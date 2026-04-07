@@ -2,7 +2,7 @@
 
 import React from "react";
 import HorizontalVirtualScroll, { withLoaderWidth } from "@/libs/horizontal-virtual-scroll";
-import { TechnicalIntro } from "@/components/TechnicalIntro";
+import { HorizontalScrollDocs } from "@/components/technical-docs";
 
 const HorizontalVirtualScrollWithLoader = withLoaderWidth(HorizontalVirtualScroll);
 
@@ -64,29 +64,7 @@ export default function HorizontalDemoPage() {
 
   return (
     <div className="relative">
-      <TechnicalIntro
-        title="Horizontal Virtual Scroll"
-        challenges={[
-          {
-            label: "Overflow-X Performance",
-            description: "Scroll chiều ngang thường gây lag nếu khối lượng DOM lớn xếp cạnh nhau trên một dải flex.",
-          },
-          {
-            label: "Infinite Loading",
-            description: "Việc append hàng nghìn card ngang mà không tối ưu sẽ làm vỡ giao diện và tốn RAM.",
-          },
-        ]}
-        solutions={[
-          {
-            label: "Fixed Item Width",
-            description: "Dùng width cố định cho mỗi card để tính toán điểm bắt đầu scroll nhanh chóng.",
-          },
-          {
-            label: "Load More Support",
-            description: "Tự động tải thêm Card khi người dùng trượt đến cuối danh sách ngang.",
-          },
-        ]}
-      />
+      <HorizontalScrollDocs />
 
       <div className="mb-6 flex items-center justify-between">
         <div>

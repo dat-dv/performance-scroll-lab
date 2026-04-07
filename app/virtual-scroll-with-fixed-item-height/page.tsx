@@ -2,7 +2,7 @@
 
 import React from "react";
 import VirtualScrollWithFixedItemHeight from "@/libs/virtual-scroll-with-fixed-item-height";
-import { TechnicalIntro } from "@/components/TechnicalIntro";
+import { VerticalScrollDocs } from "@/components/technical-docs";
 
 interface Item {
   id: number;
@@ -59,37 +59,7 @@ const Page = () => {
 
   return (
     <div className="relative">
-      <TechnicalIntro
-        title="Virtualized List (HOC)"
-        challenges={[
-          {
-            label: "Quá tải DOM",
-            description: "Render hàng nghìn phần tử cùng lúc khiến trình duyệt giật lag và tốn nhiều RAM.",
-          },
-          {
-            label: "Chi phí xử lý cao",
-            description: "Các thao tác tính toán layout, reflow và repaint trở nên rất tốn kém.",
-          },
-          {
-            label: "Hạn chế thiết bị",
-            description: "Hiệu năng giảm sâu trên các thiết bị cấu hình yếu hoặc mobile.",
-          },
-        ]}
-        solutions={[
-          {
-            label: "Render theo Viewport",
-            description: "Chỉ hiển thị những phần tử thực sự nằm trong tầm mắt người dùng.",
-          },
-          {
-            label: "Tối ưu bộ nhớ",
-            description: "Giảm đáng kể số lượng DOM nodes, giúp trải nghiệm mượt mà hơn.",
-          },
-          {
-            label: "Infinite Scroll",
-            description: "Tự động tải thêm dữ liệu khi người dùng cuộn đến cuối danh sách.",
-          },
-        ]}
-      />
+      <VerticalScrollDocs />
 
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-white/10 dark:bg-zinc-900/70">
         <VirtualScrollWithFixedItemHeight

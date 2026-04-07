@@ -1,13 +1,14 @@
 "use client";
 
-import React from "react";
+import { cn } from "@/libs/cn";
+import React, { ComponentProps } from "react";
 
 interface IntroPoint {
   label: string;
   description: string;
 }
 
-interface TechnicalIntroProps {
+interface TechnicalIntroProps extends ComponentProps<"div"> {
   title: string;
   category?: string;
   challengeTitle?: string;
@@ -26,9 +27,11 @@ export function TechnicalIntro({
   solutionTitle = "🟢 Giải pháp:",
   challenges,
   solutions,
+  className,
+  ...rest
 }: TechnicalIntroProps) {
   return (
-    <div className="mb-10">
+    <div className={cn("mb-10", className)} {...rest}>
       <h1 className="text-xl font-bold tracking-tight tracking-widest text-gray-900 uppercase dark:text-white">
         {title}
       </h1>
