@@ -21,13 +21,13 @@ export default function LoadMoreObserverPage() {
   const [items, setItems] = useState<Item[]>(initialItems);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  
+
   // Sentinel element ref
   const loaderRef = useRef<HTMLDivElement>(null);
 
   const fetchMoreData = useCallback(() => {
     if (loading || !hasMore) return;
-    
+
     setLoading(true);
     // Simulate API delay
     setTimeout(() => {
@@ -41,7 +41,7 @@ export default function LoadMoreObserverPage() {
 
       setItems((prev) => [...prev, ...newBatch]);
       setLoading(false);
-      
+
       // Stop after 200 items to simulate "end of list"
       if (items.length + newBatch.length > 200) {
         setHasMore(false);
@@ -72,18 +72,18 @@ export default function LoadMoreObserverPage() {
       <LoadMoreObserverDocs />
 
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm dark:border-white/5 dark:bg-zinc-900/40">
-        <h2 className="mb-6 text-sm font-bold uppercase tracking-widest text-gray-500">
+        <h2 className="mb-6 text-sm font-bold tracking-widest text-gray-500 uppercase">
           Standard List Rendering (No Virtualization)
         </h2>
-        
+
         <div className="space-y-4">
           {items.map((item) => (
-            <div 
-              key={item.id} 
+            <div
+              key={item.id}
               className="flex items-center justify-between rounded-xl border border-gray-100 p-4 transition-colors hover:bg-gray-50 dark:border-white/5 dark:hover:bg-white/5"
             >
               <div className="flex gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500/10 text-blue-500 font-bold">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500/10 font-bold text-blue-500">
                   {item.id}
                 </div>
                 <div>
@@ -91,35 +91,30 @@ export default function LoadMoreObserverPage() {
                   <p className="text-xs text-gray-400">{item.description}</p>
                 </div>
               </div>
-              <div className="text-sm font-bold text-emerald-500">
-                {item.price}
-              </div>
+              <div className="text-sm font-bold text-emerald-500">{item.price}</div>
             </div>
           ))}
         </div>
 
         {/* Sentinel / Loader */}
-        <div 
-          ref={loaderRef} 
-          className="mt-8 flex flex-col items-center justify-center py-10"
-        >
+        <div ref={loaderRef} className="mt-8 flex flex-col items-center justify-center py-10">
           {loading && (
             <div className="flex flex-col items-center gap-3">
               <div className="h-6 w-6 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 animate-pulse">
+              <span className="animate-pulse text-[10px] font-bold tracking-widest text-gray-400 uppercase">
                 Fetching Data...
               </span>
             </div>
           )}
           {!hasMore && (
-            <div className="rounded-full bg-gray-100 px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:bg-zinc-800">
+            <div className="rounded-full bg-gray-100 px-4 py-2 text-[10px] font-bold tracking-widest text-gray-400 uppercase dark:bg-zinc-800">
               Bạn đã xem hết 200 sản phẩm
             </div>
           )}
         </div>
       </div>
 
-      <div className="mt-6 flex items-center justify-between px-2 text-[10px] font-bold uppercase tracking-widest text-gray-400">
+      <div className="mt-6 flex items-center justify-between px-2 text-[10px] font-bold tracking-widest text-gray-400 uppercase">
         <span>Current DOM Node count: {items.length * 5} (Est.)</span>
         <span>Total Items: {items.length}</span>
       </div>

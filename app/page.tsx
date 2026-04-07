@@ -1,92 +1,102 @@
 "use client";
 
-import Link from "next/link";
+import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { VirtualizationWizard } from "@/components/virtualization-wizard";
+import { CaseCard, CaseScale, CaseDirection, CaseItemSize } from "@/components/case-card";
+import { cases } from "@/libs/data/cases-data";
 
-const cases = [
-  {
-    title: "Tổng số item ít, không phân trang",
-    description: "Load toàn bộ data một lần, render list bình thường.",
-    recommendation: "Dùng list thông thường, không cần tối ưu.",
-    href: "/static-list-demo",
-  },
-  {
-    title: "Load more khi scroll xuống cuối — item ít",
-    description: "Append thêm item mỗi khi chạm đáy. DOM tăng dần theo thời gian.",
-    recommendation: "List thường + IntersectionObserver trigger fetch.",
-    href: "/load-more-intersection-observer",
-  },
-  {
-    title: "Load more khi scroll xuống cuối — item nhiều",
-    description: "DOM phình to nếu append mãi. Cần virtual DOM để chỉ render phần đang nhìn thấy.",
-    recommendation: "Virtual scroll với fixed item height.",
-    href: "/virtual-scroll-with-fixed-item-height",
-  },
-  {
-    title: "Item có chiều cao động (dynamic height)",
-    description:
-      "Mỗi item cao khác nhau (comment, card mở rộng...). Không thể tính offset bằng index * height.",
-    recommendation: "Virtual scroll với dynamic item height — đo từng item bằng ResizeObserver.",
-    href: null, // TODO
-  },
-  {
-    title: "Bidirectional scroll (chat, timeline)",
-    description:
-      "Scroll cả lên lẫn xuống, load thêm ở cả hai đầu. Phải giữ scroll position khi prepend.",
-    recommendation: "Virtual scroll với anchor-based scroll preservation.",
-    href: null, // TODO
-  },
-  {
-    title: "Virtual Scroll Chiều Ngang",
-    description: "Tối ưu cho Dashboard, Carousel có hàng ngàn items xếp ngang.",
-    recommendation: "Virtual scroll với Fixed Item Width.",
-    href: "/horizontal-scroll-demo",
-  },
-];
-
+/**
+ * Main Demo Entry Point
+ * Manages filtering state and displays render cases grid with fluid animations.
+ */
 export default function InfiniteScrollDemo() {
+  const [filters, setFilters] = useState({
+    scale: "large" as CaseScale,
+    direction: "vertical" as CaseDirection,
+    itemSize: "fixed" as CaseItemSize,
+  });
+
+  // Derived filtered results
+  const filteredCases = useMemo(() => {
+    return cases.filter((c) => {
+      const matchScale = filters.scale === "any" || c.scale === "any" || c.scale === filters.scale;
+      const matchDirection =
+        filters.direction === "any" || c.direction === "any" || c.direction === filters.direction;
+      const matchItemSize =
+        filters.itemSize === "any" || c.itemSize === "any" || c.itemSize === filters.itemSize;
+
+      // Heuristic: If scale is small, specialized layout options are ignored
+      if (filters.scale === "small") return matchScale && matchDirection;
+
+      return matchScale && matchDirection && matchItemSize;
+    });
+  }, [filters]);
+
   return (
-    <div className="relative">
-      <h1 className="mb-1 text-xl font-semibold">Infinite Scroll & Virtual DOM</h1>
-      <p className="mb-6 text-sm text-slate-500">Các trường hợp sử dụng và chiến lược tương ứng.</p>
+    <main className="relative mx-auto max-w-7xl px-0 py-8 lg:py-16">
+      {/* 🚀 Header & Intro Text */}
+      <header className="mb-14 px-4 sm:px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-6"
+        >
+          <h1 className="text-5xl font-black tracking-tighter text-slate-900 sm:text-7xl dark:text-slate-100">
+            Infinite Scroll & <br />
+            <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent dark:from-blue-500 dark:to-indigo-500">
+              Virtual DOM
+            </span>
+          </h1>
+          <p className="max-w-2xl text-lg leading-relaxed font-medium text-slate-500 dark:text-slate-400">
+            Xây dựng trải nghiệm cuộn siêu cấp (Ultra-smooth) cho hàng triệu dòng dữ liệu. Sử dụng
+            Virtualization (Windowing) để giải phóng tài nguyên CPU & RAM cho trình duyệt.
+          </p>
+        </motion.div>
+      </header>
 
-      <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-        {cases.map((c, i) => (
-          <li
-            key={i}
-            className="border-border-primary flex flex-col justify-between rounded-lg border bg-white/5 p-3 backdrop-blur-sm transition-all hover:bg-white/10 dark:bg-black/20"
+      {/* 🧩 Intelligence Layer: Selection Wizard */}
+      <section className="mb-16 px-4 sm:px-6">
+        <VirtualizationWizard onFilterChange={setFilters} />
+      </section>
+
+      {/* 📚 Results Grid */}
+      <section className="px-4 pb-20 sm:px-6">
+        <header className="mb-10 flex items-center justify-between border-b border-slate-200 pb-6 dark:border-white/5">
+          <div className="flex flex-col gap-1.5">
+            <h2 className="flex items-center gap-3 text-xs font-black tracking-[0.25em] text-slate-500 uppercase dark:text-slate-400">
+              <div className="size-2.5 rounded-full border border-blue-500/50 bg-blue-500 shadow-[0_0_12px_rgba(59,130,246,0.5)]" />
+              Matching Solutions ({filteredCases.length})
+            </h2>
+          </div>
+
+          <button
+            onClick={() => setFilters({ scale: "any", direction: "any", itemSize: "any" })}
+            className="group flex items-center gap-2 text-[10px] font-bold text-slate-500 transition-all hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
           >
-            <div className="space-y-1.5">
-              <div className="flex items-start justify-between gap-2">
-                <h2 className="text-xs font-bold tracking-wider text-gray-400 uppercase">
-                  {c.title}
-                </h2>
-                {c.href ? (
-                  <div className="size-1.5 shrink-0 rounded-full bg-green-500" />
-                ) : (
-                  <div className="size-1.5 shrink-0 rounded-full bg-gray-300 dark:bg-gray-700" />
-                )}
-              </div>
+            <span>RESET FILTERS</span>
+            <div className="size-1 rounded-full bg-slate-300 group-hover:bg-blue-500 dark:bg-slate-700" />
+          </button>
+        </header>
 
-              <p className="line-clamp-2 text-sm leading-snug font-medium">{c.description}</p>
-            </div>
-
-            <div className="mt-4 flex items-end justify-between">
-              <p className="line-clamp-1 text-[10px] text-slate-500 italic">{c.recommendation}</p>
-
-              {c.href ? (
-                <Link
-                  href={c.href}
-                  className="rounded px-2 py-1 text-[10px] font-bold text-blue-500 transition-colors hover:bg-blue-500/10"
-                >
-                  GO →
-                </Link>
-              ) : (
-                <span className="text-[10px] font-bold text-gray-400">WIP</span>
-              )}
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
+        {/* Dynamic Grid with Layout Animations */}
+        <motion.ul layout className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <AnimatePresence mode="popLayout" initial={false}>
+            {filteredCases.map((c) => (
+              <motion.div
+                key={c.title}
+                layout
+                initial={{ opacity: 0, scale: 0.92, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.92, y: 20 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+              >
+                <CaseCard item={c} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.ul>
+      </section>
+    </main>
   );
 }

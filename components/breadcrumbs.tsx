@@ -15,7 +15,10 @@ export function Breadcrumb({ className }: { className?: string }) {
   return (
     <nav
       aria-label="Breadcrumb"
-      className={cn("flex items-center space-x-1.5 py-4 text-[10px] font-bold tracking-widest text-gray-400 uppercase transition-all duration-300", className)}
+      className={cn(
+        "flex items-center space-x-1.5 py-4 text-[10px] font-bold tracking-widest text-gray-400 uppercase transition-all duration-300",
+        className
+      )}
     >
       <Link href="/" className="flex items-center transition-colors hover:text-blue-500">
         <Home size={12} className="mr-1" />

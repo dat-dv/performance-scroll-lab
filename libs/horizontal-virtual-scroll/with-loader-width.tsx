@@ -29,7 +29,10 @@ function withLoaderWidth<T>(
       if (!firstItem) return null;
 
       return (
-        <div ref={containerRef} style={{ width: "fit-content", opacity: 0, pointerEvents: "none", position: "absolute" }}>
+        <div
+          ref={containerRef}
+          style={{ width: "fit-content", opacity: 0, pointerEvents: "none", position: "absolute" }}
+        >
           <div ref={sampleItemRef} style={{ display: "inline-block" }}>
             {props.children({ index: 0, item: firstItem })}
           </div>

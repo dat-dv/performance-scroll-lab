@@ -77,11 +77,11 @@ const Page = () => {
             Performance Mode Active
           </div>
           {isLoading && (
-            <div className="text-[10px] font-bold text-gray-400 animate-pulse uppercase tracking-widest">
+            <div className="animate-pulse text-[10px] font-bold tracking-widest text-gray-400 uppercase">
               Loading more items...
             </div>
           )}
-          <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+          <div className="text-[10px] font-bold tracking-widest text-gray-400 uppercase">
             Total Items: {items.length}
           </div>
         </div>

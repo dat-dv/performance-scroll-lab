@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "fm": "prettier --write .",
+    "fmc": "prettier --check ."
   },
   "dependencies": {
     "clsx": "^2.1.1",

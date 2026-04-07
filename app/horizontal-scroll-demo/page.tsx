@@ -25,9 +25,11 @@ const renderCard = ({ item }: { index: number; item: CardItem }) => {
   return (
     <div className="h-full w-[240px] p-3">
       <div
-        className={`flex h-full w-full flex-col items-center justify-center p-6 text-center font-bold text-white shadow-lg transition-transform hover:scale-95 rounded-2xl ${item.color}`}
+        className={`flex h-full w-full flex-col items-center justify-center rounded-2xl p-6 text-center font-bold text-white shadow-lg transition-transform hover:scale-95 ${item.color}`}
       >
-        <span className="mb-1 text-[10px] tracking-widest opacity-70 uppercase">Portfolio Item</span>
+        <span className="mb-1 text-[10px] tracking-widest uppercase opacity-70">
+          Portfolio Item
+        </span>
         <div className="text-xl">{item.title}</div>
         <div className="mt-4 rounded-full bg-white/20 px-3 py-1 text-[10px]">ID: {item.id}</div>
       </div>
@@ -74,11 +76,11 @@ export default function HorizontalDemoPage() {
           </p>
         </div>
         <div className="text-right">
-          <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+          <div className="text-[10px] font-bold tracking-widest text-gray-400 uppercase">
             Total Cards: {items.length}
           </div>
           {isLoading && (
-            <div className="text-[10px] font-bold text-emerald-500 animate-pulse uppercase tracking-widest">
+            <div className="animate-pulse text-[10px] font-bold tracking-widest text-emerald-500 uppercase">
               Fetching more...
             </div>
           )}
@@ -87,9 +89,9 @@ export default function HorizontalDemoPage() {
 
       <div className="rounded-3xl border border-gray-100 bg-gray-50/50 py-8 dark:border-white/5 dark:bg-zinc-900/40">
         <div className="mx-auto flex justify-center">
-          <HorizontalVirtualScrollWithLoader 
-            items={items} 
-            visibleCount={4} 
+          <HorizontalVirtualScrollWithLoader
+            items={items}
+            visibleCount={4}
             overscan={4}
             onEndReached={handleLoadMore}
             isLoadingMore={isLoading}
