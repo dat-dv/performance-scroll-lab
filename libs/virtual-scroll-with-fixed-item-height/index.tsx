@@ -16,6 +16,8 @@ export type TVirtualScrollWithFixedItemHeightProps<T> = {
   className?: string;
   style?: React.CSSProperties;
   overscan?: number;
+  onEndReached?: () => void;
+  isLoadingMore?: boolean;
   children: ({ index, item }: { index: number; item: T }) => React.ReactNode;
 };
 
@@ -27,10 +29,12 @@ function VirtualScrollWithFixedItemHeight<T>({
   style,
   children,
   overscan = DEFAULT_OVERSCAN,
+  onEndReached,
+  isLoadingMore,
 }: TVirtualScrollWithFixedItemHeightProps<T>) {
   const [scrollTop, setScrollTop] = useState(0);
-  // Reserved for future use: programmatic scrolling or scroll position reads.
   const containerRef = useRef<HTMLDivElement>(null);
+  const lastTriggeredLength = useRef(0);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     setScrollTop(e.currentTarget.scrollTop);
@@ -38,6 +42,16 @@ function VirtualScrollWithFixedItemHeight<T>({
 
   const startIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);
   const endIndex = Math.min(items.length, startIndex + visibleCount + overscan * 2);
+
+  // Trigger onEndReached when approaching the bottom
+  React.useEffect(() => {
+    if (onEndReached && !isLoadingMore && endIndex >= items.length - 2) {
+      if (lastTriggeredLength.current !== items.length) {
+        onEndReached();
+        lastTriggeredLength.current = items.length;
+      }
+    }
+  }, [endIndex, items.length, onEndReached, isLoadingMore]);
 
   return (
     <div

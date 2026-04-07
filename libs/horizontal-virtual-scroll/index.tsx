@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useState, useRef, useCallback, useMemo } from "react";
+import React, { useState, useRef, useCallback, useMemo, useEffect } from "react";
 
 export interface HorizontalVirtualScrollProps<T> {
   items: T[];
   itemWidth: number;
   visibleCount: number;
   overscan?: number;
+  onEndReached?: () => void;
+  isLoadingMore?: boolean;
   children: (props: { index: number; item: T }) => React.ReactNode;
 }
 
@@ -19,10 +21,13 @@ export default function HorizontalVirtualScroll<T>({
   itemWidth,
   visibleCount,
   overscan = 5,
+  onEndReached,
+  isLoadingMore,
   children,
 }: HorizontalVirtualScrollProps<T>) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const lastTriggeredLength = useRef(0);
 
   const onScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
     setScrollLeft(e.currentTarget.scrollLeft);
@@ -36,6 +41,16 @@ export default function HorizontalVirtualScroll<T>({
 
     return { startIndex: finalStart, endIndex: end };
   }, [scrollLeft, itemWidth, visibleCount, overscan, items.length]);
+
+  // Trigger onEndReached when approaching the end
+  useEffect(() => {
+    if (onEndReached && !isLoadingMore && endIndex >= items.length - 2) {
+      if (lastTriggeredLength.current !== items.length) {
+        onEndReached();
+        lastTriggeredLength.current = items.length;
+      }
+    }
+  }, [endIndex, items.length, onEndReached, isLoadingMore]);
 
   const visibleItems = items.slice(startIndex, endIndex);
 
