@@ -1,96 +1,93 @@
 "use client";
 
-import React, { useState } from "react";
-import InfiniteScroll from "@/libs/infinite-scroll";
-import { Sparkles, ArrowDown, Loader2 } from "lucide-react";
+import Link from "next/link";
+
+const cases = [
+  {
+    title: "Tổng số item ít, không phân trang",
+    description: "Load toàn bộ data một lần, render list bình thường.",
+    recommendation: "Dùng list thông thường, không cần tối ưu.",
+    href: null,
+  },
+  {
+    title: "Load more khi scroll xuống cuối — item ít",
+    description: "Append thêm item mỗi khi chạm đáy. DOM tăng dần theo thời gian.",
+    recommendation: "List thường + IntersectionObserver trigger fetch.",
+    href: null,
+  },
+  {
+    title: "Load more khi scroll xuống cuối — item nhiều",
+    description: "DOM phình to nếu append mãi. Cần virtual DOM để chỉ render phần đang nhìn thấy.",
+    recommendation: "Virtual scroll với fixed item height.",
+    href: "/virtual-scroll-with-fixed-item-height",
+  },
+  {
+    title: "Item có chiều cao động (dynamic height)",
+    description:
+      "Mỗi item cao khác nhau (comment, card mở rộng...). Không thể tính offset bằng index * height.",
+    recommendation: "Virtual scroll với dynamic item height — đo từng item bằng ResizeObserver.",
+    href: null, // TODO
+  },
+  {
+    title: "Bidirectional scroll (chat, timeline)",
+    description:
+      "Scroll cả lên lẫn xuống, load thêm ở cả hai đầu. Phải giữ scroll position khi prepend.",
+    recommendation: "Virtual scroll với anchor-based scroll preservation.",
+    href: null, // TODO
+  },
+  {
+    title: "Grid / masonry layout",
+    description:
+      "Item xếp nhiều cột, chiều cao không đều (Pinterest-style). Tính toán offset phức tạp hơn list.",
+    recommendation: "Virtual grid — track vị trí từng ô theo cả trục X và Y.",
+    href: null, // TODO
+  },
+];
 
 export default function InfiniteScrollDemo() {
-  const [items, setItems] = useState(
-    Array.from({ length: 20 }, (_, i) => `Initial Item #${i + 1}`)
-  );
-  const [hasMore, setHasMore] = useState(true);
-
-  const loadMore = (page: number) => {
-    console.log("Loading page:", page);
-    // Simulate API delay
-    setTimeout(() => {
-      if (items.length >= 100) {
-        setHasMore(false);
-        return;
-      }
-      const nextItems = Array.from(
-        { length: 15 },
-        (_, i) => `Loaded Item #${items.length + i + 1}`
-      );
-      setItems((prev) => [...prev, ...nextItems]);
-    }, 1500);
-  };
-
   return (
-    <div className="flex min-h-screen flex-col items-center p-8 md:p-24">
-      <div className="w-full max-w-2xl space-y-8">
-        <header className="space-y-4 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-400">
-            <Sparkles className="h-3 w-3" />
-            <span>Pure Library Migration</span>
-          </div>
-          <h1 className="text-5xl font-bold tracking-tighter text-white">
-            Infinite<span className="text-indigo-500">Scroll</span>
-          </h1>
-          <p className="text-zinc-500 italic">
-            &ldquo;Headless logic in libs, premium UI in app.&rdquo;
-          </p>
-        </header>
+    <div className="relative">
+      <h1 className="mb-1 text-xl font-semibold">Infinite Scroll & Virtual DOM</h1>
+      <p className="mb-6 text-sm text-slate-500">Các trường hợp sử dụng và chiến lược tương ứng.</p>
 
-        <div className="glass relative overflow-hidden rounded-3xl p-4">
-          <InfiniteScroll
-            pageStart={0}
-            loadMore={loadMore}
-            hasMore={hasMore}
-            threshold={100}
-            loader={
-              <div key="loader" className="flex w-full items-center justify-center p-8">
-                <div className="glass flex items-center gap-3 rounded-2xl px-6 py-3 shadow-xl">
-                  <Loader2 className="h-5 w-5 animate-spin text-indigo-500" />
-                  <span className="text-sm font-medium text-zinc-400">
-                    Loading more excellence...
-                  </span>
-                </div>
-              </div>
-            }
-            className="flex flex-col gap-6"
+      <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+        {cases.map((c, i) => (
+          <li
+            key={i}
+            className="border-border-primary flex flex-col justify-between rounded-lg border bg-white/5 p-3 backdrop-blur-sm transition-all hover:bg-white/10 dark:bg-black/20"
           >
-            {items.map((item, index) => (
-              <div
-                key={item}
-                className="group relative flex cursor-default items-center justify-between overflow-hidden rounded-2xl border border-white/5 bg-red-200! p-6 transition-all hover:bg-white/10"
-              >
-                <div>
-                  <h3 className="font-medium tracking-tight text-white uppercase transition-colors group-hover:text-indigo-400">
-                    {item}
-                  </h3>
-                  <p className="mt-1 text-xs text-zinc-600">
-                    Processed by headless functional library.
-                  </p>
-                </div>
-                <div className="flex h-8 w-8 items-center justify-center rounded-full border border-indigo-500/20 bg-indigo-500/10 text-indigo-500">
-                  {index + 1}
-                </div>
+            <div className="space-y-1.5">
+              <div className="flex items-start justify-between gap-2">
+                <h2 className="text-xs font-bold tracking-wider text-gray-400 uppercase">
+                  {c.title}
+                </h2>
+                {c.href ? (
+                  <div className="size-1.5 shrink-0 rounded-full bg-green-500" />
+                ) : (
+                  <div className="size-1.5 shrink-0 rounded-full bg-gray-300 dark:bg-gray-700" />
+                )}
               </div>
-            ))}
-          </InfiniteScroll>
 
-          {!hasMore && (
-            <div className="py-12 text-center text-zinc-600 italic">End of the void reached.</div>
-          )}
-        </div>
+              <p className="line-clamp-2 text-sm leading-snug font-medium">{c.description}</p>
+            </div>
 
-        <footer className="py-8 text-center">
-          <p className="flex items-center justify-center gap-2 text-sm text-zinc-700">
-            Scroll down for more <ArrowDown className="h-3 w-3 animate-bounce" />
-          </p>
-        </footer>
-      </div>
+            <div className="mt-4 flex items-end justify-between">
+              <p className="line-clamp-1 text-[10px] text-slate-500 italic">{c.recommendation}</p>
+
+              {c.href ? (
+                <Link
+                  href={c.href}
+                  className="rounded px-2 py-1 text-[10px] font-bold text-blue-500 transition-colors hover:bg-blue-500/10"
+                >
+                  GO →
+                </Link>
+              ) : (
+                <span className="text-[10px] font-bold text-gray-400">WIP</span>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
