@@ -1,10 +1,8 @@
 "use client";
 
 import React from "react";
-import HorizontalVirtualScroll, { withLoaderWidth } from "@/libs/horizontal-virtual-scroll";
+import HorizontalVirtualScroll from "@/libs/horizontal-virtual-scroll";
 import { HorizontalScrollDocs } from "@/components/technical-docs";
-
-const HorizontalVirtualScrollWithLoader = withLoaderWidth(HorizontalVirtualScroll);
 
 interface CardItem {
   id: number;
@@ -21,9 +19,10 @@ const colors = [
   "bg-indigo-500",
 ];
 
-const renderCard = ({ item }: { index: number; item: CardItem }) => {
+const renderCard = ({ index, item }: { index: number; item: CardItem }) => {
+  console.log(111, index, item);
   return (
-    <div className="h-full w-[240px] p-3">
+    <div className="h-full w-[240px] p-3" key={item.id}>
       <div
         className={`flex h-full w-full flex-col items-center justify-center rounded-2xl p-6 text-center font-bold text-white shadow-lg transition-transform hover:scale-95 ${item.color}`}
       >
@@ -89,15 +88,9 @@ export default function HorizontalDemoPage() {
 
       <div className="rounded-3xl border border-gray-100 bg-gray-50/50 py-8 dark:border-white/5 dark:bg-zinc-900/40">
         <div className="mx-auto flex justify-center">
-          <HorizontalVirtualScrollWithLoader
-            items={items}
-            visibleCount={4}
-            overscan={4}
-            onEndReached={handleLoadMore}
-            isLoadingMore={isLoading}
-          >
+          <HorizontalVirtualScroll items={items} visibleCount={4} overscan={4}>
             {renderCard}
-          </HorizontalVirtualScrollWithLoader>
+          </HorizontalVirtualScroll>
         </div>
       </div>
     </div>

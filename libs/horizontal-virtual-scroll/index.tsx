@@ -1,76 +1,79 @@
 "use client";
 
 import React, { useState, useRef, useCallback, useMemo, useEffect } from "react";
+import withLoaderSize from "./with-loader-width";
 
 export interface HorizontalVirtualScrollProps<T> {
   items: T[];
   itemWidth: number;
-  visibleCount: number;
+  visibleCount?: number | null;
   overscan?: number;
   onEndReached?: () => void;
   isLoadingMore?: boolean;
+  className?: string;
+  itemHeight?: string | number;
   children: (props: { index: number; item: T }) => React.ReactNode;
 }
 
 /**
- * Horizontal Virtual Scroll Component
- * High performance virtualization for horizontal lists with fixed item widths.
+ * Raw Horizontal Virtual Scroll Component
+ * Used when you want to provide itemWidth manually and avoid HOC measurement.
  */
-export default function HorizontalVirtualScroll<T>({
+export function HorizontalVirtualScroll<T>({
   items,
   itemWidth,
   visibleCount,
   overscan = 5,
   onEndReached,
   isLoadingMore,
+  className,
+  itemHeight = 400,
   children,
 }: HorizontalVirtualScrollProps<T>) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollLeft, setScrollLeft] = useState(0);
-  const lastTriggeredLength = useRef(0);
 
   const onScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
-    setScrollLeft(e.currentTarget.scrollLeft);
+    if (e.currentTarget) {
+      setScrollLeft(e.currentTarget.scrollLeft);
+    }
   }, []);
 
-  // Calculate range of items to render
   const { startIndex, endIndex } = useMemo(() => {
-    const start = Math.floor(scrollLeft / itemWidth);
-    const end = Math.min(items.length, start + visibleCount + overscan);
+    // If no visibleCount, estimate based on a standard 1200px viewport
+    const count = visibleCount || 6;
+    const safeWidth = itemWidth || 320;
+    const start = Math.floor(scrollLeft / safeWidth);
+    const end = Math.min(items.length, start + count + overscan);
     const finalStart = Math.max(0, start - overscan);
-
     return { startIndex: finalStart, endIndex: end };
   }, [scrollLeft, itemWidth, visibleCount, overscan, items.length]);
 
-  // Trigger onEndReached when approaching the end
   useEffect(() => {
     if (onEndReached && !isLoadingMore && endIndex >= items.length - 2) {
-      if (lastTriggeredLength.current !== items.length) {
-        onEndReached();
-        lastTriggeredLength.current = items.length;
-      }
+      onEndReached();
     }
   }, [endIndex, items.length, onEndReached, isLoadingMore]);
 
   const visibleItems = items.slice(startIndex, endIndex);
-
-  // Total horizontal width
   const totalWidth = items.length * itemWidth;
-  // Offset to shift the container to the right position
   const offsetX = startIndex * itemWidth;
+
+  console.log("visibleItems", visibleItems, startIndex);
 
   return (
     <div
       ref={containerRef}
       onScroll={onScroll}
-      className="scrollbar-hide relative overflow-x-auto overflow-y-hidden"
-      style={{ width: visibleCount * itemWidth }}
+      className={`scrollbar-hide relative overflow-x-auto overflow-y-hidden ${className || ""}`}
+      style={{
+        ...(visibleCount ? { width: visibleCount * itemWidth } : { width: "100%" }),
+        height: itemHeight,
+      }}
     >
-      {/* Sizer: Simulates total width */}
       <div style={{ width: totalWidth, height: "100%", position: "relative" }}>
-        {/* Render Container: Moves with scroll */}
         <div
-          className="flex h-full"
+          className="absolute top-0 left-0 flex h-full"
           style={{
             transform: `translateX(${offsetX}px)`,
             willChange: "transform",
@@ -90,4 +93,4 @@ export default function HorizontalVirtualScroll<T>({
   );
 }
 
-export { default as withLoaderWidth } from "./with-loader-width";
+export default withLoaderSize(HorizontalVirtualScroll);
