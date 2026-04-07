@@ -36,11 +36,10 @@ const cases = [
     href: null, // TODO
   },
   {
-    title: "Grid / masonry layout",
-    description:
-      "Item xếp nhiều cột, chiều cao không đều (Pinterest-style). Tính toán offset phức tạp hơn list.",
-    recommendation: "Virtual grid — track vị trí từng ô theo cả trục X và Y.",
-    href: null, // TODO
+    title: "Virtual Scroll Chiều Ngang",
+    description: "Tối ưu cho Dashboard, Carousel có hàng ngàn items xếp ngang.",
+    recommendation: "Virtual scroll với Fixed Item Width.",
+    href: "/horizontal-scroll-demo",
   },
 ];
 

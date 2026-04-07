@@ -1,51 +1,61 @@
+"use client";
+
+import React from "react";
+
+interface IntroPoint {
+  label: string;
+  description: string;
+}
+
+interface TechnicalIntroProps {
+  title: string;
+  category?: string;
+  challengeTitle?: string;
+  solutionTitle?: string;
+  challenges: IntroPoint[];
+  solutions: IntroPoint[];
+}
+
 /**
- * TechnicalIntro Component
- * Renders a structured explanation of the challenges and solutions for large list performance.
+ * Generic TechnicalIntro Component
+ * Renders structured technical documentation for performance-oriented demos.
  */
-export function TechnicalIntro() {
+export function TechnicalIntro({
+  title,
+  challengeTitle = "🔴 Thách thức:",
+  solutionTitle = "🟢 Giải pháp:",
+  challenges,
+  solutions,
+}: TechnicalIntroProps) {
   return (
     <div className="mb-10">
       <h1 className="text-xl font-bold tracking-tight tracking-widest text-gray-900 uppercase dark:text-white">
-        Virtualized List (HOC)
+        {title}
       </h1>
       <div className="mt-4 max-w-4xl text-sm leading-relaxed text-gray-500">
         <div className="mb-6">
           <span className="flex items-center gap-2 font-bold text-red-600 dark:text-red-500">
-            🔴 Thách thức:
+            {challengeTitle}
           </span>
           <ul className="mt-2 ml-2 list-inside list-disc space-y-1">
-            <li>
-              <strong>Quá tải DOM:</strong> Render hàng nghìn phần tử cùng lúc khiến trình duyệt
-              giật lag và tiêu tốn nhiều RAM.
-            </li>
-            <li>
-              <strong>Chi phí xử lý cao:</strong> Các thao tác tính toán layout, reflow và repaint
-              trở nên rất tốn kém.
-            </li>
-            <li>
-              <strong>Hạn chế thiết bị:</strong> Hiệu năng giảm sâu trên các thiết bị cấu hình yếu
-              hoặc mobile.
-            </li>
+            {challenges.map((point, i) => (
+              <li key={i}>
+                <strong>{point.label}:</strong> {point.description}
+              </li>
+            ))}
           </ul>
         </div>
 
         <div>
           <span className="flex items-center gap-2 font-bold text-emerald-600 dark:text-emerald-500">
-            🟢 Giải pháp (Virtual Scroll):
+            {solutionTitle}
           </span>
           <ul className="mt-2 ml-2 list-inside list-disc space-y-1">
-            <li>
-              <strong>Render theo Viewport:</strong> Chỉ hiển thị những phần tử thực sự nằm trong
-              tầm mắt người dùng.
-            </li>
-            <li>
-              <strong>Tối ưu bộ nhớ:</strong> Giảm đáng kể số lượng DOM nodes, giúp trải nghiệm mượt
-              mà hơn.
-            </li>
-            <li>
-              <strong>Khả năng mở rộng:</strong> Nền tảng để xây dựng timeline, bảng dữ liệu lớn
-              hoặc infinite scroll hiệu quả.
-            </li>
+            {solutions.map((point, i) => (
+              <li key={i}>
+                <strong>{point.label}:</strong> {point.description}
+              </li>
+            ))}
           </ul>
         </div>
       </div>
