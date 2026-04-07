@@ -2,6 +2,7 @@
 
 import React from "react";
 import { StaticListDocs } from "@/components/technical-docs";
+import { Info } from "lucide-react";
 
 interface Contact {
   id: number;
@@ -33,39 +34,55 @@ export default function StaticListDemo() {
     <div className="relative">
       <StaticListDocs />
 
-      <div className="mx-auto max-w-2xl space-y-6">
-        <h2 className="mb-4 text-sm font-bold tracking-widest text-gray-500 uppercase">
-          Team Roster (Limited Data)
-        </h2>
+        <div className="flex flex-col gap-6">
+          <header className="flex flex-col gap-2">
+            <h2 className="text-sm font-bold tracking-[0.2em] text-slate-500 uppercase dark:text-slate-400">
+              Native Map Rendering (Scale: Short)
+            </h2>
+            <p className="text-sm font-medium text-slate-500 italic">
+              Khi dữ liệu ít (&lt; 100 items), phương pháp nhanh nhất và hiệu quả nhất là render trực tiếp.
+            </p>
+          </header>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          {contacts.map((contact) => (
-            <div
-              key={contact.id}
-              className="flex items-center gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm transition-all hover:shadow-md dark:border-white/5 dark:bg-zinc-900/40"
-            >
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {contacts.map((contact) => (
               <div
-                className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl ${contact.color} font-bold text-white`}
+                key={contact.id}
+                className="flex items-center gap-4 rounded-3xl border border-slate-100 bg-white/70 p-5 shadow-sm transition-all hover:shadow-lg dark:border-white/5 dark:bg-slate-900/50"
               >
-                {contact.initials}
+                <div
+                  className={`flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl shadow-xl ${contact.color} font-black text-white`}
+                >
+                  {contact.initials}
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-lg font-black tracking-tight text-slate-900 dark:text-white">
+                    {contact.name}
+                  </span>
+                  <span className="text-[10px] font-black tracking-widest text-slate-500 uppercase dark:text-slate-400">
+                    {contact.role}
+                  </span>
+                </div>
               </div>
-              <div className="flex flex-col">
-                <span className="text-sm font-bold">{contact.name}</span>
-                <span className="text-[10px] font-bold tracking-wider text-gray-400 uppercase">
-                  {contact.role}
-                </span>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        <div className="mt-10 rounded-2xl border border-emerald-100 bg-emerald-50/50 p-6 dark:border-emerald-900/20 dark:bg-emerald-900/10">
-          <p className="text-[11px] leading-relaxed text-emerald-700 italic dark:text-emerald-400">
-            &quot;Đây là phương pháp ưu tiên khi dataset nhỏ. Don&apos;t make it complex when it
-            doesn&apos;t need to be.&quot;
-          </p>
+        <div className="mt-12 overflow-hidden rounded-[2rem] border border-blue-500/10 bg-blue-500/5 p-8 dark:border-blue-400/10 dark:bg-blue-400/5">
+          <div className="flex flex-col gap-4">
+            <div className="flex size-10 items-center justify-center rounded-xl bg-blue-500 text-white">
+              <Info className="size-6" />
+            </div>
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+              Tại sao không dùng Virtualization ở đây?
+            </h3>
+            <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+              Virtualization thêm một lớp logic cồng kềnh (tính toán chiều cao, bù trừ scroll offset). Đối với 
+              chiến lược <strong>Mặc định (Short Scale)</strong>, trình duyệt có thể render 100 items 
+              trong &lt; 2ms. Hãy giữ code đơn giản với <code>.map()</code>.
+            </p>
+          </div>
         </div>
-      </div>
     </div>
   );
 }

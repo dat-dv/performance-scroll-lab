@@ -3,9 +3,9 @@
 import React from "react";
 import Link from "next/link";
 
-export type CaseScale = "small" | "large" | "any";
-export type CaseDirection = "vertical" | "horizontal" | "bidirectional" | "any";
-export type CaseItemSize = "fixed" | "dynamic" | "any";
+export type CaseScale = "short" | "long" | "all";
+export type CaseDirection = "vertical" | "horizontal" | "bidirectional" | "all";
+export type CaseItemSize = "fixed" | "dynamic" | "all";
 
 export interface RenderCase {
   title: string;

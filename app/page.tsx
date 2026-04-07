@@ -12,7 +12,7 @@ import { cases } from "@/libs/data/cases-data";
  */
 export default function InfiniteScrollDemo() {
   const [filters, setFilters] = useState({
-    scale: "large" as CaseScale,
+    scale: "long" as CaseScale,
     direction: "vertical" as CaseDirection,
     itemSize: "fixed" as CaseItemSize,
   });
@@ -20,14 +20,14 @@ export default function InfiniteScrollDemo() {
   // Derived filtered results
   const filteredCases = useMemo(() => {
     return cases.filter((c) => {
-      const matchScale = filters.scale === "any" || c.scale === "any" || c.scale === filters.scale;
+      const matchScale = filters.scale === "all" || c.scale === "all" || c.scale === filters.scale;
       const matchDirection =
-        filters.direction === "any" || c.direction === "any" || c.direction === filters.direction;
+        filters.direction === "all" || c.direction === "all" || c.direction === filters.direction;
       const matchItemSize =
-        filters.itemSize === "any" || c.itemSize === "any" || c.itemSize === filters.itemSize;
+        filters.itemSize === "all" || c.itemSize === "all" || c.itemSize === filters.itemSize;
 
-      // Heuristic: If scale is small, specialized layout options are ignored
-      if (filters.scale === "small") return matchScale && matchDirection;
+      // Heuristic: If scale is short, specialized layout options are ignored
+      if (filters.scale === "short") return matchScale && matchDirection;
 
       return matchScale && matchDirection && matchItemSize;
     });
@@ -71,7 +71,7 @@ export default function InfiniteScrollDemo() {
           </div>
 
           <button
-            onClick={() => setFilters({ scale: "any", direction: "any", itemSize: "any" })}
+            onClick={() => setFilters({ scale: "all", direction: "all", itemSize: "all" })}
             className="group flex items-center gap-2 text-[10px] font-bold text-slate-500 transition-all hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
           >
             <span>RESET FILTERS</span>

@@ -32,7 +32,7 @@ interface WizardProps {
  * Fixed alignment for Group 3 and light mode contrast.
  */
 export function VirtualizationWizard({ onFilterChange }: WizardProps) {
-  const [scale, setScale] = useState<CaseScale>("large");
+  const [scale, setScale] = useState<CaseScale>("long");
   const [direction, setDirection] = useState<CaseDirection>("vertical");
   const [itemSize, setItemSize] = useState<CaseItemSize>("fixed");
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -42,9 +42,9 @@ export function VirtualizationWizard({ onFilterChange }: WizardProps) {
     onFilterChange({ scale, direction, itemSize });
   }, [scale, direction, itemSize, onFilterChange]);
 
-  const toggleScale = (val: CaseScale) => setScale(scale === val ? "any" : val);
-  const toggleDirection = (val: CaseDirection) => setDirection(direction === val ? "any" : val);
-  const toggleItemSize = (val: CaseItemSize) => setItemSize(itemSize === val ? "any" : val);
+  const toggleScale = (val: CaseScale) => setScale(scale === val ? "all" : val);
+  const toggleDirection = (val: CaseDirection) => setDirection(direction === val ? "all" : val);
+  const toggleItemSize = (val: CaseItemSize) => setItemSize(itemSize === val ? "all" : val);
 
   return (
     <div className="relative">
@@ -81,20 +81,20 @@ export function VirtualizationWizard({ onFilterChange }: WizardProps) {
               <FilterGroup label="1. QUY MÔ (SCALE)">
                 <div className="flex items-center gap-1.5">
                   <FilterChip
-                    active={scale === "any"}
-                    onClick={() => setScale("any")}
+                    active={scale === "all"}
+                    onClick={() => setScale("all")}
                     icon={<Layers className="size-3" />}
                     label="All"
                   />
                   <FilterChip
-                    active={scale === "small"}
-                    onClick={() => toggleScale("small")}
+                    active={scale === "short"}
+                    onClick={() => toggleScale("short")}
                     icon={<Minimize2 className="size-3" />}
                     label="Short"
                   />
                   <FilterChip
-                    active={scale === "large"}
-                    onClick={() => toggleScale("large")}
+                    active={scale === "long"}
+                    onClick={() => toggleScale("long")}
                     icon={<Maximize2 className="size-3" />}
                     label="Long"
                   />
@@ -105,8 +105,8 @@ export function VirtualizationWizard({ onFilterChange }: WizardProps) {
               <FilterGroup label="2. HƯỚNG CUỘN (SCROLL)">
                 <div className="flex items-center gap-1.5">
                   <FilterChip
-                    active={direction === "any"}
-                    onClick={() => setDirection("any")}
+                    active={direction === "all"}
+                    onClick={() => setDirection("all")}
                     icon={<Layers className="size-3" />}
                     label="All"
                   />
@@ -133,7 +133,7 @@ export function VirtualizationWizard({ onFilterChange }: WizardProps) {
 
               {/* 3. Item Size Group - Now strictly conditional and NO internal divider to avoid misalignment */}
               <AnimatePresence mode="popLayout">
-                {scale === "large" && (
+                {scale === "long" && (
                   <motion.div
                     layout
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -143,8 +143,8 @@ export function VirtualizationWizard({ onFilterChange }: WizardProps) {
                     <FilterGroup label="3. KÍCH THƯỚC (LAYOUT)">
                       <div className="flex items-center gap-1.5">
                         <FilterChip
-                          active={itemSize === "any"}
-                          onClick={() => setItemSize("any")}
+                          active={itemSize === "all"}
+                          onClick={() => setItemSize("all")}
                           icon={<Layers className="size-3" />}
                           label="All"
                         />
