@@ -13,7 +13,7 @@ const cases = [
     title: "Load more khi scroll xuống cuối — item ít",
     description: "Append thêm item mỗi khi chạm đáy. DOM tăng dần theo thời gian.",
     recommendation: "List thường + IntersectionObserver trigger fetch.",
-    href: null,
+    href: "/load-more-intersection-observer",
   },
   {
     title: "Load more khi scroll xuống cuối — item nhiều",
