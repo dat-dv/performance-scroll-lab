@@ -7,7 +7,7 @@ const cases = [
     title: "Tổng số item ít, không phân trang",
     description: "Load toàn bộ data một lần, render list bình thường.",
     recommendation: "Dùng list thông thường, không cần tối ưu.",
-    href: null,
+    href: "/static-list-demo",
   },
   {
     title: "Load more khi scroll xuống cuối — item ít",
