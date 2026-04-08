@@ -1,12 +1,17 @@
 "use client";
 
 import React from "react";
-import { Docs } from "./docs";
-import { ComingSoon } from "@/components/coming-soon";
 import ShowcaseLayout from "@/components/show-case-layout";
 import { BookOpen, PlayCircle } from "lucide-react";
+import { Docs } from "./docs";
+import Demo from "./demo";
 
-export default function Case7() {
+/**
+ * Case Study 7: Huge Dataset / Horizontal / Dynamic Width
+ * Handles virtualization where each item has an unpredictable width.
+ * Uses ResizeObserver for real-time coordinate synchronization.
+ */
+export default function HorizontalDynamicPage() {
   const tabs = [
     {
       label: "Technical Docs",
@@ -18,7 +23,7 @@ export default function Case7() {
       label: "Live Demo",
       value: "demo",
       icon: <PlayCircle className="size-4" />,
-      children: <ComingSoon title="Horizontal Virtual Dynamic Demo" />,
+      children: <Demo />,
     },
   ];
 

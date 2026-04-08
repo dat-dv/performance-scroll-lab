@@ -3,7 +3,7 @@
 import { Docs } from "./docs";
 import ShowcaseLayout from "@/components/show-case-layout";
 import { BookOpen, PlayCircle } from "lucide-react";
-import Demo from "./demo-1";
+import Demo1 from "./demo-1";
 import Demo2 from "./demo-2";
 
 export default function Case6() {
@@ -18,7 +18,7 @@ export default function Case6() {
       label: "Live Demo (Single-row)",
       value: "demo",
       icon: <PlayCircle className="size-4" />,
-      children: <Demo />,
+      children: <Demo1 />,
     },
     {
       label: "Live Demo (Multi-row)",
