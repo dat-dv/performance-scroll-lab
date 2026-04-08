@@ -37,7 +37,8 @@ export const cases: RenderCase[] = [
   // --- TIER 2: LONG SCALE (VIRTUAL VERTICAL) ---
   {
     title: "4. Long Vertical (Item Fixed Height)",
-    description: "Ảo hóa tối ưu cho 100k+ items với chiều cao cố định. Hỗ trợ Infinite Load (Tải thêm).",
+    description:
+      "Ảo hóa tối ưu cho 100k+ items với chiều cao cố định. Hỗ trợ Infinite Load (Tải thêm).",
     recommendation: "Tối ưu nhất cho Table, VirtualSelect (10k items), TreeView.",
     href: "/long-vertical-item-fixed-height",
     scale: "long",
@@ -67,7 +68,8 @@ export const cases: RenderCase[] = [
   {
     title: "7. Long Horizontal (Item Dynamic Width)",
     description: "Ảo hóa cuộn ngang cho các item có chiều rộng không đồng nhất.",
-    recommendation: "Cần ResizeObserver cho chiều ngang. Áp dụng cho: Dynamic Tag Clouds, Multi-aspect ratio Galleries.",
+    recommendation:
+      "Cần ResizeObserver cho chiều ngang. Áp dụng cho: Dynamic Tag Clouds, Galleries.",
     href: "/long-horizontal-item-dynamic-width",
     scale: "long",
     direction: "horizontal",
@@ -76,21 +78,50 @@ export const cases: RenderCase[] = [
 
   // --- TIER 4: LONG SCALE (VIRTUAL 2D GRID) ---
   {
-    title: "8. Long 2D Grid (Item Fixed Size)",
-    description: "Ảo hóa 2 chiều đồng thời (X/Y) cho lưới các item có kích thước đồng nhất.",
-    recommendation: "Xử lý hàng triệu cell. Áp dụng cho: Photo Gallery khổng lồ, Icon Grid.",
-    href: "/long-2d-grid",
+    title: "8. Long 2D Grid (Fixed Width & Height)",
+    description: "Lưới 2D đồng nhất hoàn toàn. Hiệu năng cao nhất cho Cell Rendering.",
+    recommendation: "Zero-calculation. Áp dụng cho: Icon Browser, Photo Gallery (Square).",
+    href: "/long-2d-grid-fixed",
     scale: "long",
     direction: "bidirectional",
     itemSize: "fixed",
   },
   {
-    title: "9. Long 2D Grid (Item Dynamic Size)",
-    description: "Lưới 2 chiều với chiều cao hàng hoặc chiều rộng cột thay đổi.",
-    recommendation: "Phức tạp nhất (Matrix measuring). Áp dụng cho: Spreadsheet (Excel), Kanban, Gantt.",
-    href: "/long-2d-grid-item-dynamic-size",
+    title: "9. Long 2D Grid (Fixed Width, Dynamic Height)",
+    description: "Lưới có số cột cố định nhưng chiều cao mỗi item thay đổi theo nội dung.",
+    recommendation: "Masonry-like. Áp dụng cho: Pinterest Layout, Instagram-style Feed.",
+    href: "/long-2d-grid-fixed-width-dynamic-height",
     scale: "long",
     direction: "bidirectional",
     itemSize: "dynamic",
+  },
+  {
+    title: "10. Long 2D Grid (Fixed Height, Dynamic Width)",
+    description: "Lưới có chiều cao hàng cố định nhưng chiều rộng các cột thay đổi.",
+    recommendation: "Gantt/Timeline style. Áp dụng cho: Calendar, Schedule Planner.",
+    href: "/long-2d-grid-fixed-height-dynamic-width",
+    scale: "long",
+    direction: "bidirectional",
+    itemSize: "dynamic",
+  },
+  {
+    title: "11. Long 2D Grid (Dynamic Width & Height)",
+    description: "Toàn bộ kích thước ô dữ liệu đều co giãn linh hoạt (Full Matrix).",
+    recommendation: "Matrix complex. Áp dụng cho: Full Spreadsheet (Excel), Kanban Boards.",
+    href: "/long-2d-grid-dynamic",
+    scale: "long",
+    direction: "bidirectional",
+    itemSize: "dynamic",
+  },
+
+  // --- TIER 5: COMPOSITE (NESTED) ---
+  {
+    title: "12. Long Composite (Nested Virtualization)",
+    description: "Kết hợp Nested: Dọc (Dynamic Height cho Row) + Ngang (Fixed Width cho Item).",
+    recommendation: "Pinnacle of Performance. Áp dụng cho: Netflix Home, App Store.",
+    href: "/long-composite-nested",
+    scale: "long",
+    direction: "bidirectional",
+    itemSize: "all",
   },
 ];
