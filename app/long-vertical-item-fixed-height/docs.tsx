@@ -8,7 +8,7 @@ export function LongVerticalItemFixedHeightDocs() {
   return (
     <>
       <TechnicalIntro
-        title="Virtualized List (HOC)"
+        title="4. Huge Dataset / Vertical / Fixed Height"
         challenges={[
           {
             label: "Quá tải DOM",

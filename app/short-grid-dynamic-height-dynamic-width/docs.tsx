@@ -9,7 +9,7 @@ export function Docs() {
   return (
     <>
       <TechnicalIntro
-        title="3.4. Short 2D Grid (Dynamic Height - Dynamic Width)"
+        title="3.4. Small Dataset / Grid / Dynamic Axis"
         challenges={[
           {
             label: "Packing Density",

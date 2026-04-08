@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Be_Vietnam_Pro, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 // ===== Fonts =====
-const geistSans = Geist({
+const sans = Be_Vietnam_Pro({
   variable: "--font-sans",
-  subsets: ["latin"],
+  subsets: ["vietnamese", "latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
-const geistMono = Geist_Mono({
+const mono = Geist_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
 });
@@ -32,7 +33,7 @@ import { FilterProvider } from "@/context/filter-context";
 // ===== Layout =====
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang="en" className={`${sans.variable} ${mono.variable} h-full antialiased`}>
       <body className="bg-background flex min-h-screen flex-col pt-[72px] transition-colors duration-300">
         <Suspense>
           <FilterProvider>

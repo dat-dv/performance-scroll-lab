@@ -24,6 +24,9 @@
   --color-layout-bg: var(--layout-bg);
   --color-footer-bg: var(--footer-bg);
   --color-border-primary: var(--border-color);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
 }
 
 * {
@@ -31,6 +34,7 @@
 }
 
 body {
+  font-family: var(--font-sans);
   background-color: var(--background);
   color: var(--foreground);
   transition:

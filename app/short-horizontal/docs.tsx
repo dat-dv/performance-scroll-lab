@@ -8,7 +8,7 @@ export function ShortHorizontalDocs() {
   return (
     <>
       <TechnicalIntro
-        title="1.2. Short Horizontal (Native Map)"
+        title="1.2. Small Dataset / Horizontal / Fixed Width"
         challenges={[
           {
             label: "Trải nghiệm cuộn",

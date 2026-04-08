@@ -4,7 +4,7 @@ import React from "react";
 import { GridFixedDocs } from "./docs";
 import { LaboratoryDemoHeader } from "@/components/laboratory-demo-header";
 
-const MOCK_ICONS = Array.from({ length: 80 }, (_, i) => ({
+const MOCK_ICONS = Array.from({ length: 150 }, (_, i) => ({
   id: i + 1,
   emoji: ["🚀", "✨", "🔥", "🌈", "🛡️", "📦", "🧩", "⚡"][i % 8],
   label: `Item ${i + 1}`,
@@ -22,7 +22,7 @@ export default function FixedHeightFixedWidthPage() {
           <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md dark:border-white/5 dark:bg-white/5">
             <LaboratoryDemoHeader
               title="3.1. Live Demo: Fixed Size Grid"
-              description="80 Items • Native CSS Grid • Aspect Square"
+              description="150 Items • Native CSS Grid • Aspect Square"
               badgeText="Uniform Layout"
             />
 

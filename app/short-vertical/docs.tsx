@@ -9,7 +9,7 @@ export function ShortVerticalDocs() {
   return (
     <>
       <TechnicalIntro
-        title="1.1. Short Vertical (Native Map)"
+        title="1.1. Small Dataset / Vertical / Fixed Height"
         challenges={[
           {
             label: "Quản lý độ phức tạp",

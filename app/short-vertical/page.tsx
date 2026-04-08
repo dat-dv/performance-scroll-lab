@@ -11,7 +11,7 @@ interface Contact {
   avatar: string;
 }
 
-const MOCK_CONTACTS: Contact[] = Array.from({ length: 20 }, (_, i) => ({
+const MOCK_CONTACTS: Contact[] = Array.from({ length: 80 }, (_, i) => ({
   id: i,
   name: `User ${i + 1}`,
   role: ["Engineer", "Designer", "Product", "Quality"][i % 4],

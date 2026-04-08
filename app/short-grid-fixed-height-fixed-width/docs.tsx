@@ -9,7 +9,7 @@ export function GridFixedDocs() {
   return (
     <>
       <TechnicalIntro
-        title="3.1. Short 2D Grid (Fixed Height - Fixed Width)"
+        title="3.1. Small Dataset / Grid / Fixed Size"
         challenges={[
           {
             label: "Rendering Consistency",

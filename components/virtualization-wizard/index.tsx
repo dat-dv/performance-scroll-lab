@@ -84,19 +84,19 @@ export function VirtualizationWizard() {
                     active={scale === "all"}
                     onClick={setScaleAll}
                     icon={<Layers className="size-3" />}
-                    label="All"
+                    label="Tất cả"
                   />
                   <FilterChip
                     active={scale === "short"}
                     onClick={() => toggleScale("short")}
                     icon={<Minimize2 className="size-3" />}
-                    label="Short"
+                    label="Ít Items"
                   />
                   <FilterChip
                     active={scale === "long"}
                     onClick={() => toggleScale("long")}
                     icon={<Maximize2 className="size-3" />}
-                    label="Long"
+                    label="Nhiều Items"
                   />
                 </div>
               </FilterGroup>
@@ -108,25 +108,25 @@ export function VirtualizationWizard() {
                     active={direction === "all"}
                     onClick={setDirectionAll}
                     icon={<Layers className="size-3" />}
-                    label="All"
+                    label="Tất cả"
                   />
                   <FilterChip
                     active={direction === "vertical"}
                     onClick={() => toggleDirection("vertical")}
                     icon={<Rows className="size-3" />}
-                    label="Vertical"
+                    label="Cuộn Dọc"
                   />
                   <FilterChip
                     active={direction === "horizontal"}
                     onClick={() => toggleDirection("horizontal")}
                     icon={<Columns className="size-3" />}
-                    label="Horizontal"
+                    label="Cuộn Ngang"
                   />
                   <FilterChip
                     active={direction === "bidirectional"}
                     onClick={() => toggleDirection("bidirectional")}
                     icon={<MoveHorizontal className="size-3" />}
-                    label="2D Grid"
+                    label="Grid"
                   />
                 </div>
               </FilterGroup>
@@ -146,19 +146,19 @@ export function VirtualizationWizard() {
                           active={itemSize === "all"}
                           onClick={setItemSizeAll}
                           icon={<Layers className="size-3" />}
-                          label="All"
+                          label="Tất cả"
                         />
                         <FilterChip
                           active={itemSize === "fixed"}
                           onClick={() => toggleItemSize("fixed")}
                           icon={<LayoutList className="size-3" />}
-                          label="Fixed"
+                          label="Cố định"
                         />
                         <FilterChip
                           active={itemSize === "dynamic"}
                           onClick={() => toggleItemSize("dynamic")}
                           icon={<Layers className="size-3" />}
-                          label="Dynamic"
+                          label="Không cố định"
                         />
                       </div>
                     </FilterGroup>

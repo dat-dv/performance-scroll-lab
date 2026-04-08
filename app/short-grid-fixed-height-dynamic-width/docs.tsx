@@ -9,7 +9,7 @@ export function Docs() {
   return (
     <>
       <TechnicalIntro
-        title="3.2. Short 2D Grid (Fixed Height - Dynamic Width)"
+        title="3.2. Small Dataset / Grid / Dynamic Width"
         challenges={[
           { label: "Text Wrapping", description: "Xử lý việc các item có chiều rộng khác nhau wrap xuống dòng mượt mà." },
           { label: "Vertical Rhythm", description: "Đảm bảo khoảng cách dọc giữa các dòng item luôn đồng nhất." },

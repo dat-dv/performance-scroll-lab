@@ -9,7 +9,7 @@ export function Docs() {
   return (
     <>
       <TechnicalIntro
-        title="3.3. Short 2D Grid (Dynamic Height - Fixed Width)"
+        title="3.3. Small Dataset / Grid / Dynamic Height"
         challenges={[
           {
             label: "Content Variance",
