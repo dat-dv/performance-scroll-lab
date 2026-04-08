@@ -16,10 +16,11 @@ const geistMono = Geist_Mono({
 // ===== Metadata =====
 export const metadata: Metadata = {
   title: {
-    default: "Dat App",
-    template: "%s | Dat App",
+    default: "Virtualization — High Performance UI",
+    template: "%s | Virtualization",
   },
-  description: "High performance UI system built by Dat",
+  description:
+    "A professional suite of virtualization strategies, infinite scrolling patterns, and windowing techniques for modern web applications.",
 };
 
 import { Breadcrumb } from "@/components/breadcrumbs";
