@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import VirtualScrollWithFixedItemHeight from "@/libs/virtual-scroll-with-fixed-item-height";
+import VirtualScroll from "@/libs/virtual-scroll/virtual-scroll-with-fixed-item-height";
 import { LongVerticalItemFixedHeightDocs } from "./docs";
 import { LaboratoryDemoHeader } from "@/components/laboratory-demo-header";
 import ShowcaseLayout from "@/components/show-case-layout";
@@ -35,7 +35,7 @@ export default function LongVerticalItemFixedHeightPage() {
             description={`${ITEMS.length.toLocaleString()} Items • Fixed Height Virtualization`}
           />
           <div className="h-[600px]">
-            <VirtualScrollWithFixedItemHeight items={ITEMS}>
+            <VirtualScroll items={ITEMS}>
               {({ item }) => (
                 <div className="flex h-[50px] items-center border-b border-slate-100 px-8 transition-colors hover:bg-slate-50 dark:border-white/5 dark:hover:bg-white/5">
                   <div className="flex items-center gap-4">
@@ -53,7 +53,7 @@ export default function LongVerticalItemFixedHeightPage() {
                   </div>
                 </div>
               )}
-            </VirtualScrollWithFixedItemHeight>
+            </VirtualScroll>
           </div>
         </div>
       ),

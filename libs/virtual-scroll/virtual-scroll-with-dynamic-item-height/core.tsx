@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useRef, JSX } from "react";
-import withLoaderHeight from "./with-loader-height";
 
 const DEFAULT_ITEM_HEIGHT = 30;
 const DEFAULT_VISIBLE_COUNT = 20;
@@ -9,19 +8,9 @@ const DEFAULT_VISIBLE_COUNT = 20;
 // whitespace flicker during fast scrolling in either direction.
 const DEFAULT_OVERSCAN = 10;
 
-export type TVirtualScrollWithFixedItemHeightProps<T> = {
-  items: T[];
-  itemHeight?: number;
-  visibleCount?: number;
-  className?: string;
-  style?: React.CSSProperties;
-  overscan?: number;
-  onEndReached?: () => void;
-  isLoadingMore?: boolean;
-  children: ({ index, item }: { index: number; item: T }) => React.ReactNode;
-};
+import { TVirtualScrollDynamicHeightProps } from "./types";
 
-function VirtualScrollWithFixedItemHeight<T>({
+function VirtualScrollDynamicHeight<T>({
   items,
   itemHeight = DEFAULT_ITEM_HEIGHT,
   visibleCount = DEFAULT_VISIBLE_COUNT,
@@ -31,7 +20,7 @@ function VirtualScrollWithFixedItemHeight<T>({
   overscan = DEFAULT_OVERSCAN,
   onEndReached,
   isLoadingMore,
-}: TVirtualScrollWithFixedItemHeightProps<T>) {
+}: TVirtualScrollDynamicHeightProps<T>) {
   const [scrollTop, setScrollTop] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const lastTriggeredLength = useRef(0);
@@ -96,4 +85,4 @@ function VirtualScrollWithFixedItemHeight<T>({
   );
 }
 
-export default withLoaderHeight(VirtualScrollWithFixedItemHeight);
+export default VirtualScrollDynamicHeight;

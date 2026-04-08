@@ -1,14 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { TVirtualScrollWithFixedItemHeightProps } from ".";
+import { TVirtualScrollProps } from "./types";
 
-function withLoaderHeight<T>(
-  WrappedComponent: React.ComponentType<TVirtualScrollWithFixedItemHeightProps<T>>
-) {
-  return function WithLoaderHeight<P extends T>(
-    props: Omit<TVirtualScrollWithFixedItemHeightProps<P>, "itemHeight">
-  ) {
+function withLoaderHeight<T>(WrappedComponent: React.ComponentType<TVirtualScrollProps<T>>) {
+  return function WithLoaderHeight<P extends T>(props: Omit<TVirtualScrollProps<P>, "itemHeight">) {
     const containerRef = useRef<HTMLDivElement>(null);
     const sampleItemRef = useRef<HTMLDivElement>(null);
     const [itemHeight, setItemHeight] = useState<number | null>(null);
@@ -34,10 +30,7 @@ function withLoaderHeight<T>(
 
     // Khi đã đo xong, truyền itemHeight vào WrappedComponent
     return (
-      <WrappedComponent
-        {...(props as unknown as TVirtualScrollWithFixedItemHeightProps<T>)}
-        itemHeight={itemHeight}
-      />
+      <WrappedComponent {...(props as unknown as TVirtualScrollProps<T>)} itemHeight={itemHeight} />
     );
   };
 }
