@@ -126,7 +126,7 @@ export function VirtualizationWizard() {
                     active={direction === "bidirectional"}
                     onClick={() => toggleDirection("bidirectional")}
                     icon={<MoveHorizontal className="size-3" />}
-                    label="Grid"
+                    label="Ngang + Dọc"
                   />
                 </div>
               </FilterGroup>

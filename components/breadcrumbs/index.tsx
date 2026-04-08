@@ -16,19 +16,19 @@ export function Breadcrumb({ className }: { className?: string }) {
     <nav
       aria-label="Breadcrumb"
       className={cn(
-        "flex items-center space-x-1.5 py-4 text-[10px] font-bold tracking-widest text-gray-400 uppercase transition-all duration-300",
+        "flex items-center space-x-1.5 py-4 text-xs font-semibold text-gray-400 transition-all duration-300",
         className
       )}
     >
       <Link href="/" className="flex items-center transition-colors hover:text-blue-500">
         <Home size={12} className="mr-1" />
-        HOME
+        Home
       </Link>
 
       {segments.map((segment, index) => {
         const isLast = index === segments.length - 1;
         const href = `/${segments.slice(0, index + 1).join("/")}`;
-        const label = segment.replace(/-/g, " ").toUpperCase();
+        const label = segment.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
         return (
           <div key={index} className="flex items-center space-x-1.5">

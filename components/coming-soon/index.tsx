@@ -30,10 +30,10 @@ export function ComingSoon({ title }: ComingSoonProps) {
         </div>
 
         <div className="space-y-3">
-          <h2 className="text-[10px] font-black tracking-[0.4em] text-slate-400 uppercase">
+          <h2 className="text-xs font-bold text-slate-400">
             In Development
           </h2>
-          <h1 className="text-4xl font-black tracking-tight text-slate-900 dark:text-slate-100">
+          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100">
             {title}
           </h1>
           <p className="mx-auto max-w-lg text-sm leading-relaxed font-medium text-slate-500 dark:text-slate-400">
@@ -44,10 +44,10 @@ export function ComingSoon({ title }: ComingSoonProps) {
 
         <button
           onClick={router.back}
-          className="group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-6 py-3 text-[10px] font-black tracking-widest text-slate-900 shadow-sm transition-all hover:border-slate-900 hover:bg-slate-900 hover:text-white dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:border-white dark:hover:bg-white dark:hover:text-black"
+          className="group flex items-center gap-2 rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-slate-900 shadow-sm transition-all hover:bg-slate-900 hover:text-white dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white dark:hover:text-black"
         >
-          <ArrowLeft className="size-3 transition-transform group-hover:-translate-x-1" />
-          Trở lại
+          <ArrowLeft className="size-4 transition-transform group-hover:-translate-x-1" />
+          Quay lại
         </button>
       </motion.div>
     </div>

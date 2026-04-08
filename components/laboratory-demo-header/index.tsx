@@ -67,7 +67,7 @@ export function LaboratoryDemoHeader({
       </div>
       <div className="flex items-center gap-2">
         <span className={cn("flex size-2 animate-pulse rounded-full", badgeColor)}></span>
-        <span className="text-xs font-bold tracking-wider text-slate-400 uppercase">
+        <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
           {badgeText}
         </span>
       </div>
