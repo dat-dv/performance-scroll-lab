@@ -1,54 +1,67 @@
 "use client";
 
-import React from "react";
-import { Docs } from "./docs";
-import { LaboratoryDemoHeader } from "@/components/laboratory-demo-header";
+import React, { useState } from "react";
+import { Case1 } from "./cases/Case1";
+import { Case2 } from "./cases/Case2";
+import { Case3 } from "./cases/Case3";
+import { Case4 } from "./cases/Case4";
+import { LayoutGroup, motion } from "framer-motion";
 
-const MOCK_CARDS = Array.from({ length: 40 }, (_, i) => ({
-  id: i + 1,
-  title: `Card Title #${i + 1}`,
-  description: i % 3 === 0 
-    ? "Mô tả ngắn." 
-    : i % 3 === 1 
-      ? "Mô tả trung bình để kiểm tra sự co giãn của Card."
-      : "Đây là một đoạn mô tả rất dài được viết ra để ép card phải giãn nở tối đa theo chiều dọc, từ đó kiểm tra xem native grid có đồng bộ chiều cao hàng hay không.",
-}));
+const CASES = [
+  { id: "case-1", title: "Standard Grid", component: Case1 },
+  { id: "case-2", title: "Wide Grid", component: Case2 },
+  { id: "case-3", title: "Non-Uniform Height", component: Case3 },
+  { id: "case-4", title: "Masonry Layout", component: Case4 },
+];
 
-export default function DynamicHeightFixedWidthPage() {
+export default function DynamicHeightPage() {
+  const [activeTab, setActiveTab] = useState(CASES[0].id);
+
+  const ActiveComponent = CASES.find((c) => c.id === activeTab)?.component || Case1;
+
   return (
-    <div className="flex min-h-screen flex-col">
-      <main className="flex-1 pb-20">
-        <div className="mx-auto max-w-5xl px-6 pt-12">
-          <Docs />
-
-          <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md dark:border-white/5 dark:bg-white/5">
-            <LaboratoryDemoHeader
-              title="3.3. Live Demo: Card Grid"
-              description="40 Items • Native CSS Grid • Dynamic Height"
-              badgeText="Product Layout"
-            />
-
-            <div className="p-8">
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
-                {MOCK_CARDS.map((card) => (
-                  <div
-                    key={card.id}
-                    className="flex flex-col rounded-2xl border border-slate-100 bg-white p-6 transition-all hover:border-blue-400 hover:shadow-lg dark:border-white/5 dark:bg-white/5"
-                  >
-                    <div className="mb-4 text-2xl">📦</div>
-                    <h4 className="mb-2 font-bold text-slate-900 dark:text-white leading-tight">
-                      {card.title}
-                    </h4>
-                    <p className="text-xs text-slate-500 font-medium">
-                      {card.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+    <div className="mx-auto max-w-5xl space-y-12 px-6 py-12">
+      {/* Tab Navigation */}
+      <div className="z-50 flex justify-center">
+        <div className="flex gap-1 rounded-full border border-slate-200 bg-white/80 p-1 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-black/40">
+          <LayoutGroup id="case-tabs">
+            {CASES.map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`relative px-6 py-2 text-sm font-bold transition-colors ${
+                    isActive
+                      ? "text-blue-600 dark:text-blue-400"
+                      : "text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                  }`}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="active-tab"
+                      className="absolute inset-0 rounded-full bg-blue-50 dark:bg-blue-500/10"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <span className="relative z-10">{tab.title}</span>
+                </button>
+              );
+            })}
+          </LayoutGroup>
         </div>
-      </main>
+      </div>
+
+      {/* Case Content */}
+      <motion.div
+        key={activeTab}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+      >
+        <ActiveComponent />
+      </motion.div>
     </div>
   );
 }
