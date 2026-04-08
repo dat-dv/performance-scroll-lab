@@ -1,9 +1,14 @@
 "use client";
 
 import React from "react";
-import { ExternalLink, Sparkles } from "lucide-react";
+import { ExternalLink, Sparkles, Code2, Cpu, Info, Zap } from "lucide-react";
 import StepItem from "@/components/step-item";
+import ReferenceItem from "../referance-item";
 
+/**
+ * Technical documentation for Dynamic Height Virtualization.
+ * Content focused on expert-level architecture (Steps 1-6 + Outro).
+ */
 export function Docs() {
   return (
     <div className="mx-auto space-y-10 pt-10 pb-24">
@@ -35,12 +40,12 @@ export function Docs() {
         {/* Step 1 */}
         <StepItem
           step="S.01"
-          title='Bước 1: Thiết lập "Khung xương" và "Vùng đệm giả"'
+          title='Bước 1: Thiết lập "Khung xương"'
           accentColor="text-blue-600 dark:text-blue-400"
           glowColor="shadow-blue-500/10"
         >
           <p>
-            Đừng render toàn bộ dữ liệu vào DOM. Anh chỉ cần một khung hiển thị cố định (Viewport)
+            Đừng render toàn bộ dữ liệu vào DOM. Mình chỉ cần một khung hiển thị cố định (Viewport)
             và một cơ chế giả lập chiều cao.
           </p>
           <div className="mt-4 flex flex-col gap-3 rounded-2xl bg-slate-50 p-5 dark:bg-white/5">
@@ -56,7 +61,7 @@ export function Docs() {
           </div>
         </StepItem>
 
-        {/* NEW Step 2 */}
+        {/* Step 2 */}
         <StepItem
           step="S.02"
           title="Bước 2: Gắn Listener theo dõi sự kiện cuộn"
@@ -64,12 +69,12 @@ export function Docs() {
           glowColor="shadow-cyan-500/10"
         >
           <p>
-            Để hệ thống biết khi nào cần cập nhật dữ liệu, anh phải biết được người dùng đang đứng ở
-            đâu trong danh sách.
+            Để hệ thống biết khi nào cần cập nhật dữ liệu, mình phải biết được người dùng đang đứng
+            ở đâu trong danh sách.
           </p>
           <div className="mt-4 flex flex-col gap-3 rounded-2xl bg-slate-50 p-5 dark:bg-white/5">
             <p>
-              <b className="text-cyan-700 dark:text-cyan-300">Cơ chế:</b> Anh gắn sự kiện{" "}
+              <b className="text-cyan-700 dark:text-cyan-300">Cơ chế:</b> Mình gắn sự kiện{" "}
               <code>onScroll</code> vào Container Ref (nếu cuộn trong khung cục bộ) hoặc gắn thẳng
               vào <code>window</code> (nếu cuộn toàn trang).
             </p>
@@ -90,101 +95,168 @@ export function Docs() {
         >
           <p>
             Khi nhận được giá trị <code>scrollTop</code> từ Bước 2, hệ thống cần thực hiện một phép
-            tính "thần tốc" để xác định trạng thái hiển thị:
+            tính "thần tốc" để xác định trạng thái hiển thị mà không cần duyệt qua toàn bộ danh
+            sách:
           </p>
-          <div className="mt-4 flex flex-col gap-3 rounded-2xl bg-slate-50 p-5 dark:bg-white/5">
+          <div className="mt-4 flex flex-col gap-4 rounded-2xl bg-slate-50 p-6 dark:bg-white/5">
             <p>
-              <b className="text-emerald-700 dark:text-emerald-300">Tính toán StartIndex:</b> Sử
-              dụng Tìm kiếm nhị phân trên mảng <b>Offset Cache</b> để tìm ra Index của item có toạ
-              độ Y gần nhất với <code>scrollTop</code>. Đây chính là điểm bắt đầu để anh cắt (slice)
-              mảng dữ liệu.
+              <b className="text-emerald-700 dark:text-emerald-300">
+                Tính toán StartIndex (O(log n)):
+              </b>{" "}
+              Sử dụng Tìm kiếm nhị phân trên mảng <b>Offset Cache</b> (mảng chứa tọa độ Y bắt đầu
+              của từng item). Thuật toán này giúp mình tìm ra Index của item đầu tiên xuất hiện
+              trong khung nhìn chỉ trong vài micro giây.
             </p>
             <p>
-              <b className="text-emerald-700 dark:text-emerald-300">Xác định TranslateY:</b> Từ
-              Index vừa tìm được, anh lấy toạ độ Y thực tế của nó trong Cache. Giá trị này dùng để
-              đẩy (transform) khối item đang render lên đúng vị trí, đảm bảo nó luôn khớp với thanh
-              cuộn thật của trình duyệt.
+              <b className="text-emerald-700 dark:text-emerald-300">
+                Xác định TranslateY (Vị trí tuyệt đối):
+              </b>{" "}
+              Sau khi có Index, mình truy xuất tọa độ Y chính xác của item đó từ Cache. Giá trị này
+              được dùng để thiết lập thuộc tính <code>transform: translate3d(0, y, 0)</code> cho
+              khối bao quanh các item đang render.
             </p>
+            <div className="border-t border-slate-200 pt-4 dark:border-white/5">
+              <p className="text-xs font-bold tracking-wider text-slate-400 uppercase">
+                Nhiệm vụ cốt lõi:
+              </p>
+              <p className="mt-1 text-sm leading-relaxed">
+                Việc này đảm bảo rằng dù mình chỉ render một nhóm nhỏ item (ví dụ 20/1.000.000), thì
+                nhóm đó vẫn luôn được đặt ở đúng vị trí tương ứng với thanh cuộn thật của trình
+                duyệt, tạo ra ảo giác về một danh sách dài vô tận mà không gây nặng bộ nhớ.
+              </p>
+            </div>
           </div>
         </StepItem>
 
         {/* Step 4 */}
         <StepItem
           step="S.04"
-          title="Bước 4: Cập nhật kích thước thực tế với ResizeObserver"
+          title="Bước 4: Vòng lặp Render và Tự động hiệu chỉnh (Measure & Cache)"
           accentColor="text-purple-600 dark:text-purple-400"
           glowColor="shadow-purple-500/10"
         >
-          <p>
-            Vì chiều cao ban đầu chỉ là con số &quot;ước tính&quot;, anh cần lấy kích thước thật
-            ngay khi item được render để hiệu chỉnh lại hệ thống.
-          </p>
-          <div className="mt-4 flex flex-col gap-3 rounded-2xl bg-slate-50 p-5 dark:bg-white/5">
-            <p>
-              <b className="text-purple-700 dark:text-purple-300">Cơ chế:</b> Gắn ResizeObserver vào
-              các item đang hiển thị trong Viewport.
-            </p>
-            <p>
-              <b className="text-purple-700 dark:text-purple-300">Nhiệm vụ:</b> Khi item xuất hiện
-              hoặc thay đổi nội dung (ảnh load xong, bấm mở rộng văn bản), Observer sẽ trả về chiều
-              cao thực. Anh lấy con số này cập nhật lại vào Offset Cache và tính toán lại tổng chiều
-              cao của toàn bộ danh sách.
-            </p>
+          <div className="space-y-6">
+            <div className="space-y-3">
+              <p className="leading-relaxed text-slate-600 dark:text-slate-400">
+                Sau khi đã xác định được dải Index cần render (ví dụ từ 0 đến 20), từ mảng items ban
+                đầu nhận vào chúng ta sẽ render trong khoảng Index (0 - 20) ra ui.
+              </p>
+              <div className="flex items-start gap-4 rounded-2xl border border-blue-100 bg-blue-50/50 p-4 dark:border-white/5 dark:bg-white/5">
+                <div className="mt-1 rounded-full bg-blue-500/10 p-2 text-blue-600 dark:text-blue-400">
+                  <Cpu className="size-4" />
+                </div>
+                <p className="text-sm leading-relaxed">
+                  Mỗi phần tử render ra lập tức được bọc bởi <b>ResizeObserver</b>. Ngay sau khi
+                  trình duyệt vẽ xong, Observer sẽ trả về chiều cao thực và báo về{" "}
+                  <code>handleItemResize</code>.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-4 rounded-3xl border border-purple-100 bg-purple-50/30 p-6 dark:border-white/5 dark:bg-white/5">
+              <div className="space-y-2">
+                <h4 className="flex items-center gap-2 text-xs font-black tracking-widest text-purple-700 uppercase dark:text-purple-400">
+                  <Info className="size-3" />
+                  Quy trình đồng bộ dữ liệu
+                </h4>
+                <div className="space-y-4 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                  <p>
+                    Ở bước trước để render ra khung xương chúng ta đã tính toán{" "}
+                    <b>itemPositions, totalHeight</b>.
+                  </p>
+                  <ul className="list-disc space-y-2 pl-4 marker:text-purple-400">
+                    <li>
+                      <b>itemPositions</b> là 1 mảng lưu trữ tọa độ Y bắt đầu của từng item.
+                    </li>
+                    <li>
+                      Ban đầu dự báo thông qua <code>estimatedHeight</code>, sau đó được cập nhật
+                      thực tế vào <b>measuredHeights</b>.
+                    </li>
+                  </ul>
+
+                  <p className="mt-4 rounded-xl bg-purple-100/50 p-4 font-medium text-purple-900 dark:bg-purple-900/30 dark:text-purple-200">
+                    Kỹ thuật này giúp vòng lặp render cực kỳ linh hoạt: Khi render xong phần tử nào,
+                    nó sẽ &quot;khớp&quot; lại toạ độ Y của phần tử đó và toàn bộ các phần tử phía
+                    sau.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4 rounded-[2rem] bg-slate-900 p-8 text-white">
+              <div className="flex items-center gap-3">
+                <Code2 className="size-5 text-emerald-400" />
+                <h4 className="text-sm font-bold tracking-tight">Vòng lặp tự hiệu chỉnh</h4>
+              </div>
+              <div className="space-y-4 text-sm leading-relaxed text-slate-400">
+                <p>
+                  Khi các item render hoàn tất sẽ callback lên update lại <b>measuredHeights</b> và
+                  tính toán lại <b>itemPositions</b> và <b>totalHeight</b>.
+                </p>
+                <div className="h-px bg-white/10" />
+                <p className="text-emerald-400 italic">
+                  -&gt; Các lần tiếp theo chỉ cần scroll top thay đổi nó sẽ lại đi tính toán lại
+                  start item và end items. Nếu start và end thay đổi thì nó sẽ lại đi tính toán lại.
+                </p>
+              </div>
+            </div>
           </div>
         </StepItem>
 
         {/* Step 5 */}
         <StepItem
           step="S.05"
-          title='Bước 5: Cơ chế "Neo cuộn" (Scroll Anchoring)'
+          title='Bước 5: Kỹ thuật "Overscan" và Sự ổn định của Slice'
           accentColor="text-amber-600 dark:text-amber-400"
           glowColor="shadow-amber-500/10"
         >
-          <p>
-            Đây là kỹ thuật xử lý trải nghiệm người dùng quan trọng nhất. Nếu một item phía trên
-            khung nhìn thay đổi chiều cao, nó sẽ vô tình đẩy các item phía dưới xuống, gây hiện
-            tượng giật trang.
-          </p>
-          <div className="mt-4 flex flex-col gap-3 rounded-2xl bg-slate-50 p-5 dark:bg-white/5">
-            <p>
-              <b className="text-amber-700 dark:text-amber-300">Xử lý:</b> Tính toán độ lệch (Delta
-              = Chiều cao thực tế - Chiều cao ước tính).
+          <div className="space-y-5">
+            <p className="leading-relaxed">
+              Đây là bước tối ưu sống còn để danh sách không bị render lại (re-slice) liên tục, gây
+              tốn tài nguyên CPU khi người dùng cuộn từng pixel nhỏ.
             </p>
-            <p>
-              <b className="text-amber-700 dark:text-amber-300">Bù trừ:</b> Nếu thay đổi xảy ra ở vị
-              trí phía trên scrollTop, anh cần cộng dồn giá trị Delta này trực tiếp vào scrollTop
-              của Container. Kết quả là người dùng sẽ thấy nội dung đứng yên một cách ổn định dù dữ
-              liệu bên trên đang co giãn.
-            </p>
-          </div>
-        </StepItem>
 
-        {/* Step 6 */}
-        <StepItem
-          step="S.06"
-          title="Bước 6: Tối ưu hiển thị và phần cứng"
-          accentColor="text-rose-600 dark:text-rose-400"
-          glowColor="shadow-rose-500/10"
-        >
-          <p>Để đảm bảo trải nghiệm liền mạch, anh cần thêm các tinh chỉnh về tài nguyên:</p>
-          <div className="mt-4 flex flex-col gap-3 rounded-2xl bg-slate-50 p-5 dark:bg-white/5">
-            <p>
-              <b className="text-rose-700 dark:text-rose-300">Vùng đệm (Overscan):</b> Luôn render
-              dư ra khoảng 5-10 item ở hai đầu khung nhìn. Điều này giúp khi cuộn nhanh, các item
-              mới đã sẵn sàng hiển thị trước khi người dùng kịp nhìn thấy khoảng trắng.
-            </p>
-            <p>
-              <b className="text-rose-700 dark:text-rose-300">Tận dụng GPU:</b> Sử dụng transform:
-              translate3d(0, y, 0) để định vị các item thay vì dùng thuộc tính top. Cách này giúp
-              trình duyệt xử lý hình ảnh trực tiếp trên lớp (layer) đồ họa, giảm tải cho vi xử lý
-              trung tâm và giữ cho chuyển động luôn mượt mà.
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="rounded-2xl border border-amber-100 bg-amber-50/50 p-5 dark:border-white/5 dark:bg-white/5">
+                <div className="mb-3 flex items-center gap-2 text-amber-700 dark:text-amber-400">
+                  <Zap className="size-4" />
+                  <b className="text-sm font-black tracking-widest uppercase">
+                    Tránh Slice liên tục
+                  </b>
+                </div>
+                <p className="text-sm leading-relaxed">
+                  Thay vì chỉ lấy đúng 20 item trong Viewport, mình render dư ra 5-10 item ở cả 2
+                  đầu. Khi người dùng cuộn nhẹ, tập hợp item (slice) vẫn giữ nguyên, giúp trình
+                  duyệt không phải tính toán lại DOM liên tục.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-amber-100 bg-amber-50/50 p-5 dark:border-white/5 dark:bg-white/5">
+                <div className="mb-3 flex items-center gap-2 text-amber-700 dark:text-amber-400">
+                  <Info className="size-4" />
+                  <b className="text-sm font-black tracking-widest uppercase">
+                    Loại bỏ hiện tượng Trắng
+                  </b>
+                </div>
+                <p className="text-sm leading-relaxed">
+                  Lớp đệm đóng vai trò &quot;vùng chờ&quot;. Khi cuộn nhanh, các item tiếp theo đã
+                  có mặt sẵn trong DOM, triệt tiêu hoàn toàn hiện tượng &quot;flicker&quot; trắng
+                  trang thường thấy ở các giải pháp thô sơ.
+                </p>
+              </div>
+            </div>
+
+            <p className="rounded-xl border-l-4 border-amber-400 bg-amber-50 p-4 text-sm font-medium text-amber-900 dark:bg-amber-900/20 dark:text-amber-300">
+              💡 <b>Tư duy chuyên gia:</b> Render dư ít hơn 10 item không ảnh hưởng đến hiệu năng,
+              nhưng nó giúp &quot;ổn định hóa&quot; trạng thái của mảng Render, giảm tải cho bộ máy
+              tính toán Start/End Index.
             </p>
           </div>
         </StepItem>
       </div>
 
       {/* References */}
-      <div className="rounded-[2.5rem] border border-blue-100 bg-blue-50/30 p-10 dark:border-blue-500/10 dark:bg-blue-500/5">
+      <div className="rounded-[2.5rem] border border-blue-100 bg-blue-50/30 pt-4 dark:border-blue-500/10 dark:bg-blue-500/5">
         <h4 className="mb-8 flex items-center gap-3 text-sm font-black tracking-widest text-blue-600 uppercase dark:text-blue-400">
           <ExternalLink className="size-5" />
           Các thư viện có sẵn
@@ -203,32 +275,5 @@ export function Docs() {
         </div>
       </div>
     </div>
-  );
-}
-
-function ReferenceItem({
-  title,
-  description,
-  link,
-}: {
-  title: string;
-  description: string;
-  link: string;
-}) {
-  return (
-    <a
-      href={link}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group flex flex-col gap-3 rounded-2xl border border-slate-200/60 bg-white p-6 transition-all hover:border-blue-300 hover:shadow-xl dark:border-white/5 dark:bg-slate-900"
-    >
-      <div className="flex items-center justify-between">
-        <span className="text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400">
-          {title}
-        </span>
-        <ExternalLink className="size-4 text-slate-400 transition-colors group-hover:text-blue-500" />
-      </div>
-      <p className="text-sm leading-relaxed text-slate-500 dark:text-slate-400">{description}</p>
-    </a>
   );
 }

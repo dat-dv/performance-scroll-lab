@@ -7,8 +7,9 @@ const DEFAULT_ITEM_HEIGHT = 50;
 const DEFAULT_OVERSCAN = 5;
 
 /**
- * Thành phần đo lường: Tự động đo chiều cao thực tế của từng phần tử
- * và báo về cho cha để cập nhật bản đồ vị trí.
+ * Thành phần MeasuredItem:
+ * Tự động đo chiều cao thực tế của từng phần tử bằng ResizeObserver
+ * và báo cáo kết quả về cho component cha để tính toán lại tọa độ.
  */
 function MeasuredItem({
   children,
@@ -40,33 +41,39 @@ function MeasuredItem({
   return <div ref={ref}>{children}</div>;
 }
 
+/**
+ * Component Virtual Scroll hỗ trợ item có chiều cao không cố định (Dynamic Height).
+ * Sử dụng thuật toán Tìm kiếm nhị phân để tối ưu hiệu suất render.
+ */
 function VirtualScrollDynamicHeight<T>({
   items,
   estimatedHeight = DEFAULT_ITEM_HEIGHT,
   className,
   style,
-  children: renderItem,
+  children,
   overscan = DEFAULT_OVERSCAN,
   onEndReached,
   isLoadingMore,
   hasNext = true,
   containerHeight = 0,
 }: TVirtualScrollDynamicHeightProps<T>) {
-  const [scrollTop, setScrollTop] = useState(0); // Vị trí cuộn hiện tại
-  const [viewportHeight, setViewportHeight] = useState(0); // Chiều cao khung nhìn thấy
-  console.log("scrollTop", scrollTop);
-  console.log("viewportHeight", viewportHeight);
-  // Chế độ Window Scroll được bật nếu người dùng không truyền containerHeight cố định
+  const [scrollTop, setScrollTop] = useState(0); // Vị trí cuộn hiện tại (relative to container)
+  const [viewportHeight, setViewportHeight] = useState(0); // Chiều cao vùng hiển thị của trình duyệt
+
+  // Nếu không truyền containerHeight thì mặc định là chế độ cuộn theo Window
   const isWindowScrollMode = containerHeight === 0;
 
-  // Cache chiều cao của từng item đã được đo: { [index]: height }
+  // Cache chiều cao thực tế của từng item sau khi đã render: { [index]: height }
   const [measuredHeights, setMeasuredHeights] = useState<Record<number, number>>({});
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const lastTriggeredLength = useRef(0);
+  const lastTriggeredLength = useRef(0); // Dùng để tránh gọi onEndReached nhiều lần cho cùng một tập dữ liệu
 
-  // Tính toán vị trí Y tuyệt đối của từng item (Prefix Sums)
-  // itemPositions[i] là tọa độ Y mà item thứ i sẽ bắt đầu
+  /**
+   * Tính toán Offset Cache (Prefix Sums):
+   * itemPositions[i] lưu tọa độ Y bắt đầu của item thứ i.
+   * totalHeight là tổng chiều cao giả lập cho toàn bộ danh sách (dùng để set chiều cao cho phantom container).
+   */
   const { itemPositions, totalHeight } = useMemo(() => {
     const positions = new Array(items.length);
     let currentTotal = 0;
@@ -78,25 +85,26 @@ function VirtualScrollDynamicHeight<T>({
     return { itemPositions: positions, totalHeight: currentTotal };
   }, [items.length, measuredHeights, estimatedHeight]);
 
-  console.log("itemPositions", itemPositions);
-  console.log("totalHeight", totalHeight);
-
+  // Khởi tạo chiều cao viewport ban đầu
   useEffect(() => {
     if (containerRef.current) {
       setViewportHeight(containerRef.current.clientHeight);
     }
   }, []);
 
+  // Xử lý sự kiện cuộn nội bộ (trong container có height cố định)
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    // Chỉ thực hiện nếu không phải window scroll
     if (isWindowScrollMode) return;
     setScrollTop(e.currentTarget.scrollTop);
   };
 
-  // Window scroll logic chỉ thực hiện effect khi là window scroll
+  /**
+   * Logic xử lý cuộn toàn trang (Window Scroll):
+   * Cần tính toán độ lệch (offsetTop) của Container so với đỉnh trang
+   * để biết chính xác vị trí scrollTop tương đối.
+   */
   useEffect(() => {
     if (!isWindowScrollMode) return;
-    console.log("isWindowScrollMode", isWindowScrollMode);
 
     const handleWindowScroll = () => {
       if (!containerRef.current) return;
@@ -122,8 +130,8 @@ function VirtualScrollDynamicHeight<T>({
   }, [isWindowScrollMode]);
 
   /**
-   * Tìm index của item đầu tiên cần render bằng Tìm kiếm nhị phân (O(log n)).
-   * Giúp ứng dụng mượt mà ngay cả khi có hàng trăm ngàn item.
+   * Truy vấn vị trí bằng Binary Search (O(log n)):
+   * Tìm index của item đầu tiên xuất hiện trong vùng scrollTop.
    */
   const findStartIndex = (scrollPos: number) => {
     let start = 0;
@@ -144,19 +152,23 @@ function VirtualScrollDynamicHeight<T>({
     return Math.max(0, start - 1);
   };
 
-  // 1. rawStartIndex: Tìm index chính xác của item nằm ngay tại mép trên của khung nhìn (O(log n))
+  /**
+   * QUAN TRỌNG: Tính toán dải Index cần render
+   */
+
+  // 1. rawStartIndex: Index chính xác nằm ngay mép trên khung nhìn
   const rawStartIndex = findStartIndex(scrollTop);
 
-  // 2. startIndex: Index thực tế sẽ render, được lùi lại một khoảng 'overscan' (vùng đệm)
-  // Việc lùi lại giúp chuẩn bị trước các item phía trên để khi cuộn ngược lên không bị thấy vùng trắng.
-  // Math.max(0, ...) để đảm bảo index không bao giờ bị âm.
+  // 2. startIndex: Index render thực tế (đã lùi lại vùng đệm overscan bên trên)
+  // Giúp khi người dùng cuộn ngược lên không bị thấy khoảng trắng (flicker)
   const startIndex = Math.max(0, rawStartIndex - overscan);
 
   /**
-   * Find the last visible index based on viewport height.
+   * 3. findEndIndex: Tìm index cuối cùng hiển thị dựa trên chiều cao khung nhìn.
+   * Kết quả sẽ được cộng thêm overscan vùng đệm bên dưới.
    */
-  const findEndIndex = (startIdx: number, viewportHeight: number) => {
-    const endPos = scrollTop + (viewportHeight || 600); // 600px default if no height detected yet
+  const findEndIndex = (startIdx: number, vHeight: number) => {
+    const endPos = scrollTop + vHeight;
     let i = startIdx;
     while (i < items.length && itemPositions[i] < endPos) {
       i++;
@@ -164,12 +176,12 @@ function VirtualScrollDynamicHeight<T>({
     return Math.min(items.length, i + overscan);
   };
 
-  // Determine which height to use for viewport calculation
-  const activeViewportHeight = containerHeight > 0 ? containerHeight : viewportHeight;
+  // Xác định chiều cao viewport thực tế để tính toán endIndex
+  const activeViewportHeight = isWindowScrollMode ? viewportHeight : containerHeight;
   const endIndex = findEndIndex(rawStartIndex, activeViewportHeight);
 
   /**
-   * Cập nhật cache chiều cao khi MeasuredItem báo cáo kích thước mới.
+   * Cập nhật cache chiều cao khi MeasuredItem báo cáo kích thước thực tế mới.
    */
   const handleItemResize = useCallback((index: number, height: number) => {
     setMeasuredHeights((prev) => {
@@ -178,9 +190,13 @@ function VirtualScrollDynamicHeight<T>({
     });
   }, []);
 
-  // Logic Infinite Scroll: Tự động tải thêm khi cuộn gần đến cuối
+  /**
+   * Logic Infinite Scroll:
+   * Tự động gọi API tải thêm khi người dùng cuộn gần đến cuối danh sách (cách threshold đơn vị).
+   */
   useEffect(() => {
-    if (onEndReached && !isLoadingMore && endIndex >= items.length - 2 && hasNext) {
+    const threshold = 4; // Điểm kích hoạt tải thêm (cách cuối 4 phần tử)
+    if (onEndReached && !isLoadingMore && endIndex >= items.length - threshold && hasNext) {
       if (lastTriggeredLength.current !== items.length) {
         onEndReached();
         lastTriggeredLength.current = items.length;
@@ -201,6 +217,7 @@ function VirtualScrollDynamicHeight<T>({
         ...style,
       }}
     >
+      {/* Phantom Container: Dùng để giả lập tổng chiều cao của toàn bộ danh sách */}
       <div
         style={{
           height: totalHeight,
@@ -215,13 +232,14 @@ function VirtualScrollDynamicHeight<T>({
               key={absoluteIndex}
               style={{
                 position: "absolute",
-                top: itemPositions[absoluteIndex],
+                top: itemPositions[absoluteIndex], // Đặt item vào đúng tọa độ Y từ cache
                 left: 0,
                 right: 0,
               }}
             >
+              {/* Bọc item trong MeasuredItem để lấy chiều cao thực sau khi render */}
               <MeasuredItem index={absoluteIndex} onResize={handleItemResize}>
-                {renderItem({ index: absoluteIndex, item })}
+                {children({ index: absoluteIndex, item })}
               </MeasuredItem>
             </div>
           );
