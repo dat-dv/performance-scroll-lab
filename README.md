@@ -1,36 +1,26 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Windowing Lab: Virtualization Architecture 🚀
 
-## Getting Started
+Dự án nghiên cứu chuyên sâu về UI Performance và Virtualization, giải quyết bài toán tối ưu hóa $N$ nodes khi render các tập dữ liệu cực lớn trên trình duyệt.
 
-First, run the development server:
+## 🎯 Mục tiêu cốt lõi
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Triệt tiêu tình trạng lag/crash bằng cách chỉ render các phần tử trong khung nhìn (Viewport), kiểm soát số lượng DOM nodes ổn định bất kể quy mô dữ liệu.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🏛️ Hệ thống 5 phần
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **1: Native (Short Scale)** - < 100 items: Dùng `.map()` trực tiếp + CSS Scroll Snap.
+- **2: Standard Windowing (Long Vertical)** - 10k - 1M items: Tính toán chiều cao cố định, vị trí tuyệt đối.
+- **3: Horizontal Windowing (Long Horizontal)**: Tối ưu cuộn ngang cho dataset lớn.
+- **4: Bidirectional Windowing (2D Grid)**: Xử lý ma trận dữ liệu (Spreadsheet/Gallery).
+- **5: Composite (Nested Virtualization)**: Lồng ghép cuộn dọc và ngang.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 💎 4 Trụ cột toán học
 
-## Learn More
+- **Không gian ảo**: Tính `totalSize` (width/height) ngay lập tức để giả lập thanh cuộn chuẩn xác.
+- **Truy xuất $O(1)$**: Xác định index cần render tức thì bằng phép chia: `scrollTop / itemHeight` (không loop).
+- **Vị trí tuyệt đối**: Mapping index vào tọa độ thực tế qua `transform: translate(x, y)` để giữ item đúng vị trí khi cuộn.
+- **Math vs Observer**: Ưu tiên **Sync Math** để tính toán vị trí, tránh độ trễ (white flash) của Async IntersectionObserver.
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠️ Tech Stack & Roadmap
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Stack**: Next.js, Framer Motion, Tailwind CSS, Lucide React.
