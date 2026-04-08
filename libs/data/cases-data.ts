@@ -113,7 +113,7 @@ export const cases: RenderCase[] = [
     scale: "long",
     direction: "vertical",
     itemSize: "dynamic",
-    isDone: false,
+    isDone: true,
   },
 
   // --- TIER 3: LONG SCALE (VIRTUAL HORIZONTAL) ---

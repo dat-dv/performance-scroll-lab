@@ -2,8 +2,7 @@ import React from "react";
 
 export type TVirtualScrollDynamicHeightProps<T> = {
   items: T[];
-  itemHeight?: number;
-  visibleCount?: number;
+  estimatedHeight?: number;
   className?: string;
   style?: React.CSSProperties;
   overscan?: number;

@@ -1,186 +1,203 @@
 "use client";
 
 import React from "react";
-import { TechnicalIntro } from "@/components/technical-intro";
-import { TechnicalDeepDive } from "@/components/technical-deep-dive";
-import { CodeBlock } from "@/components/code-block";
-import { Code, ExternalLink } from "lucide-react";
+import { ExternalLink, Sparkles } from "lucide-react";
+import StepItem from "@/components/step-item";
 
-/**
- * Case 5: Technical documentation for Dynamic Height Virtualization.
- * Content provided by the USER regarding advanced position management and performance hooks.
- */
 export function Docs() {
   return (
-    <div className="space-y-16 pb-24">
-      {/* 1. Introduction & Overview */}
-      <TechnicalIntro
-        title="5. Huge Dataset / Vertical / Dynamic Height"
-        challenges={[
-          {
-            label: "Layout Uncertainty",
-            description:
-              "Mỗi item có độ dài nội dung khác nhau, không thể áp dụng công thức index * height.",
-          },
-          {
-            label: "Scrollbar Jumping",
-            description:
-              "Thanh cuộn bị nhảy hoặc giật khi item được đo lường lại kích thước thực tế.",
-          },
-          {
-            label: "Performance Overhead",
-            description:
-              "Việc đo lường kích thước liên tục (Measuring) có thể gây lag nếu không tối ưu.",
-          },
-        ]}
-        solutions={[
-          {
-            label: "Estimated Height",
-            description:
-              "Sử dụng một giá trị chiều cao dự đoán (e.g. 100px) cho các item chưa render.",
-          },
-          {
-            label: "ResizeObserver API",
-            description: "Lắng nghe thay đổi kích thước thực tế của DOM Node một cách bất đồng bộ.",
-          },
-          {
-            label: "Position Offset Cache",
-            description:
-              "Lưu trữ toạ độ Y của từng item vào một mảng đệm để tính toán scroll mượt mà.",
-          },
-        ]}
-      />
-
-      <div className="-mt-8 flex items-center gap-2">
-        <a
-          href="https://github.com/dat-dv/performance-scroll-lab/tree/Master/app/long-vertical-item-dynamic-height/page.tsx"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-1.5 opacity-40 transition-opacity hover:text-blue-500 hover:opacity-100"
-        >
-          <Code className="size-3" />
-          <span className="font-mono text-[10px] font-bold tracking-tight">
-            long-vertical-item-dynamic-height/page.tsx
-          </span>
-        </a>
-      </div>
-
-      {/* 2. Deep Dive Sections */}
-      <div className="space-y-12">
-        <TechnicalDeepDive
-          mainTitle="Kiến trúc Quản lý Vị trí (Position Manager)"
-          points={[
-            {
-              title: "Metadata Caching with O(logn)",
-              colorClass: "text-blue-600 dark:text-blue-400",
-              description:
-                "Thay vì dùng vòng lặp, chúng ta sử dụng Binary Search trên mảng metadata {index, height, offsetTop} để tìm startIndex cực nhanh, ngay cả với 100,000 items.",
-            },
-            {
-              title: "Scroll Anchoring & Delta Correction",
-              colorClass: "text-emerald-600 dark:text-emerald-400",
-              description:
-                "Để tránh nhảy scrollbar, khi item phía trên thay đổi kích thước, ta phải lập tức bù đắp (delta) vào scrollTop của container.",
-            },
-          ]}
-        />
-
-        <TechnicalDeepDive
-          mainTitle="Tối ưu Hoá Rendering & Browser"
-          points={[
-            {
-              title: "Content Visibility auto",
-              colorClass: "text-purple-600 dark:text-purple-400",
-              description:
-                "Kết hợp Virtual Scroll với content-visibility: auto để trình duyệt bỏ qua việc render layout cho các phần tử ngoài màn hình nhưng vẫn giữ trạng thái hình học.",
-            },
-            {
-              title: "ResizeObserver Batching",
-              colorClass: "text-amber-600 dark:text-amber-400",
-              description:
-                "Sử dụng một Observer duy nhất phối hợp với requestAnimationFrame (rAF) để batch các cập nhật kích thước, tránh gây ra Forced Reflow liên tục.",
-            },
-          ]}
-        />
-      </div>
-
-      {/* 3. Implementation Logic (Code Example) */}
-      <div className="space-y-6">
-        <div className="space-y-2">
-          <h3 className="text-xl font-bold text-slate-900 dark:text-white">
-            Core Position Management Logic
-          </h3>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
-            Mô phỏng logic xử lý Cache và cập nhật Offset khi kích thước thực tế thay đổi.
+    <div className="mx-auto space-y-10 pt-10 pb-24">
+      {/* Header */}
+      <section className="relative space-y-6 overflow-hidden rounded-[3rem] bg-slate-900 p-12 text-white dark:bg-white/5">
+        <div className="absolute -top-20 -right-20 size-64 rounded-full bg-blue-600/20 blur-[100px]" />
+        <div className="relative space-y-4">
+          <div className="flex items-center gap-2 text-xs font-black tracking-[0.2em] text-blue-400 uppercase">
+            <Sparkles className="size-4" />
+            Technical Architecture
+          </div>
+          <h2 className="text-4xl font-black tracking-tight md:text-5xl">
+            Xây dựng Virtual Scroll <br />
+            <span className="bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
+              Dynamic Height
+            </span>{" "}
+            từ con số 0 🚀
+          </h2>
+          <p className="max-w-2xl text-lg leading-relaxed text-slate-400">
+            Để xử lý danh sách hàng triệu bản ghi với kích thước không cố định (như tin nhắn, bảng
+            tin), bí quyết nằm ở việc quản lý tọa độ thay vì quản lý số lượng phần tử. Dưới đây là 6
+            bước cốt lõi:
           </p>
         </div>
-        <CodeBlock
-          language="typescript"
-          code={`interface ItemMeta {
-  index: number;
-  height: number;
-  offsetTop: number;
-}
+      </section>
 
-class VirtualPositionManager {
-  private cache: ItemMeta[] = [];
-  private estimatedHeight: number;
+      {/* Implementation Guide */}
+      <div className="relative pl-4">
+        {/* Step 1 */}
+        <StepItem
+          step="S.01"
+          title='Bước 1: Thiết lập "Khung xương" và "Vùng đệm giả"'
+          accentColor="text-blue-600 dark:text-blue-400"
+          glowColor="shadow-blue-500/10"
+        >
+          <p>
+            Đừng render toàn bộ dữ liệu vào DOM. Anh chỉ cần một khung hiển thị cố định (Viewport)
+            và một cơ chế giả lập chiều cao.
+          </p>
+          <div className="mt-4 flex flex-col gap-3 rounded-2xl bg-slate-50 p-5 dark:bg-white/5">
+            <p>
+              <b className="text-slate-900 dark:text-white">Cấu trúc:</b> Một Container cha có{" "}
+              <code>overflow-y: auto</code> và một div con (Phantom Container).
+            </p>
+            <p>
+              <b className="text-slate-900 dark:text-white">Nhiệm vụ:</b> Chiều cao của div con này
+              bằng Tổng số lượng item × Chiều cao ước tính. Nó giúp trình duyệt hiển thị thanh cuộn
+              với tỷ lệ chính xác, dù các item thật sự chưa hề tồn tại.
+            </p>
+          </div>
+        </StepItem>
 
-  constructor(count: number, estimatedHeight: number) {
-    this.estimatedHeight = estimatedHeight;
-    // Khởi tạo cache với giá trị dự đoán
-    for (let i = 0; i < count; i++) {
-      this.cache.push({
-        index: i,
-        height: estimatedHeight,
-        offsetTop: i * estimatedHeight
-      });
-    }
-  }
+        {/* NEW Step 2 */}
+        <StepItem
+          step="S.02"
+          title="Bước 2: Gắn Listener theo dõi sự kiện cuộn"
+          accentColor="text-cyan-600 dark:text-cyan-400"
+          glowColor="shadow-cyan-500/10"
+        >
+          <p>
+            Để hệ thống biết khi nào cần cập nhật dữ liệu, anh phải biết được người dùng đang đứng ở
+            đâu trong danh sách.
+          </p>
+          <div className="mt-4 flex flex-col gap-3 rounded-2xl bg-slate-50 p-5 dark:bg-white/5">
+            <p>
+              <b className="text-cyan-700 dark:text-cyan-300">Cơ chế:</b> Anh gắn sự kiện{" "}
+              <code>onScroll</code> vào Container Ref (nếu cuộn trong khung cục bộ) hoặc gắn thẳng
+              vào <code>window</code> (nếu cuộn toàn trang).
+            </p>
+            <p>
+              <b className="text-cyan-700 dark:text-cyan-300">Nhiệm vụ:</b> Mỗi khi cuộn, listener
+              sẽ bắt lấy giá trị <code>scrollTop</code> và cập nhật vào State. Đây chính là "đầu
+              vào" duy nhất để các bước sau tính toán toạ độ hiển thị.
+            </p>
+          </div>
+        </StepItem>
 
-  // Cập nhật khi ResizeObserver tìm thấy kích thước thực
-  updateItemHeight(index: number, realHeight: number) {
-    const diff = realHeight - this.cache[index].height;
-    if (diff === 0) return;
+        {/* Step 3 */}
+        <StepItem
+          step="S.03"
+          title="Bước 3: Truy vấn vị trí bằng Binary Search"
+          accentColor="text-emerald-600 dark:text-emerald-400"
+          glowColor="shadow-emerald-500/10"
+        >
+          <p>
+            Khi nhận được giá trị <code>scrollTop</code> từ Bước 2, hệ thống cần thực hiện một phép
+            tính "thần tốc" để xác định trạng thái hiển thị:
+          </p>
+          <div className="mt-4 flex flex-col gap-3 rounded-2xl bg-slate-50 p-5 dark:bg-white/5">
+            <p>
+              <b className="text-emerald-700 dark:text-emerald-300">Tính toán StartIndex:</b> Sử
+              dụng Tìm kiếm nhị phân trên mảng <b>Offset Cache</b> để tìm ra Index của item có toạ
+              độ Y gần nhất với <code>scrollTop</code>. Đây chính là điểm bắt đầu để anh cắt (slice)
+              mảng dữ liệu.
+            </p>
+            <p>
+              <b className="text-emerald-700 dark:text-emerald-300">Xác định TranslateY:</b> Từ
+              Index vừa tìm được, anh lấy toạ độ Y thực tế của nó trong Cache. Giá trị này dùng để
+              đẩy (transform) khối item đang render lên đúng vị trí, đảm bảo nó luôn khớp với thanh
+              cuộn thật của trình duyệt.
+            </p>
+          </div>
+        </StepItem>
 
-    this.cache[index].height = realHeight;
-    // Cập nhật lại offset cho tất cả các item phía sau (Prefix Sum update)
-    // Trong thực tế có thể tối ưu bằng Segment Tree hoặc Binary Indexed Tree để đạt O(logn) cập nhật
-    for (let i = index + 1; i < this.cache.length; i++) {
-        this.cache[i].offsetTop += diff;
-    }
-  }
+        {/* Step 4 */}
+        <StepItem
+          step="S.04"
+          title="Bước 4: Cập nhật kích thước thực tế với ResizeObserver"
+          accentColor="text-purple-600 dark:text-purple-400"
+          glowColor="shadow-purple-500/10"
+        >
+          <p>
+            Vì chiều cao ban đầu chỉ là con số &quot;ước tính&quot;, anh cần lấy kích thước thật
+            ngay khi item được render để hiệu chỉnh lại hệ thống.
+          </p>
+          <div className="mt-4 flex flex-col gap-3 rounded-2xl bg-slate-50 p-5 dark:bg-white/5">
+            <p>
+              <b className="text-purple-700 dark:text-purple-300">Cơ chế:</b> Gắn ResizeObserver vào
+              các item đang hiển thị trong Viewport.
+            </p>
+            <p>
+              <b className="text-purple-700 dark:text-purple-300">Nhiệm vụ:</b> Khi item xuất hiện
+              hoặc thay đổi nội dung (ảnh load xong, bấm mở rộng văn bản), Observer sẽ trả về chiều
+              cao thực. Anh lấy con số này cập nhật lại vào Offset Cache và tính toán lại tổng chiều
+              cao của toàn bộ danh sách.
+            </p>
+          </div>
+        </StepItem>
 
-  // Dùng Binary Search để tìm item hiển thị đầu tiên
-  findStartIndex(scrollTop: number) {
-     // Binary Search logic on this.cache based on offsetTop
-     let low = 0, high = this.cache.length - 1;
-     while (low <= high) {
-         const mid = Math.floor((low + high) / 2);
-         if (this.cache[mid].offsetTop <= scrollTop) low = mid + 1;
-         else high = mid - 1;
-     }
-     return high >= 0 ? high : 0;
-  }
-}`}
-        />
+        {/* Step 5 */}
+        <StepItem
+          step="S.05"
+          title='Bước 5: Cơ chế "Neo cuộn" (Scroll Anchoring)'
+          accentColor="text-amber-600 dark:text-amber-400"
+          glowColor="shadow-amber-500/10"
+        >
+          <p>
+            Đây là kỹ thuật xử lý trải nghiệm người dùng quan trọng nhất. Nếu một item phía trên
+            khung nhìn thay đổi chiều cao, nó sẽ vô tình đẩy các item phía dưới xuống, gây hiện
+            tượng giật trang.
+          </p>
+          <div className="mt-4 flex flex-col gap-3 rounded-2xl bg-slate-50 p-5 dark:bg-white/5">
+            <p>
+              <b className="text-amber-700 dark:text-amber-300">Xử lý:</b> Tính toán độ lệch (Delta
+              = Chiều cao thực tế - Chiều cao ước tính).
+            </p>
+            <p>
+              <b className="text-amber-700 dark:text-amber-300">Bù trừ:</b> Nếu thay đổi xảy ra ở vị
+              trí phía trên scrollTop, anh cần cộng dồn giá trị Delta này trực tiếp vào scrollTop
+              của Container. Kết quả là người dùng sẽ thấy nội dung đứng yên một cách ổn định dù dữ
+              liệu bên trên đang co giãn.
+            </p>
+          </div>
+        </StepItem>
+
+        {/* Step 6 */}
+        <StepItem
+          step="S.06"
+          title="Bước 6: Tối ưu hiển thị và phần cứng"
+          accentColor="text-rose-600 dark:text-rose-400"
+          glowColor="shadow-rose-500/10"
+        >
+          <p>Để đảm bảo trải nghiệm liền mạch, anh cần thêm các tinh chỉnh về tài nguyên:</p>
+          <div className="mt-4 flex flex-col gap-3 rounded-2xl bg-slate-50 p-5 dark:bg-white/5">
+            <p>
+              <b className="text-rose-700 dark:text-rose-300">Vùng đệm (Overscan):</b> Luôn render
+              dư ra khoảng 5-10 item ở hai đầu khung nhìn. Điều này giúp khi cuộn nhanh, các item
+              mới đã sẵn sàng hiển thị trước khi người dùng kịp nhìn thấy khoảng trắng.
+            </p>
+            <p>
+              <b className="text-rose-700 dark:text-rose-300">Tận dụng GPU:</b> Sử dụng transform:
+              translate3d(0, y, 0) để định vị các item thay vì dùng thuộc tính top. Cách này giúp
+              trình duyệt xử lý hình ảnh trực tiếp trên lớp (layer) đồ họa, giảm tải cho vi xử lý
+              trung tâm và giữ cho chuyển động luôn mượt mà.
+            </p>
+          </div>
+        </StepItem>
       </div>
 
-      {/* 4. References & Learning Resources */}
-      <div className="rounded-3xl border border-blue-100 bg-blue-50/30 p-8 dark:border-blue-500/10 dark:bg-blue-500/5">
-        <h4 className="mb-6 flex items-center gap-2 text-sm font-bold tracking-widest text-blue-600 uppercase dark:text-blue-400">
-          <ExternalLink className="size-4" />
-          Tài liệu Tham khảo chuyên sâu
+      {/* References */}
+      <div className="rounded-[2.5rem] border border-blue-100 bg-blue-50/30 p-10 dark:border-blue-500/10 dark:bg-blue-500/5">
+        <h4 className="mb-8 flex items-center gap-3 text-sm font-black tracking-widest text-blue-600 uppercase dark:text-blue-400">
+          <ExternalLink className="size-5" />
+          Các thư viện có sẵn
         </h4>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <ReferenceItem
             title="TanStack Virtual"
-            description="Mạnh về headless logic và dynamic measurement, tiêu chuẩn cho React hiện đại."
+            description="Mạnh về headless logic và dynamic measurement."
             link="https://tanstack.com/virtual"
           />
           <ReferenceItem
             title="React Virtuoso"
-            description="Thư viện xử lý dynamic height tốt nhất hiện nay, giải quyết cực tốt vấn đề nhảy scrollbar."
+            description="Thư viện xử lý dynamic height tốt nhất hiện nay."
             link="https://virtuoso.dev/"
           />
         </div>
@@ -203,13 +220,15 @@ function ReferenceItem({
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      className="group space-y-2 rounded-2xl border border-slate-200/60 bg-white p-5 transition-all hover:border-blue-300 hover:shadow-md dark:border-white/5 dark:bg-slate-900"
+      className="group flex flex-col gap-3 rounded-2xl border border-slate-200/60 bg-white p-6 transition-all hover:border-blue-300 hover:shadow-xl dark:border-white/5 dark:bg-slate-900"
     >
       <div className="flex items-center justify-between">
-        <span className="font-bold text-slate-900 dark:text-white">{title}</span>
-        <ExternalLink className="size-3 text-slate-400 transition-colors group-hover:text-blue-500" />
+        <span className="text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400">
+          {title}
+        </span>
+        <ExternalLink className="size-4 text-slate-400 transition-colors group-hover:text-blue-500" />
       </div>
-      <p className="text-xs leading-relaxed text-slate-500 dark:text-slate-400">{description}</p>
+      <p className="text-sm leading-relaxed text-slate-500 dark:text-slate-400">{description}</p>
     </a>
   );
 }
