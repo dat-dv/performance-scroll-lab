@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Code } from "lucide-react";
 import { GIT_REPO } from "@/app/constansts/config";
+import { cn } from "@/libs/cn";
 
 export type CaseScale = "short" | "long" | "all";
 export type CaseDirection = "vertical" | "horizontal" | "bidirectional" | "all";
@@ -28,62 +29,77 @@ interface CaseCardProps {
 }
 
 /**
- * Card component for individual virtualization use cases.
+ * CaseCard component - Modularized for all virtualization lab scenarios.
+ * Implements a premium visual treatment for "Coming Soon" states.
  */
 export function CaseCard({ item }: CaseCardProps) {
   const isAvailable = item.isDone && item.href;
 
   return (
     <li
-      className={`group relative flex flex-col justify-between overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-5 shadow-md shadow-black/5 backdrop-blur-sm transition-all dark:shadow-black/20 ${"hover:border-slate-300 hover:bg-slate-100 dark:border-white/5 dark:bg-black/20 dark:bg-white/5 dark:hover:border-white/10 dark:hover:bg-white/10"}`}
+      className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border transition-all duration-300 ${
+        isAvailable
+          ? "border-slate-200 bg-white shadow-sm hover:border-blue-400 hover:shadow-xl hover:shadow-blue-500/10 dark:border-white/5 dark:bg-white/5 dark:hover:border-blue-500/50"
+          : "border-slate-100 bg-slate-50/50 opacity-75 grayscale dark:border-white/5 dark:bg-white/5"
+      } p-6`}
     >
       <div className="space-y-4">
         <div className="flex items-start justify-between gap-3">
-          <h2 className="text-[10px] leading-relaxed font-black tracking-widest text-slate-400 uppercase dark:text-slate-500">
+          <h2
+            className={`text-[10px] font-black tracking-[0.2em] uppercase transition-colors ${
+              isAvailable
+                ? "text-blue-600 dark:text-blue-400"
+                : "text-slate-400 dark:text-slate-600"
+            }`}
+          >
             {item.title}
           </h2>
-
-          <div className="size-2 shrink-0 rounded-full bg-slate-300 dark:bg-slate-700" />
+          {isAvailable && (
+            <div className="size-2 shrink-0 animate-pulse rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
+          )}
         </div>
 
-        <p className="line-clamp-2 text-sm leading-relaxed font-medium text-slate-900 dark:text-slate-200">
+        <p className="line-clamp-2 text-sm leading-relaxed font-bold text-slate-900 transition-colors group-hover:text-slate-900 dark:text-slate-200 dark:group-hover:text-white">
           {item.description}
         </p>
 
         {/* 📝 Source Path Reference */}
         <a
-          href={GIT_REPO + item.sourcePath}
-          target="_blank"
+          href={isAvailable ? GIT_REPO + item.sourcePath : "#"}
+          target={isAvailable ? "_blank" : "_self"}
           rel="noopener noreferrer"
-          className="flex w-fit items-center gap-1.5 opacity-50 transition-all hover:text-blue-500 hover:opacity-100"
+          className={`flex w-fit items-center gap-1.5 transition-all ${
+            isAvailable
+              ? "opacity-50 hover:text-blue-500 hover:opacity-100"
+              : "cursor-not-allowed opacity-20"
+          }`}
         >
           <Code className="size-3" />
           <span className="font-mono text-[9px] font-medium">{item.sourcePath}</span>
         </a>
       </div>
 
-      <div className="mt-6 flex items-end justify-between gap-2 border-t border-slate-200 pt-4 dark:border-white/5">
-        <div className="flex flex-col gap-0.5">
-          <span className="text-[9px] font-black tracking-tighter text-slate-400 uppercase dark:text-slate-500">
-            SUGGESTION
+      <div className="mt-8 flex items-end justify-between gap-2 border-t border-slate-100 pt-4 dark:border-white/5">
+        <div className="flex flex-col gap-1">
+          <span className="text-[8px] font-black tracking-widest text-slate-400 uppercase dark:text-slate-600">
+            REACHED TARGET
           </span>
-          <p className="line-clamp-1 text-[11px] font-bold text-slate-600 italic dark:text-slate-400">
+          <p className="line-clamp-1 text-[10px] font-black text-slate-500 italic dark:text-slate-400">
             {item.recommendation}
           </p>
         </div>
 
-        {isAvailable ? (
-          <Link
-            href={item.href}
-            className="w-fit shrink-0 rounded-lg bg-blue-500/10 px-3 py-1.5 text-[10px] font-black tracking-tighter text-blue-500 shadow-sm transition-all hover:bg-blue-500 hover:text-white dark:text-blue-400"
-          >
-            GO →
-          </Link>
-        ) : (
-          <span className="w-fit shrink-0 rounded-lg bg-slate-100 px-3 py-1.5 text-[10px] font-black tracking-tighter text-slate-400 dark:bg-white/5 dark:text-slate-600">
-            SOON
-          </span>
-        )}
+        <Link
+          href={item.href || "#"}
+          className={cn(
+            "flex h-8 shrink-0 items-center rounded-lg px-4 text-[10px] font-black tracking-widest shadow-sm transition-all active:translate-y-0",
+            item.isDone
+              ? "bg-blue-500 text-white shadow-blue-500/20 hover:-translate-y-0.5 hover:bg-blue-600 hover:shadow-blue-500/40"
+              : "bg-slate-100 text-slate-400 hover:bg-slate-200 dark:bg-white/5 dark:text-slate-600 dark:hover:bg-white/10"
+          )}
+        >
+          GO →
+        </Link>
       </div>
     </li>
   );
