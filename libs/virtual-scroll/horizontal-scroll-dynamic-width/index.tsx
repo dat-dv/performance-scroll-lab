@@ -12,7 +12,7 @@ const DEFAULT_OVERSCAN = 5;
  * Giải pháp tối ưu nhất cho danh sách ngang có chiều rộng Item không cố định.
  * Sử dụng Prefix Sums + Binary Search + ResizeObserver.
  */
-export default function HorizontalVirtualScrollDynamic<T>({
+export default function HorizontalScrollDynamicWidth<T>({
   items,
   estimatedWidth = DEFAULT_ESTIMATED_WIDTH,
   overscan = DEFAULT_OVERSCAN,

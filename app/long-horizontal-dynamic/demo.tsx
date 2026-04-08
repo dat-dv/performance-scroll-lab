@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import HorizontalVirtualScrollDynamic from "@/libs/virtual-scroll/horizontal-dynamic-width";
+import HorizontalScrollDynamicWidth from "@/libs/virtual-scroll/horizontal-scroll-dynamic-width";
 import { Sparkles, ArrowRight } from "lucide-react";
 
 interface NewsItem {
@@ -60,7 +60,7 @@ export default function Demo() {
       </div>
 
       <div className="rounded-[3rem] border border-slate-200 bg-slate-50 p-4 shadow-inner dark:border-white/5 dark:bg-slate-900/50">
-        <HorizontalVirtualScrollDynamic
+        <HorizontalScrollDynamicWidth
           items={items}
           estimatedWidth={350}
           itemHeight={480} // Chiều cao tổng của khung cuộn
@@ -97,7 +97,7 @@ export default function Demo() {
               </div>
             </div>
           )}
-        </HorizontalVirtualScrollDynamic>
+        </HorizontalScrollDynamicWidth>
       </div>
 
       <div className="flex justify-center">

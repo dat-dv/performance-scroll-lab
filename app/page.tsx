@@ -16,7 +16,7 @@ export default function InfiniteScrollDemo() {
   // Derived filtered results
   const filteredCases = useMemo(() => {
     return cases.filter((c) => {
-      const matchScale = scale === "all" ? true : c.scale === scale;
+      const matchScale = scale === "all" || c.scale === "all" || c.scale === scale;
       const matchDirection =
         direction === "all" || c.direction === "all" || c.direction === direction;
       const matchItemSize = itemSize === "all" || c.itemSize === "all" || c.itemSize === itemSize;

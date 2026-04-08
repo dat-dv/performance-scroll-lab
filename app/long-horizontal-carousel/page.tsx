@@ -1,6 +1,6 @@
 "use client";
 
-import HorizontalVirtualScroll from "@/libs/horizontal-virtual-scroll";
+import HorizontalVirtualScroll from "@/libs/virtual-scroll/horizontal-scroll-fixed-width";
 import { ChevronLeft, Info, Cpu } from "lucide-react";
 import Link from "next/link";
 

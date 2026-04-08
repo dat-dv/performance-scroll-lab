@@ -1,6 +1,6 @@
 "use client";
 
-import HorizontalVirtualScroll from "@/libs/horizontal-virtual-scroll";
+import HorizontalVirtualScroll from "@/libs/virtual-scroll/horizontal-scroll-fixed-width";
 import { RenderItem } from "./render-item";
 import { useState } from "react";
 import { delay } from "@/libs/delay";
