@@ -15,10 +15,24 @@ interface Category {
 const MOCK_CATEGORIES: Category[] = [
   { id: 1, title: "Architecture", count: 12, icon: "🏛️", color: "from-blue-500 to-cyan-500" },
   { id: 2, title: "Performance", count: 8, icon: "⚡", color: "from-amber-500 to-orange-500" },
-  { id: 3, title: "Animation", count: 15, icon: "✨", color: "from-purple-500 to-pink-500" },
-  { id: 4, title: "Database", count: 6, icon: "💾", color: "from-emerald-500 to-teal-500" },
+  { id: 3, title: "Animation", count: 18, icon: "✨", color: "from-purple-500 to-pink-500" },
+  { id: 4, title: "Database", count: 22, icon: "💾", color: "from-emerald-500 to-teal-500" },
   { id: 5, title: "Security", count: 9, icon: "🛡️", color: "from-rose-500 to-red-500" },
   { id: 6, title: "Frontend", count: 24, icon: "🎨", color: "from-indigo-500 to-blue-500" },
+  { id: 7, title: "Marketing", count: 14, icon: "📈", color: "from-emerald-400 to-green-600" },
+  { id: 8, title: "Design", count: 32, icon: "💎", color: "from-pink-400 to-rose-600" },
+  { id: 9, title: "Engineering", count: 19, icon: "⚙️", color: "from-gray-500 to-slate-700" },
+  { id: 10, title: "DevOps", count: 11, icon: "🚀", color: "from-blue-600 to-indigo-800" },
+  { id: 11, title: "Testing", count: 7, icon: "🧪", color: "from-yellow-400 to-orange-500" },
+  { id: 12, title: "Cloud", count: 15, icon: "☁️", color: "from-cyan-400 to-blue-500" },
+  { id: 13, title: "Mobile", count: 21, icon: "📱", color: "from-violet-500 to-purple-700" },
+  { id: 14, title: "Web Vitals", count: 13, icon: "⏱️", color: "from-green-500 to-emerald-700" },
+  { id: 15, title: "Infrastructure", count: 16, icon: "🧱", color: "from-orange-500 to-amber-700" },
+  { id: 16, title: "Analytics", count: 10, icon: "📊", color: "from-blue-400 to-indigo-600" },
+  { id: 17, title: "Operations", count: 8, icon: "🛂", color: "from-slate-600 to-zinc-800" },
+  { id: 18, title: "Innovation", count: 25, icon: "💡", color: "from-yellow-500 to-orange-600" },
+  { id: 19, title: "Research", count: 30, icon: "🔍", color: "from-blue-700 to-cyan-900" },
+  { id: 20, title: "Production", count: 12, icon: "🏭", color: "from-gray-700 to-black" },
 ];
 
 export default function ShortHorizontalPage() {

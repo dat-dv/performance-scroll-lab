@@ -1,10 +1,10 @@
 # The Windowing Lab: Virtualization Architecture 🚀
 
-Dự án nghiên cứu chuyên sâu về UI Performance và Virtualization, giải quyết bài toán tối ưu hóa $N$ nodes khi render các tập dữ liệu cực lớn trên trình duyệt.
+Dự án nghiên cứu về UI Performance và Virtualization, tối ưu hóa $N$ nodes khi render các tập dữ liệu cực lớn trên trình duyệt.
 
 ## 🎯 Mục tiêu cốt lõi
 
-Triệt tiêu tình trạng lag/crash bằng cách chỉ render các phần tử trong khung nhìn (Viewport), kiểm soát số lượng DOM nodes ổn định bất kể quy mô dữ liệu.
+Giảm tình trạng lag/crash bằng cách chỉ render các phần tử trong khung nhìn (Viewport), kiểm soát số lượng DOM nodes ổn định bất kể quy mô dữ liệu.
 
 ## 🏛️ Hệ thống 5 phần
 

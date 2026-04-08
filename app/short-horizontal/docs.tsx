@@ -63,7 +63,7 @@ export function ShortHorizontalDocs() {
             title: "Tại sao không Virtualize theo chiều ngang?",
             colorClass: "text-blue-600 dark:text-blue-400",
             description:
-              "Tầm nhìn của con người hạn chế theo chiều ngang. Hầu hết các app chỉ hiển thị < 20 items (Categories, Story, Tabs). Ở mức này, CSS là vua.",
+              "Tầm nhìn của con người hạn chế theo chiều ngang. Hầu hết các app chỉ hiển thị < 20 items (Categories, Story, Tabs). Ở mức này, CSS là tốt nhất.",
           },
           {
             title: "Ưu tiên Mobile Performance",
