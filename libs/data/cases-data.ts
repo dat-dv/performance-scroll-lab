@@ -153,7 +153,7 @@ export const cases: RenderCase[] = [
     scale: "all",
     direction: "bidirectional",
     itemSize: "fixed",
-    isDone: false,
+    isDone: true,
   },
   {
     id: "9",

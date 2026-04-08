@@ -1,12 +1,17 @@
 "use client";
 
 import React from "react";
-import { Docs } from "./docs";
-import { ComingSoon } from "@/components/coming-soon";
 import ShowcaseLayout from "@/components/show-case-layout";
 import { BookOpen, PlayCircle } from "lucide-react";
+import { Docs } from "./docs";
+import Demo from "./demo";
 
-export default function Case8() {
+/**
+ * Case Study 8: Huge Dataset / 2D Grid / Fixed Size
+ * Bidirectional virtualization for massive matrices.
+ * Performance: O(1) for millions of cells.
+ */
+export default function GridFixedPage() {
   const tabs = [
     {
       label: "Technical Docs",
@@ -18,7 +23,7 @@ export default function Case8() {
       label: "Live Demo",
       value: "demo",
       icon: <PlayCircle className="size-4" />,
-      children: <ComingSoon title="Virtual 2D Grid Fixed Demo" />,
+      children: <Demo />,
     },
   ];
 
