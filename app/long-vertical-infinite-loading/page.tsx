@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { LoadMoreObserverDocs } from "@/components/technical-docs";
+import { LoadMoreObserverDocs } from "./load-more-observer-docs";
+import { LaboratoryDemoHeader } from "@/components/laboratory-demo-header";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 interface Item {
   id: number;
@@ -69,48 +70,55 @@ export default function LoadMoreObserverPage() {
 
   return (
     <div className="relative">
-      <LoadMoreObserverDocs />
+      <div className="mx-auto max-w-5xl px-6 pt-12">
+        <LoadMoreObserverDocs />
 
-      <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm dark:border-white/5 dark:bg-zinc-900/40">
-        <h2 className="mb-6 text-sm font-bold tracking-widest text-gray-500 uppercase">
-          Standard List Rendering (No Virtualization)
-        </h2>
+        <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md dark:border-white/5 dark:bg-white/5">
+          <LaboratoryDemoHeader
+            title="Standard List + Infinite Load"
+            description="200 Items Limit • Intersection Observer Sentinel"
+            badgeText="Observing"
+            badgeColor="bg-blue-500"
+          />
 
-        <div className="space-y-4">
-          {items.map((item) => (
-            <div
-              key={item.id}
-              className="flex items-center justify-between rounded-xl border border-gray-100 p-4 transition-colors hover:bg-gray-50 dark:border-white/5 dark:hover:bg-white/5"
-            >
-              <div className="flex gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500/10 font-bold text-blue-500">
-                  {item.id}
+          <div className="p-8">
+            <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+              {items.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center justify-between rounded-xl border border-gray-100 p-4 transition-colors hover:bg-gray-50 dark:border-white/5 dark:hover:bg-white/5"
+                >
+                  <div className="flex gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500/10 font-bold text-blue-500">
+                      {item.id}
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold">{item.name}</h3>
+                      <p className="text-xs text-gray-400">{item.description}</p>
+                    </div>
+                  </div>
+                  <div className="text-sm font-bold text-emerald-500">{item.price}</div>
                 </div>
-                <div>
-                  <h3 className="text-sm font-bold">{item.name}</h3>
-                  <p className="text-xs text-gray-400">{item.description}</p>
-                </div>
+              ))}
+
+              {/* Sentinel / Loader */}
+              <div ref={loaderRef} className="mt-8 flex flex-col items-center justify-center py-10">
+                {loading && (
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="h-6 w-6 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />
+                    <span className="animate-pulse text-[10px] font-bold tracking-widest text-gray-400 uppercase">
+                      Fetching Data...
+                    </span>
+                  </div>
+                )}
+                {!hasMore && (
+                  <div className="rounded-full bg-gray-100 px-4 py-2 text-[10px] font-bold tracking-widest text-gray-400 uppercase dark:bg-zinc-800">
+                    Bạn đã xem hết 200 sản phẩm
+                  </div>
+                )}
               </div>
-              <div className="text-sm font-bold text-emerald-500">{item.price}</div>
             </div>
-          ))}
-        </div>
-
-        {/* Sentinel / Loader */}
-        <div ref={loaderRef} className="mt-8 flex flex-col items-center justify-center py-10">
-          {loading && (
-            <div className="flex flex-col items-center gap-3">
-              <div className="h-6 w-6 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />
-              <span className="animate-pulse text-[10px] font-bold tracking-widest text-gray-400 uppercase">
-                Fetching Data...
-              </span>
-            </div>
-          )}
-          {!hasMore && (
-            <div className="rounded-full bg-gray-100 px-4 py-2 text-[10px] font-bold tracking-widest text-gray-400 uppercase dark:bg-zinc-800">
-              Bạn đã xem hết 200 sản phẩm
-            </div>
-          )}
+          </div>
         </div>
       </div>
 

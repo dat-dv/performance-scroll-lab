@@ -33,8 +33,8 @@ export function DemoHeader() {
             </span>
           </h1>
           <p className="max-w-xl text-lg font-medium text-slate-500 dark:text-slate-400">
-            A high-performance demonstration of horizontal windowing. Only the visible fragments
-            of the list are kept in the DOM.
+            A high-performance demonstration of horizontal windowing. Only the visible fragments of
+            the list are kept in the DOM.
           </p>
         </motion.div>
 

@@ -15,23 +15,17 @@ import {
   Settings2,
 } from "lucide-react";
 
-import { CaseScale, CaseDirection, CaseItemSize } from "./case-card";
-import { FilterGroup } from "./wizard/FilterGroup";
-import { FilterChip } from "./wizard/FilterChip";
-
 import { useCaseFilters } from "@/context/filter-context";
+import { CaseScale, CaseDirection, CaseItemSize } from "@/libs/data/cases-data";
+import { FilterChip } from "../wizard/FilterChip";
+import { FilterGroup } from "../wizard/FilterGroup";
 
 /**
  * Strategy Wizard - Modularized layout.
  * Now a zero-prop component fueled by FilterContext.
  */
 export function VirtualizationWizard() {
-  const { 
-    scale, 
-    direction, 
-    itemSize, 
-    updateFilters 
-  } = useCaseFilters();
+  const { scale, direction, itemSize, updateFilters } = useCaseFilters();
 
   const [isCollapsed, setIsCollapsed] = useState(false);
 

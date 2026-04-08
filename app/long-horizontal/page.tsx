@@ -5,7 +5,7 @@ import { RenderItem } from "./render-item";
 import { useState } from "react";
 import { delay } from "@/libs/delay";
 import { createMockItems } from "./mock-data";
-import { DemoHeader } from "./components/demo-header";
+import { DemoHeader } from "./demo-header";
 
 /**
  * Static Horizontal Demo Page

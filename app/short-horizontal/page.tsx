@@ -1,102 +1,71 @@
 "use client";
 
 import React from "react";
-import { Info, MousePointer2 } from "lucide-react";
+import { ShortHorizontalDocs } from "./docs";
+import { LaboratoryDemoHeader } from "@/components/laboratory-demo-header";
 
-const MOCK_ITEMS = Array.from({ length: 12 }, (_, i) => ({
-  id: i,
-  title: `Tab Item #${i + 1}`,
-  color: [
-    "from-blue-500 to-indigo-600",
-    "from-emerald-400 to-teal-600",
-    "from-rose-400 to-orange-500",
-  ][i % 3],
-}));
+interface Category {
+  id: number;
+  title: string;
+  count: number;
+  icon: string;
+  color: string;
+}
 
-export default function ShortHorizontalDemo() {
+const MOCK_CATEGORIES: Category[] = [
+  { id: 1, title: "Architecture", count: 12, icon: "🏛️", color: "from-blue-500 to-cyan-500" },
+  { id: 2, title: "Performance", count: 8, icon: "⚡", color: "from-amber-500 to-orange-500" },
+  { id: 3, title: "Animation", count: 15, icon: "✨", color: "from-purple-500 to-pink-500" },
+  { id: 4, title: "Database", count: 6, icon: "💾", color: "from-emerald-500 to-teal-500" },
+  { id: 5, title: "Security", count: 9, icon: "🛡️", color: "from-rose-500 to-red-500" },
+  { id: 6, title: "Frontend", count: 24, icon: "🎨", color: "from-indigo-500 to-blue-500" },
+];
+
+export default function ShortHorizontalPage() {
   return (
-    <div className="min-h-screen space-y-12 pb-20">
-      <div className="overflow-hidden rounded-[2rem] border border-emerald-500/20 bg-gradient-to-br from-emerald-500/5 to-transparent p-10 backdrop-blur-sm dark:border-emerald-400/20">
-        <div className="flex flex-col gap-8">
-          <div className="flex items-center gap-4">
-            <div className="flex size-12 items-center justify-center rounded-2xl bg-emerald-500 text-white shadow-2xl shadow-emerald-500/20">
-              <Info className="size-7" />
-            </div>
-            <div className="flex flex-col gap-0.5">
-              <span className="text-[10px] font-black tracking-widest text-emerald-500 uppercase">
-                Architecture Tier 1
-              </span>
-              <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">
-                1.2. Short Horizontal (Native Map)
-              </h1>
-            </div>
-          </div>
+    <div className="flex min-h-screen flex-col">
+      <main className="flex-1 pb-20">
+        <div className="mx-auto max-w-5xl px-6 pt-12">
+          {/* 1. Technical Documentation Section */}
+          <ShortHorizontalDocs />
 
-          <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-            <div className="space-y-4">
-              <h4 className="flex items-center gap-2 text-xs font-black tracking-widest text-slate-900 uppercase dark:text-white">
-                <div className="size-1.5 rounded-full bg-emerald-500" />
-                BÀI TOÁN & NGỮ CẢNH
-              </h4>
-              <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                Hiển thị một cụm{" "}
-                <strong>
-                  Banner quảng cáo, dải Story icons (kiểu Instagram), hoặc danh sách thẻ sản phẩm
-                  Hot
-                </strong>{" "}
-                với số lượng từ 5-15 items.
-                <br />
-                <br />
-                Thách thức chính là <strong>Bundle Size và Thời gian khởi tạo</strong>. Sử dụng các
-                thư viện như Swiper.js hay Slick cho 10 items là sự lãng phí tài nguyên lớn, làm
-                chậm chỉ số LCP (Largest Contentful Paint) của trang web.
-              </p>
-            </div>
-            <div className="space-y-4">
-              <h4 className="flex items-center gap-2 text-xs font-black tracking-widest text-emerald-600 uppercase">
-                <div className="size-1.5 rounded-full bg-emerald-500" />
-                CHIẾN LƯỢC GIẢI QUYẾT
-              </h4>
-              <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                Tận dụng sức mạnh của <strong>CSS Scroll Snap</strong>. Đây là giải pháp native giúp
-                tạo trải nghiệm cuộn mượt mà như ứng dụng di động mà không tốn bất kỳ dòng
-                JavaScript nào để khởi tạo UI.
-                <br />
-                <br />
-                <strong>Ưu điểm:</strong> 0ms JS initialization, hỗ trợ Touch/Swipe native cực tốt,
-                và hoàn toàn响应 (Responsive) thông qua CSS Media Queries. Đây là lựa chọn hàng đầu
-                cho các Carousel đơn giản ở đầu trang (Above the fold).
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+          {/* 2. Live Demo Section */}
+          <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md dark:border-white/5 dark:bg-white/5">
+            <LaboratoryDemoHeader
+              description={`${MOCK_CATEGORIES.length} Categories • Horizontal Scroll Logic`}
+            />
 
-      <section className="relative -mx-6 overflow-hidden bg-slate-50/50 py-12 dark:bg-white/5">
-        {/* 🚀 Pure CSS Horizontal Scroll Container */}
-        <div className="scrollbar-hide flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-6">
-          {MOCK_ITEMS.map((item) => (
-            <div key={item.id} className="w-80 shrink-0 snap-center">
-              <div
-                className={`flex h-64 flex-col items-center justify-center rounded-[2.5rem] bg-gradient-to-br p-8 text-center font-bold text-white shadow-xl ${item.color}`}
-              >
-                <div className="mb-2 text-[10px] tracking-widest uppercase opacity-70">
-                  Native Item
-                </div>
-                <div className="text-2xl leading-tight tracking-tight">{item.title}</div>
-                <div className="mt-4 rounded-full bg-white/20 px-4 py-1 text-sm font-black">
-                  ID: {item.id}
-                </div>
+            <div className="p-8">
+              <div className="custom-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto pt-2 pb-6">
+                {MOCK_CATEGORIES.map((cat) => (
+                  <div
+                    key={cat.id}
+                    className="group/card relative min-w-[280px] shrink-0 snap-start overflow-hidden rounded-2xl border border-slate-100 bg-white p-6 transition-all hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl dark:border-white/5 dark:bg-white/5 dark:hover:border-white/10"
+                  >
+                    <div
+                      className={`mb-4 flex size-12 items-center justify-center rounded-xl bg-gradient-to-br ${cat.color} text-2xl shadow-lg`}
+                    >
+                      {cat.icon}
+                    </div>
+                    <h4 className="mb-1 text-lg font-bold text-slate-900 dark:text-white">
+                      {cat.title}
+                    </h4>
+                    <p className="mb-4 text-xs font-medium tracking-tighter text-slate-500 uppercase">
+                      {cat.count} Experiments
+                    </p>
+                    <div className="h-1 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-white/5">
+                      <div
+                        className={`h-full bg-gradient-to-r ${cat.color} transition-all duration-1000 group-hover/card:w-full`}
+                        style={{ width: `${(cat.count / 25) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
+          </div>
         </div>
-
-        <div className="mt-4 flex justify-center gap-2 text-[10px] font-black tracking-widest text-slate-400 uppercase">
-          <MousePointer2 className="size-3" />
-          <span>Swipe or Scroll horizontally</span>
-        </div>
-      </section>
+      </main>
     </div>
   );
 }

@@ -1,112 +1,75 @@
 "use client";
 
 import React from "react";
-import { Info } from "lucide-react";
+import { ShortVerticalDocs } from "./docs";
+import { LaboratoryDemoHeader } from "@/components/laboratory-demo-header";
 
 interface Contact {
   id: number;
   name: string;
   role: string;
-  initials: string;
-  color: string;
+  avatar: string;
 }
 
-const contacts: Contact[] = [
-  { id: 1, name: "Lebron James", role: "Forward", initials: "LJ", color: "bg-blue-500" },
-  { id: 2, name: "Stephen Curry", role: "Guard", initials: "SC", color: "bg-amber-500" },
-  { id: 3, name: "Kevin Durant", role: "Forward", initials: "KD", color: "bg-rose-500" },
-  {
-    id: 4,
-    name: "Giannis Antetokounmpo",
-    role: "Forward",
-    initials: "GA",
-    color: "bg-emerald-500",
-  },
-  { id: 5, name: "Nikola Jokic", role: "Center", initials: "NJ", color: "bg-indigo-500" },
-  { id: 6, name: "Luka Doncic", role: "Guard", initials: "LD", color: "bg-purple-500" },
-  { id: 7, name: "Joel Embiid", role: "Center", initials: "JE", color: "bg-orange-500" },
-  { id: 8, name: "Jayson Tatum", role: "Forward", initials: "JT", color: "bg-cyan-500" },
-];
+const MOCK_CONTACTS: Contact[] = Array.from({ length: 20 }, (_, i) => ({
+  id: i,
+  name: `User ${i + 1}`,
+  role: ["Engineer", "Designer", "Product", "Quality"][i % 4],
+  avatar: `https://i.pravatar.cc/150?u=${i}`,
+}));
 
-export default function StaticListDemo() {
+export default function ShortVerticalPage() {
   return (
-    <div className="relative space-y-12">
-      {/* 🎯 Context Card: Combined Problem & Solution */}
-      <div className="overflow-hidden rounded-[2rem] border border-blue-500/20 bg-gradient-to-br from-blue-500/5 to-transparent p-10 backdrop-blur-sm dark:border-blue-400/20">
-        <div className="flex flex-col gap-8">
-          <div className="flex items-center gap-4">
-            <div className="flex size-12 items-center justify-center rounded-2xl bg-blue-500 text-white shadow-2xl shadow-blue-500/20">
-              <Info className="size-7" />
-            </div>
-            <div className="flex flex-col gap-0.5">
-              <span className="text-[10px] font-black tracking-widest text-blue-500 uppercase">Architecture Tier 1</span>
-              <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">
-                1.1. Short Vertical (Native Map)
-              </h1>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-            <div className="space-y-4">
-              <h4 className="flex items-center gap-2 text-xs font-black tracking-widest text-slate-900 uppercase dark:text-white">
-                <div className="size-1.5 rounded-full bg-blue-500" />
-                BÀI TOÁN & NGỮ CẢNH
-              </h4>
-              <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                Bạn đang xây dựng các thành phần UI cơ bản như: <strong>Danh bạ điện thoại, Menu điều hướng, Header Chat, hoặc danh sách thẻ bài (Cards)</strong> với số lượng item cố định và quy mô nhỏ (thường dưới 100 items). 
-                <br /><br />
-                Thách thức ở đây không nằm ở hiệu năng xử lý của trình duyệt, mà nằm ở việc <strong>quản lý độ phức tạp của Code</strong>. Nhiều lập trình viên thường mắc lỗi &quot;Over-engineering&quot; khi áp dụng ngay Virtualization (Windowing) cho các danh sách này, dẫn đến code bị phình to (ref, offset calculation) mà không mang lại lợi ích thực tế.
-              </p>
-            </div>
-            <div className="space-y-4">
-              <h4 className="flex items-center gap-2 text-xs font-black tracking-widest text-emerald-600 uppercase">
-                <div className="size-1.5 rounded-full bg-emerald-500" />
-                CHIẾN LƯỢC GIẢI QUYẾT
-              </h4>
-              <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                Đối với quy mô <strong>Short Scale</strong>, chiến lược tối ưu nhất là sử dụng phương thức <code>.map()</code> nguyên bản của React để render toàn bộ DOM Nodes. 
-                <br /><br />
-                <strong>Lợi ích cốt lõi:</strong> Trình duyệt hiện đại có khả năng render 100 node trong chưa đầy 2ms. Việc giữ code đơn giản giúp tăng khả năng bảo trì, hỗ trợ SEO nội dung tốt hơn, và đảm bảo các tính năng native của trình duyệt (như Ctrl+F tìm kiếm) hoạt động hoàn hảo mà không cần thêm logic phức tạp.
-              </p>
+    <div className="flex min-h-screen flex-col">
+      <main className="flex-1 pb-20">
+        <div className="mx-auto max-w-5xl px-6 pt-12">
+          {/* 1. Technical Documentation Section */}
+          <ShortVerticalDocs />
+
+          {/* 2. Live Demo Section */}
+          <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md dark:border-white/5 dark:bg-white/5">
+            <LaboratoryDemoHeader
+              description={`${MOCK_CONTACTS.length} Items • Contacts List Rendering`}
+            />
+
+            <div className="p-1">
+              <div className="custom-scrollbar max-h-[500px] overflow-y-auto px-7 py-7">
+                <div className="flex flex-col gap-3">
+                  {MOCK_CONTACTS.map((item) => (
+                    <div
+                      key={item.id}
+                      className="group/item flex items-center justify-between rounded-2xl border border-transparent bg-slate-50/50 p-4 transition-all hover:border-slate-200 hover:bg-white hover:shadow-sm dark:bg-white/5 dark:hover:border-white/10 dark:hover:bg-white/10"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="relative">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={item.avatar}
+                            alt={item.name}
+                            className="size-12 rounded-xl object-cover ring-2 ring-white transition-transform group-hover/item:scale-105 dark:ring-slate-900"
+                          />
+                          <div className="absolute -top-1 -right-1 size-3 rounded-full border-2 border-white bg-emerald-500 dark:border-slate-900" />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-bold text-slate-900 dark:text-white">
+                            {item.name}
+                          </span>
+                          <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                            {item.role}
+                          </span>
+                        </div>
+                      </div>
+                      <button className="rounded-xl border border-slate-200 px-4 py-2 text-xs font-bold text-slate-600 transition-all hover:bg-slate-900 hover:text-white dark:border-white/10 dark:text-slate-400 dark:hover:bg-white dark:hover:text-slate-900">
+                        View Profile
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* 🚀 The Demo */}
-      <div className="space-y-6">
-        <header className="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-white/5">
-          <h2 className="text-xs font-black tracking-[0.2em] text-slate-400 uppercase">
-            Native List Rendering
-          </h2>
-          <span className="rounded-full bg-slate-100 px-3 py-1 text-[10px] font-bold text-slate-500 dark:bg-white/5">
-            8 ITEMS
-          </span>
-        </header>
-
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          {contacts.map((contact) => (
-            <div
-              key={contact.id}
-              className="flex items-center gap-4 rounded-3xl border border-slate-100 bg-white/70 p-5 shadow-sm transition-all hover:shadow-lg dark:border-white/5 dark:bg-slate-900/50"
-            >
-              <div
-                className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl shadow-lg ${contact.color} font-black text-white`}
-              >
-                {contact.initials}
-              </div>
-              <div className="flex flex-col">
-                <span className="text-lg font-black tracking-tight text-slate-900 dark:text-white">
-                  {contact.name}
-                </span>
-                <span className="text-[10px] font-black tracking-widest text-slate-500 uppercase dark:text-slate-400">
-                  {contact.role}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      </main>
     </div>
   );
 }

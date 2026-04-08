@@ -8,11 +8,16 @@ Triệt tiêu tình trạng lag/crash bằng cách chỉ render các phần tử
 
 ## 🏛️ Hệ thống 5 phần
 
-- **1: Native (Short Scale)** - < 100 items: Dùng `.map()` trực tiếp + CSS Scroll Snap.
+- **1: Native (Short Scale)** - < 100 items: Dùng `.map()` trực tiếp.
+  - [x] Vertical: [`app/short-vertical/page.tsx`](https://github.com/dat-dv/performance-scroll-lab/tree/Master/app/short-vertical/page.tsx)
+  - [x] Horizontal: [`app/short-horizontal/page.tsx`](https://github.com/dat-dv/performance-scroll-lab/tree/Master/app/short-horizontal/page.tsx)
+  - [x] 2D Grid: [`app/short-grid/page.tsx`](https://github.com/dat-dv/performance-scroll-lab/tree/Master/app/short-grid/page.tsx)
 - **2: Standard Windowing (Long Vertical)** - 10k - 1M items: Tính toán chiều cao cố định, vị trí tuyệt đối.
-- **3: Horizontal Windowing (Long Horizontal)**: Tối ưu cuộn ngang cho dataset lớn.
-- **4: Bidirectional Windowing (2D Grid)**: Xử lý ma trận dữ liệu (Spreadsheet/Gallery).
-- **5: Composite (Nested Virtualization)**: Lồng ghép cuộn dọc và ngang.
+  - [x] Fixed Height: [`app/long-vertical-item-fixed-height/page.tsx`](https://github.com/dat-dv/performance-scroll-lab/tree/Master/app/long-vertical-item-fixed-height/page.tsx)
+  - [ ] Dynamic Height: `app/long-vertical-item-dynamic-height/page.tsx` (Soon)
+- **3: Horizontal Windowing (Long Horizontal)**: Tối ưu cuộn ngang cho dataset lớn. [Source Code](https://github.com/dat-dv/performance-scroll-lab/tree/Master/app/long-horizontal/page.tsx) / [Demo](/long-horizontal)
+- **4: Bidirectional Windowing (2D Grid)**: Xử lý ma trận dữ liệu (Spreadsheet/Gallery). [Source Code](https://github.com/dat-dv/performance-scroll-lab/tree/Master/app/bidirectional-grid/page.tsx) / [Demo](/bidirectional-grid)
+- **5: Composite (Nested Virtualization)**: Lồng ghép cuộn dọc và ngang. [Source Code](https://github.com/dat-dv/performance-scroll-lab/tree/Master/app/composite-virtualization/page.tsx) / [Demo](/composite-virtualization)
 
 ## 💎 4 Trụ cột toán học
 

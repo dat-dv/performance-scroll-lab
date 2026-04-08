@@ -44,14 +44,14 @@ export default function StaticHorizontalDemo() {
         <HorizontalVirtualScroll items={MOCK_ITEMS} overscan={5}>
           {({ item }) => (
             <div className="flex size-full items-center justify-center p-4">
-              <div className={`flex h-80 w-full max-w-sm flex-col items-center justify-center rounded-[2.5rem] bg-gradient-to-br p-8 text-center font-bold text-white shadow-xl ${item.color}`}>
+              <div
+                className={`flex h-80 w-full max-w-sm flex-col items-center justify-center rounded-[2.5rem] bg-gradient-to-br p-8 text-center font-bold text-white shadow-xl ${item.color}`}
+              >
                 <div className="mb-2 text-[10px] tracking-widest uppercase opacity-70">
                   Static Index
                 </div>
                 <div className="text-3xl tracking-tight">{item.title}</div>
-                <div className="mt-4 rounded-full bg-white/20 px-4 py-1 text-sm">
-                  ID: {item.id}
-                </div>
+                <div className="mt-4 rounded-full bg-white/20 px-4 py-1 text-sm">ID: {item.id}</div>
               </div>
             </div>
           )}
@@ -63,14 +63,16 @@ export default function StaticHorizontalDemo() {
           <Info className="size-6 text-blue-500" />
           <h2 className="text-xl font-bold">No Side-Effects</h2>
           <p className="text-slate-500">
-            This demo uses a fixed local array. No state updates or network simulations occur during the scrolling process.
+            This demo uses a fixed local array. No state updates or network simulations occur during
+            the scrolling process.
           </p>
         </div>
         <div className="space-y-4 rounded-3xl border border-slate-200 p-8 dark:border-white/5">
           <Cpu className="size-6 text-emerald-500" />
           <h2 className="text-xl font-bold">Predictive Slicing</h2>
           <p className="text-slate-500">
-            Since the length is known and static, viewport slicing is highly predictable and has nearly zero overhead.
+            Since the length is known and static, viewport slicing is highly predictable and has
+            nearly zero overhead.
           </p>
         </div>
       </div>

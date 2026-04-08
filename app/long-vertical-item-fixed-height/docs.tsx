@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import { TechnicalIntro } from "../tẹchnical-intro";
-import { TechnicalDeepDive } from "../technical-deep-dive";
+import { TechnicalIntro } from "@/components/technical-intro";
+import { TechnicalDeepDive } from "@/components/technical-deep-dive";
 
-export function VerticalScrollDocs() {
+export function LongVerticalItemFixedHeightDocs() {
   return (
     <>
       <TechnicalIntro

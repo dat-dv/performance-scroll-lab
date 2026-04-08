@@ -2,16 +2,20 @@
 
 import React from "react";
 import Link from "next/link";
+import { Code } from "lucide-react";
+import { GIT_REPO } from "@/app/constansts/config";
 
 export type CaseScale = "short" | "long" | "all";
 export type CaseDirection = "vertical" | "horizontal" | "bidirectional" | "all";
 export type CaseItemSize = "fixed" | "dynamic" | "all";
 
 export interface RenderCase {
+  id: string;
   title: string;
   description: string;
   recommendation: string;
   href: string;
+  sourcePath: string;
   // Filter Tags
   scale: CaseScale;
   direction: CaseDirection;
@@ -45,6 +49,17 @@ export function CaseCard({ item }: CaseCardProps) {
         <p className="line-clamp-2 text-sm leading-relaxed font-medium text-slate-900 dark:text-slate-200">
           {item.description}
         </p>
+
+        {/* 📝 Source Path Reference */}
+        <a
+          href={GIT_REPO + item.sourcePath}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex w-fit items-center gap-1.5 opacity-50 transition-all hover:text-blue-500 hover:opacity-100"
+        >
+          <Code className="size-3" />
+          <span className="font-mono text-[9px] font-medium">{item.sourcePath}</span>
+        </a>
       </div>
 
       <div className="mt-6 flex items-end justify-between gap-2 border-t border-slate-200 pt-4 dark:border-white/5">

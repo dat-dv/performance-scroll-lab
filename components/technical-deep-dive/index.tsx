@@ -7,6 +7,7 @@ interface DeepDivePoint {
   title: string;
   description: string;
   colorClass: string;
+  label?: string;
 }
 
 interface TechnicalDeepDiveProps extends ComponentProps<"div"> {
@@ -39,8 +40,9 @@ export function TechnicalDeepDive({
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {points.map((point, index) => (
           <div key={index} className="space-y-2">
-            <h4 className={`text-xs font-bold ${point.colorClass}`}>
-              {index + 1}. {point.title}
+            <h4 className={cn("text-xs font-bold", point.colorClass)}>
+              {index + 1}. {point.label && <span className="opacity-60">{point.label}: </span>}
+              {point.title}
             </h4>
             <p className="text-xs leading-relaxed text-gray-500">{point.description}</p>
           </div>
