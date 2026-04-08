@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { CaseCard } from "@/components/case-card";
 import { VirtualizationWizard } from "@/components/virtualization-wizard";
 import { cases } from "@/libs/data/cases-data";
@@ -33,9 +32,7 @@ export default function InfiniteScrollDemo() {
     <main className="relative mx-auto max-w-7xl px-0 py-8 lg:py-16">
       {/* 🚀 Header & Intro Text */}
       <header className="mb-14 px-4 sm:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+        <div
           className="space-y-6"
         >
           <h1 className="text-5xl font-black tracking-tighter text-slate-900 sm:text-7xl dark:text-slate-100">
@@ -48,7 +45,7 @@ export default function InfiniteScrollDemo() {
             Xây dựng trải nghiệm cuộn siêu cấp (Ultra-smooth) cho hàng triệu dòng dữ liệu. Sử dụng
             Virtualization (Windowing) để giải phóng tài nguyên CPU & RAM cho trình duyệt.
           </p>
-        </motion.div>
+        </div>
       </header>
 
       {/* 🧩 Intelligence Layer: Selection Wizard */}
@@ -75,23 +72,14 @@ export default function InfiniteScrollDemo() {
           </button>
         </header>
 
-        {/* Dynamic Grid with Layout Animations */}
-        <motion.ul layout className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <AnimatePresence mode="popLayout" initial={false}>
-            {filteredCases.map((c) => (
-              <motion.div
-                key={c.title}
-                layout
-                initial={{ opacity: 0, scale: 0.92, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.92, y: 20 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-              >
-                <CaseCard item={c} />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.ul>
+        {/* Dynamic Grid without Layout Animations */}
+        <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {filteredCases.map((c) => (
+            <div key={c.title}>
+              <CaseCard item={c} />
+            </div>
+          ))}
+        </ul>
       </section>
     </main>
   );

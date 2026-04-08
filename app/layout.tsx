@@ -35,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${sans.variable} ${mono.variable} custom-scrollbar h-full antialiased`}
+      className={`${sans.variable} ${mono.variable} dark custom-scrollbar h-full antialiased`}
     >
       <body className="bg-background flex min-h-screen flex-col pt-[72px] transition-colors duration-300">
         <Suspense>
