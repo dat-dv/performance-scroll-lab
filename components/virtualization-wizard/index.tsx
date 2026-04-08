@@ -140,7 +140,7 @@ export function VirtualizationWizard() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                   >
-                    <FilterGroup label="3. KÍCH THƯỚC (LAYOUT)">
+                    <FilterGroup label="3. KÍCH ITEMS (ITEM WIDTH & HEIGHT)">
                       <div className="flex items-center gap-1.5">
                         <FilterChip
                           active={itemSize === "all"}
