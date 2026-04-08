@@ -45,28 +45,28 @@ export function VerticalScrollDocs() {
         mainTitle="Tại sao cần cố định kích thước?"
         points={[
           {
-            title: "Không gian ảo",
+            title: "Để hiển thị thanh scroll đúng",
             colorClass: "text-blue-600 dark:text-blue-400",
             description:
-              "Để trình duyệt hiển thị thanh cuộn chính xác ngay cả với 10k items, ta cần biết tổng size (itemHeight * count) ngay lập tức.",
+              "Trình duyệt cần biết tổng chiều cao list để render thanh cuộn. Nếu mỗi item cao 30px và có 10,000 items thì tổng là 300,000px — phải tính được ngay từ đầu.",
           },
           {
-            title: "Truy xuất O(1)",
+            title: "Tính index cực nhanh (O(1))",
             colorClass: "text-emerald-600 dark:text-emerald-400",
             description:
-              "Với fixed-size, ta có thể tính chính xác index cần render dựa trên độ dời (offset) cuộn mà không cần loop duyệt mảng.",
+              "Chỉ cần lấy scrollTop chia cho itemHeight là ra index. Không cần duyệt mảng hay đo từng phần tử.",
           },
           {
-            title: "Vị trí tuyệt đối",
+            title: "Đặt vị trí chính xác",
             colorClass: "text-purple-600 dark:text-purple-400",
             description:
-              "Hệ thống dùng 'position: absolute'; item thứ 5k chỉ đứng đúng vị trí nếu ta biết được tổng size của 4,999 item phía trước.",
+              "Mỗi item được đặt bằng position: absolute. Muốn item thứ 5000 nằm đúng chỗ thì phải biết nó cách top bao nhiêu (5000 * height).",
           },
           {
-            title: "Tại sao không dùng Observer?",
+            title: "Tại sao không dùng IntersectionObserver?",
             colorClass: "text-amber-600 dark:text-amber-400",
             description:
-              "IntersectionObserver là bất đồng bộ (async). Tính toán Math giúp xác định index tức thì, tránh tình trạng giật/trắng trang khi cuộn nhanh qua hàng ngàn item.",
+              "Observer chạy theo kiểu callback sau khi scroll xảy ra, nên có thể bị trễ. Dùng công thức toán giúp xác định item cần render ngay lập tức, mượt hơn khi scroll nhanh.",
           },
         ]}
       />

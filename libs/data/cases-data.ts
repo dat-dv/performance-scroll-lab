@@ -1,4 +1,13 @@
-import { RenderCase } from "@/components/case-card";
+export interface RenderCase {
+  title: string;
+  description: string;
+  recommendation: string;
+  href: string;
+  scale: "short" | "long" | "all";
+  direction: "vertical" | "horizontal" | "bidirectional" | "all";
+  itemSize: "fixed" | "dynamic" | "all";
+  isDone: boolean;
+}
 
 /**
  * Architectural Patterns for Virtualization.
@@ -14,6 +23,7 @@ export const cases: RenderCase[] = [
     scale: "short",
     direction: "vertical",
     itemSize: "all",
+    isDone: true,
   },
   {
     title: "2. Short Horizontal (Native Map)",
@@ -23,6 +33,7 @@ export const cases: RenderCase[] = [
     scale: "short",
     direction: "horizontal",
     itemSize: "all",
+    isDone: true,
   },
   {
     title: "3. Short 2D Grid (Native Map)",
@@ -32,6 +43,7 @@ export const cases: RenderCase[] = [
     scale: "short",
     direction: "bidirectional",
     itemSize: "all",
+    isDone: true,
   },
 
   // --- TIER 2: LONG SCALE (VIRTUAL VERTICAL) ---
@@ -44,6 +56,7 @@ export const cases: RenderCase[] = [
     scale: "long",
     direction: "vertical",
     itemSize: "fixed",
+    isDone: true,
   },
   {
     title: "5. Long Vertical (Item Dynamic Height)",
@@ -53,6 +66,7 @@ export const cases: RenderCase[] = [
     scale: "long",
     direction: "vertical",
     itemSize: "dynamic",
+    isDone: false,
   },
 
   // --- TIER 3: LONG SCALE (VIRTUAL HORIZONTAL) ---
@@ -64,6 +78,7 @@ export const cases: RenderCase[] = [
     scale: "long",
     direction: "horizontal",
     itemSize: "fixed",
+    isDone: false,
   },
   {
     title: "7. Long Horizontal (Item Dynamic Width)",
@@ -74,6 +89,7 @@ export const cases: RenderCase[] = [
     scale: "long",
     direction: "horizontal",
     itemSize: "dynamic",
+    isDone: false,
   },
 
   // --- TIER 4: LONG SCALE (VIRTUAL 2D GRID) ---
@@ -85,6 +101,7 @@ export const cases: RenderCase[] = [
     scale: "long",
     direction: "bidirectional",
     itemSize: "fixed",
+    isDone: false,
   },
   {
     title: "9. Long 2D Grid (Fixed Width, Dynamic Height)",
@@ -94,6 +111,7 @@ export const cases: RenderCase[] = [
     scale: "long",
     direction: "bidirectional",
     itemSize: "dynamic",
+    isDone: false,
   },
   {
     title: "10. Long 2D Grid (Fixed Height, Dynamic Width)",
@@ -103,6 +121,7 @@ export const cases: RenderCase[] = [
     scale: "long",
     direction: "bidirectional",
     itemSize: "dynamic",
+    isDone: false,
   },
   {
     title: "11. Long 2D Grid (Dynamic Width & Height)",
@@ -112,6 +131,7 @@ export const cases: RenderCase[] = [
     scale: "long",
     direction: "bidirectional",
     itemSize: "dynamic",
+    isDone: false,
   },
 
   // --- TIER 5: COMPOSITE (NESTED) ---
@@ -123,5 +143,6 @@ export const cases: RenderCase[] = [
     scale: "long",
     direction: "bidirectional",
     itemSize: "all",
+    isDone: false,
   },
 ];
