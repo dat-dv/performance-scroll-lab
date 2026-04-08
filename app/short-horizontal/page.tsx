@@ -1,8 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { BookOpen, PlayCircle } from "lucide-react";
 import { ShortHorizontalDocs } from "./docs";
 import { LaboratoryDemoHeader } from "@/components/laboratory-demo-header";
+import { TabButton } from "@/components/tab-button";
 
 interface Category {
   id: number;
@@ -36,50 +39,75 @@ const MOCK_CATEGORIES: Category[] = [
 ];
 
 export default function ShortHorizontalPage() {
+  const [activeTab, setActiveTab] = useState<"demo" | "docs">("docs");
+
   return (
-    <div className="flex min-h-screen flex-col">
-      <main className="flex-1 pb-20">
-        <div className="mx-auto max-w-5xl px-6 pt-12">
-          {/* 1. Technical Documentation Section */}
-          <ShortHorizontalDocs />
-
-          {/* 2. Live Demo Section */}
-          <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md dark:border-white/5 dark:bg-white/5">
-            <LaboratoryDemoHeader
-              description={`${MOCK_CATEGORIES.length} Categories • Horizontal Scroll Logic`}
-            />
-
-            <div className="p-8">
-              <div className="custom-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto pt-2 pb-6">
-                {MOCK_CATEGORIES.map((cat) => (
-                  <div
-                    key={cat.id}
-                    className="group/card relative min-w-[280px] shrink-0 snap-start overflow-hidden rounded-2xl border border-slate-100 bg-white p-6 transition-all hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl dark:border-white/5 dark:bg-white/5 dark:hover:border-white/10"
-                  >
-                    <div
-                      className={`mb-4 flex size-12 items-center justify-center rounded-xl bg-gradient-to-br ${cat.color} text-2xl shadow-lg`}
-                    >
-                      {cat.icon}
-                    </div>
-                    <h4 className="mb-1 text-lg font-bold text-slate-900 dark:text-white">
-                      {cat.title}
-                    </h4>
-                    <p className="mb-4 text-xs font-medium tracking-tighter text-slate-500 uppercase">
-                      {cat.count} Experiments
-                    </p>
-                    <div className="h-1 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-white/5">
-                      <div
-                        className={`h-full bg-gradient-to-r ${cat.color} transition-all duration-1000 group-hover/card:w-full`}
-                        style={{ width: `${(cat.count / 25) * 100}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+    <main className="">
+      <div className="mb-12 space-y-8">
+        {/* 🧭 Local Navigation */}
+        <div className="flex w-fit items-center gap-1 rounded-2xl border border-slate-200 bg-slate-50/50 p-1.5 dark:border-white/5 dark:bg-white/5">
+          <TabButton
+            active={activeTab === "demo"}
+            onClick={() => setActiveTab("demo")}
+            icon={<PlayCircle className="size-4" />}
+            label="Live Demo"
+          />
+          <TabButton
+            active={activeTab === "docs"}
+            onClick={() => setActiveTab("docs")}
+            icon={<BookOpen className="size-4" />}
+            label="Technical Docs"
+          />
         </div>
-      </main>
-    </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            {activeTab === "demo" ? (
+              <div className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md dark:border-white/5 dark:bg-white/5">
+                <LaboratoryDemoHeader
+                  description={`${MOCK_CATEGORIES.length} Categories • Horizontal Scroll Logic`}
+                />
+                <div className="p-8">
+                  <div className="custom-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto pt-2 pb-6">
+                    {MOCK_CATEGORIES.map((cat) => (
+                      <div
+                        key={cat.id}
+                        className="group/card relative min-w-[280px] shrink-0 snap-start overflow-hidden rounded-2xl border border-slate-100 bg-white p-6 transition-all hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl dark:border-white/5 dark:bg-white/5 dark:hover:border-white/10"
+                      >
+                        <div
+                          className={`mb-4 flex size-12 items-center justify-center rounded-xl bg-gradient-to-br ${cat.color} text-2xl shadow-lg`}
+                        >
+                          {cat.icon}
+                        </div>
+                        <h4 className="mb-1 text-lg font-bold text-slate-900 dark:text-white">
+                          {cat.title}
+                        </h4>
+                        <p className="mb-4 text-xs font-medium tracking-tighter text-slate-500 uppercase">
+                          {cat.count} Experiments
+                        </p>
+                        <div className="h-1 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-white/5">
+                          <div
+                            className={`h-full bg-gradient-to-r ${cat.color} transition-all duration-1000 group-hover/card:w-full`}
+                            style={{ width: `${(cat.count / 25) * 100}%` }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <ShortHorizontalDocs />
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </main>
   );
 }

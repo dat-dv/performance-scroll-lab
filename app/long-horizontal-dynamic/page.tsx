@@ -1,12 +1,26 @@
 "use client";
 
 import React from "react";
+import { Docs } from "./docs";
 import { ComingSoon } from "@/components/coming-soon";
+import ShowcaseLayout from "@/components/show-case-layout";
+import { BookOpen, PlayCircle } from "lucide-react";
 
-export default function Page() {
-  return (
-    <main className="mx-auto max-w-7xl px-4 py-8 lg:py-16">
-      <ComingSoon title="7. Huge Dataset / Horizontal / Dynamic Width" />
-    </main>
-  );
+export default function Case7() {
+  const tabs = [
+    {
+      label: "Technical Docs",
+      value: "docs",
+      icon: <BookOpen className="size-4" />,
+      children: <Docs />,
+    },
+    {
+      label: "Live Demo",
+      value: "demo",
+      icon: <PlayCircle className="size-4" />,
+      children: <ComingSoon title="Horizontal Virtual Dynamic Demo" />,
+    },
+  ];
+
+  return <ShowcaseLayout tabs={tabs} />;
 }
