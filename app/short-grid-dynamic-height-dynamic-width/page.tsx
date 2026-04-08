@@ -3,6 +3,7 @@
 import React from "react";
 import { Docs } from "./docs";
 import { LaboratoryDemoHeader } from "@/components/laboratory-demo-header";
+import { Notes } from "./notes";
 
 const MOCK_TILES = Array.from({ length: 80 }, (_, i) => ({
   id: i + 1,
@@ -51,6 +52,8 @@ export default function DynamicHeightDynamicWidthPage() {
               </div>
             </div>
           </div>
+
+          <Notes />
         </div>
       </main>
     </div>
