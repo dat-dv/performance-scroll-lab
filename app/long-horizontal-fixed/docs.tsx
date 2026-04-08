@@ -16,11 +16,13 @@ export function Docs() {
         challenges={[
           {
             label: "X-Axis Virtualization",
-            description: "Tính toán vị trí hiển thị theo chiều ngang (left offset) thay vì chiều dọc.",
+            description:
+              "Tính toán vị trí hiển thị theo chiều ngang (left offset) thay vì chiều dọc.",
           },
           {
             label: "Container Width",
-            description: "Ép chiều rộng container (Scroll Width) cực lớn mà không làm treo trình duyệt.",
+            description:
+              "Ép chiều rộng container (Scroll Width) cực lớn mà không làm treo trình duyệt.",
           },
         ]}
         solutions={[
@@ -30,7 +32,8 @@ export function Docs() {
           },
           {
             label: "Lazy Side Rendering",
-            description: "Chỉ render các item nằm trong 'overscan' buffer ở hai bên trái/phải viewport.",
+            description:
+              "Chỉ render các item nằm trong 'overscan' buffer ở hai bên trái/phải viewport.",
           },
         ]}
       />

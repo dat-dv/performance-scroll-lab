@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
 import { Docs } from "./docs";
-import { ComingSoon } from "@/components/coming-soon";
 import ShowcaseLayout from "@/components/show-case-layout";
 import { BookOpen, PlayCircle } from "lucide-react";
+import Demo from "./demo-1";
+import Demo2 from "./demo-2";
 
 export default function Case6() {
   const tabs = [
@@ -15,10 +15,16 @@ export default function Case6() {
       children: <Docs />,
     },
     {
-      label: "Live Demo",
+      label: "Live Demo (Single-row)",
       value: "demo",
       icon: <PlayCircle className="size-4" />,
-      children: <ComingSoon title="Horizontal Virtual Fixed Demo" />,
+      children: <Demo />,
+    },
+    {
+      label: "Live Demo (Multi-row)",
+      value: "demo2",
+      icon: <PlayCircle className="size-4" />,
+      children: <Demo2 />,
     },
   ];
 

@@ -13,13 +13,10 @@ export interface HorizontalVirtualScrollProps<T> {
   className?: string;
   itemHeight?: string | number;
   children: (props: { index: number; item: T }) => React.ReactNode;
+  hasNext?: boolean;
 }
 
-/**
- * Raw Horizontal Virtual Scroll Component
- * Used when you want to provide itemWidth manually and avoid HOC measurement.
- */
-export function HorizontalVirtualScroll<T>({
+function HorizontalVirtualScroll<T>({
   items,
   itemWidth,
   visibleCount,
@@ -29,6 +26,7 @@ export function HorizontalVirtualScroll<T>({
   className,
   itemHeight = 400,
   children,
+  hasNext,
 }: HorizontalVirtualScrollProps<T>) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -50,10 +48,11 @@ export function HorizontalVirtualScroll<T>({
   }, [scrollLeft, itemWidth, visibleCount, overscan, items.length]);
 
   useEffect(() => {
-    if (onEndReached && !isLoadingMore && endIndex >= items.length - 2) {
+    const threshold = 4; // Điểm kích hoạt tải thêm (cách cuối 4 phần tử)
+    if (onEndReached && !isLoadingMore && endIndex >= items.length - threshold && hasNext) {
       onEndReached();
     }
-  }, [endIndex, items.length, onEndReached, isLoadingMore]);
+  }, [endIndex, items.length, onEndReached, isLoadingMore, hasNext]);
 
   const visibleItems = items.slice(startIndex, endIndex);
   const totalWidth = items.length * itemWidth;

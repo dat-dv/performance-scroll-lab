@@ -48,13 +48,13 @@ function withLoaderSize<T>(WrappedComponent: React.ComponentType<HorizontalVirtu
 
     // Khi đã đo xong, truyền size vào WrappedComponent như default values
     const itemWidth = props.itemWidth ?? size?.width ?? 0;
-    const itemHeight = props.itemHeight ?? size?.height ?? 0;
+    const itemHeight = props.itemHeight ?? size?.height;
 
     return (
       <WrappedComponent
         {...(props as unknown as HorizontalVirtualScrollProps<T>)}
-        itemWidth={itemWidth}
-        itemHeight={itemHeight}
+        {...(itemWidth > 0 ? { itemWidth } : {})}
+        {...(itemHeight ? { itemHeight } : {})}
       />
     );
   };

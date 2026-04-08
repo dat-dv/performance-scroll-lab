@@ -5,13 +5,8 @@ import { RenderItem } from "./render-item";
 import { useState } from "react";
 import { delay } from "@/libs/delay";
 import { createMockItems } from "./mock-data";
-import { DemoHeader } from "./demo-header";
 
-/**
- * Static Horizontal Demo Page
- * Demonstrates high-performance horizontal scrolling with virtualization and infinite load.
- */
-export default function StaticHorizontalDemo() {
+export default function Demo() {
   const [items, setItems] = useState(() => createMockItems(20));
   const [loading, setLoading] = useState(false);
   const handleEndReached = async () => {
@@ -23,19 +18,17 @@ export default function StaticHorizontalDemo() {
     setLoading(false);
   };
 
+  const hasNext = items.length < 300;
+
   return (
     <div className="min-h-screen space-y-12 pb-20">
-      {/* 🚀 Header Section */}
-      <DemoHeader />
-
-      {/* 🧩 Virtualized Scroll Area */}
       <section className="relative -mx-6 overflow-visible rounded-[3rem] bg-slate-50/50 px-6 py-12 dark:bg-white/5">
         <HorizontalVirtualScroll
           items={items}
-          visibleCount={null}
           overscan={4}
           onEndReached={handleEndReached}
           isLoadingMore={loading}
+          hasNext={hasNext}
         >
           {RenderItem}
         </HorizontalVirtualScroll>
