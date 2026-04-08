@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Maximize2,
@@ -19,32 +19,38 @@ import { CaseScale, CaseDirection, CaseItemSize } from "./case-card";
 import { FilterGroup } from "./wizard/FilterGroup";
 import { FilterChip } from "./wizard/FilterChip";
 
-interface WizardProps {
-  onFilterChange: (filters: {
-    scale: CaseScale;
-    direction: CaseDirection;
-    itemSize: CaseItemSize;
-  }) => void;
-}
+import { useCaseFilters } from "@/context/filter-context";
 
 /**
- * Enhanced Wizard UI.
- * Fixed alignment for Group 3 and light mode contrast.
+ * Strategy Wizard - Modularized layout.
+ * Now a zero-prop component fueled by FilterContext.
  */
-export function VirtualizationWizard({ onFilterChange }: WizardProps) {
-  const [scale, setScale] = useState<CaseScale>("long");
-  const [direction, setDirection] = useState<CaseDirection>("vertical");
-  const [itemSize, setItemSize] = useState<CaseItemSize>("fixed");
+export function VirtualizationWizard() {
+  const { 
+    scale, 
+    direction, 
+    itemSize, 
+    updateFilters 
+  } = useCaseFilters();
+
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  // Sync state to parent
-  useEffect(() => {
-    onFilterChange({ scale, direction, itemSize });
-  }, [scale, direction, itemSize, onFilterChange]);
+  // Toggle handlers that update the global Context/URL
+  const toggleScale = (val: CaseScale) => {
+    updateFilters({ scale: scale === val ? "all" : val });
+  };
 
-  const toggleScale = (val: CaseScale) => setScale(scale === val ? "all" : val);
-  const toggleDirection = (val: CaseDirection) => setDirection(direction === val ? "all" : val);
-  const toggleItemSize = (val: CaseItemSize) => setItemSize(itemSize === val ? "all" : val);
+  const toggleDirection = (val: CaseDirection) => {
+    updateFilters({ direction: direction === val ? "all" : val });
+  };
+
+  const toggleItemSize = (val: CaseItemSize) => {
+    updateFilters({ itemSize: itemSize === val ? "all" : val });
+  };
+
+  const setScaleAll = () => updateFilters({ scale: "all" });
+  const setDirectionAll = () => updateFilters({ direction: "all" });
+  const setItemSizeAll = () => updateFilters({ itemSize: "all" });
 
   return (
     <div className="relative">
@@ -82,7 +88,7 @@ export function VirtualizationWizard({ onFilterChange }: WizardProps) {
                 <div className="flex items-center gap-1.5">
                   <FilterChip
                     active={scale === "all"}
-                    onClick={() => setScale("all")}
+                    onClick={setScaleAll}
                     icon={<Layers className="size-3" />}
                     label="All"
                   />
@@ -106,7 +112,7 @@ export function VirtualizationWizard({ onFilterChange }: WizardProps) {
                 <div className="flex items-center gap-1.5">
                   <FilterChip
                     active={direction === "all"}
-                    onClick={() => setDirection("all")}
+                    onClick={setDirectionAll}
                     icon={<Layers className="size-3" />}
                     label="All"
                   />
@@ -144,7 +150,7 @@ export function VirtualizationWizard({ onFilterChange }: WizardProps) {
                       <div className="flex items-center gap-1.5">
                         <FilterChip
                           active={itemSize === "all"}
-                          onClick={() => setItemSize("all")}
+                          onClick={setItemSizeAll}
                           icon={<Layers className="size-3" />}
                           label="All"
                         />

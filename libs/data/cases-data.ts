@@ -2,10 +2,10 @@ import { RenderCase } from "@/components/case-card";
 
 /**
  * Architectural Patterns for Virtualization.
- * Focused on the "How" (Height Logic) rather than the "What" (UI Content).
+ * Ordered by: Scale -> Direction -> Item Complexity.
  */
 export const cases: RenderCase[] = [
-  // --- PATTERN 1: NATIVE RENDERING (SHORT SCALE) ---
+  // --- TIER 1: SHORT SCALE (NATIVE) ---
   {
     title: "1. Short Vertical (Native Map)",
     description: "Render mảng nhỏ trực tiếp vào DOM. Không cần xử lý scroll phức tạp.",
@@ -34,11 +34,11 @@ export const cases: RenderCase[] = [
     itemSize: "all",
   },
 
-  // --- PATTERN 2: VIRTUAL WINDOWING (LONG SCALE) ---
+  // --- TIER 2: LONG SCALE (VIRTUAL VERTICAL) ---
   {
     title: "4. Long Vertical (Item Fixed Height)",
     description: "Ảo hóa tối ưu cho 100k+ items với chiều cao cố định. Hỗ trợ Infinite Load (Tải thêm).",
-    recommendation: "Tối ưu nhất cho Table, VirtualSelect (10k items), TreeView, Roster dài.",
+    recommendation: "Tối ưu nhất cho Table, VirtualSelect (10k items), TreeView.",
     href: "/long-vertical-item-fixed-height",
     scale: "long",
     direction: "vertical",
@@ -53,22 +53,44 @@ export const cases: RenderCase[] = [
     direction: "vertical",
     itemSize: "dynamic",
   },
+
+  // --- TIER 3: LONG SCALE (VIRTUAL HORIZONTAL) ---
   {
-    title: "6. Long 2D Grid (Fixed Virtualization)",
-    description: "Ảo hóa 2 chiều đồng thời (X/Y) cho dữ liệu dạng lưới khổng lồ.",
-    recommendation: "Xử lý hàng triệu cell. Áp dụng cho: Spreadsheet (Excel), Kanban, Gantt.",
-    href: "/long-2d-grid",
-    scale: "long",
-    direction: "bidirectional",
-    itemSize: "all",
-  },
-  {
-    title: "7. Long Horizontal (Fixed Virtualization)",
-    description: "Tối ưu hóa cuộn ngang cho các dataset lớn theo chiều rộng.",
-    recommendation: "Giữ DOM gọn nhẹ. Áp dụng cho: Timelines, Large Horizontal Dashboards.",
+    title: "6. Long Horizontal (Item Fixed Width)",
+    description: "Tối ưu hóa cuộn ngang cho các dataset lớn với chiều rộng item cố định.",
+    recommendation: "Giữ DOM gọn nhẹ. Áp dụng cho: Timelines, Product Carousels đồng nhất.",
     href: "/long-horizontal",
     scale: "long",
     direction: "horizontal",
     itemSize: "fixed",
+  },
+  {
+    title: "7. Long Horizontal (Item Dynamic Width)",
+    description: "Ảo hóa cuộn ngang cho các item có chiều rộng không đồng nhất.",
+    recommendation: "Cần ResizeObserver cho chiều ngang. Áp dụng cho: Dynamic Tag Clouds, Multi-aspect ratio Galleries.",
+    href: "/long-horizontal-item-dynamic-width",
+    scale: "long",
+    direction: "horizontal",
+    itemSize: "dynamic",
+  },
+
+  // --- TIER 4: LONG SCALE (VIRTUAL 2D GRID) ---
+  {
+    title: "8. Long 2D Grid (Item Fixed Size)",
+    description: "Ảo hóa 2 chiều đồng thời (X/Y) cho lưới các item có kích thước đồng nhất.",
+    recommendation: "Xử lý hàng triệu cell. Áp dụng cho: Photo Gallery khổng lồ, Icon Grid.",
+    href: "/long-2d-grid",
+    scale: "long",
+    direction: "bidirectional",
+    itemSize: "fixed",
+  },
+  {
+    title: "9. Long 2D Grid (Item Dynamic Size)",
+    description: "Lưới 2 chiều với chiều cao hàng hoặc chiều rộng cột thay đổi.",
+    recommendation: "Phức tạp nhất (Matrix measuring). Áp dụng cho: Spreadsheet (Excel), Kanban, Gantt.",
+    href: "/long-2d-grid-item-dynamic-size",
+    scale: "long",
+    direction: "bidirectional",
+    itemSize: "dynamic",
   },
 ];

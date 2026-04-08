@@ -1,37 +1,33 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { CaseCard } from "@/components/case-card";
 import { VirtualizationWizard } from "@/components/virtualization-wizard";
-import { CaseCard, CaseScale, CaseDirection, CaseItemSize } from "@/components/case-card";
 import { cases } from "@/libs/data/cases-data";
+import { useCaseFilters } from "@/context/filter-context";
 
 /**
- * Main Demo Entry Point
- * Manages filtering state and displays render cases grid with fluid animations.
+ * Main Solutions Page - The hub for all virtualization scenarios.
+ * Pattern-based filtering driven by FilterContext.
  */
 export default function InfiniteScrollDemo() {
-  const [filters, setFilters] = useState({
-    scale: "long" as CaseScale,
-    direction: "vertical" as CaseDirection,
-    itemSize: "fixed" as CaseItemSize,
-  });
+  const { scale, direction, itemSize, resetFilters } = useCaseFilters();
 
   // Derived filtered results
   const filteredCases = useMemo(() => {
     return cases.filter((c) => {
-      const matchScale = filters.scale === "all" || c.scale === "all" || c.scale === filters.scale;
+      const matchScale = scale === "all" || c.scale === "all" || c.scale === scale;
       const matchDirection =
-        filters.direction === "all" || c.direction === "all" || c.direction === filters.direction;
-      const matchItemSize =
-        filters.itemSize === "all" || c.itemSize === "all" || c.itemSize === filters.itemSize;
+        direction === "all" || c.direction === "all" || c.direction === direction;
+      const matchItemSize = itemSize === "all" || c.itemSize === "all" || c.itemSize === itemSize;
 
       // Heuristic: If scale is short, specialized layout options are ignored
-      if (filters.scale === "short") return matchScale && matchDirection;
+      if (scale === "short") return matchScale && matchDirection;
 
       return matchScale && matchDirection && matchItemSize;
     });
-  }, [filters]);
+  }, [scale, direction, itemSize]);
 
   return (
     <main className="relative mx-auto max-w-7xl px-0 py-8 lg:py-16">
@@ -57,7 +53,7 @@ export default function InfiniteScrollDemo() {
 
       {/* 🧩 Intelligence Layer: Selection Wizard */}
       <section className="mb-16 px-4 sm:px-6">
-        <VirtualizationWizard onFilterChange={setFilters} />
+        <VirtualizationWizard />
       </section>
 
       {/* 📚 Results Grid */}
@@ -71,7 +67,7 @@ export default function InfiniteScrollDemo() {
           </div>
 
           <button
-            onClick={() => setFilters({ scale: "all", direction: "all", itemSize: "all" })}
+            onClick={resetFilters}
             className="group flex items-center gap-2 text-[10px] font-bold text-slate-500 transition-all hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
           >
             <span>RESET FILTERS</span>
