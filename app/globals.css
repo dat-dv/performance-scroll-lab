@@ -1,21 +1,20 @@
 @import "tailwindcss";
+@variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #111827;
-  --layout-bg: #ffffff;
-  --footer-bg: rgba(255, 255, 255, 0.8);
-  --border-color: #f3f4f6;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --layout-bg: #f8fafc;
+  --footer-bg: rgba(248, 250, 252, 0.8);
+  --border-color: #e2e8f0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #000000;
-    --foreground: #f9fafb;
-    --layout-bg: #000000;
-    --footer-bg: rgba(0, 0, 0, 0.5);
-    --border-color: rgba(255, 255, 255, 0.1);
-  }
+.dark {
+  --background: #000000;
+  --foreground: #f9fafb;
+  --layout-bg: #000000;
+  --footer-bg: rgba(0, 0, 0, 0.5);
+  --border-color: rgba(255, 255, 255, 0.1);
 }
 
 @theme inline {

@@ -24,36 +24,50 @@ export const metadata: Metadata = {
     "A professional suite of virtualization strategies, infinite scrolling patterns, and windowing techniques for modern web applications.",
 };
 
-import { Breadcrumb } from "@/components/breadcrumbs";
 import { Footer } from "@/components/footer";
-
 import { Suspense } from "react";
-import { FilterProvider } from "@/context/filter-context";
+import Header from "@/components/header";
+import { ThemeTransitionProvider } from "@/components/theme-transition";
 
 // ===== Layout =====
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${sans.variable} ${mono.variable} dark custom-scrollbar h-full antialiased`}
+      className={`${sans.variable} ${mono.variable} custom-scrollbar h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('theme');
+                  if (theme === 'dark' || !theme) {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className="bg-background flex min-h-screen flex-col pt-[72px] transition-colors duration-300">
-        <Suspense>
-          <FilterProvider>
+        <ThemeTransitionProvider>
+          <Suspense>
             {/* Navigation / Breadcrumb Container (Fixed Header) */}
-            <div className="fixed inset-x-0 top-0 z-[100] border-b border-gray-100 bg-white/90 shadow-sm backdrop-blur-xl dark:border-white/5 dark:bg-black/80">
-              <div className="mx-auto max-w-[1200px] px-6">
-                <Breadcrumb />
-              </div>
-            </div>
+            <Header />
 
             {/* Main Content Area */}
             <main className="mx-auto w-full max-w-[1200px] flex-grow px-6 py-6">{children}</main>
 
             {/* Footer */}
             <Footer />
-          </FilterProvider>
-        </Suspense>
+          </Suspense>
+        </ThemeTransitionProvider>
       </body>
     </html>
   );

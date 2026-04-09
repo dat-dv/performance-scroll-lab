@@ -95,8 +95,7 @@ export function Docs() {
         >
           <p>
             Khi nhận được giá trị <code>scrollTop</code> từ Bước 2, hệ thống cần thực hiện một phép
-            tính "thần tốc" để xác định trạng thái hiển thị mà không cần duyệt qua toàn bộ danh
-            sách:
+            tính để xác định trạng thái hiển thị mà không cần duyệt qua toàn bộ danh sách:
           </p>
           <div className="mt-4 flex flex-col gap-4 rounded-2xl bg-slate-50 p-6 dark:bg-white/5">
             <p>
@@ -256,7 +255,7 @@ export function Docs() {
       </div>
 
       {/* References */}
-      <div className="rounded-[2.5rem] border border-blue-100 bg-blue-50/30 pt-4 dark:border-blue-500/10 dark:bg-blue-500/5">
+      <div className="p-4 rounded-[2.5rem] border border-blue-100 bg-blue-50/30 dark:border-blue-500/10 dark:bg-blue-500/5">
         <h4 className="mb-8 flex items-center gap-3 text-sm font-black tracking-widest text-blue-600 uppercase dark:text-blue-400">
           <ExternalLink className="size-5" />
           Các thư viện có sẵn

@@ -5,6 +5,7 @@ import Image from "next/image";
 import VirtualScrollFixed from "@/libs/virtual-scroll/virtual-scroll-with-fixed-item-height";
 import HorizontalVirtualScroll from "@/libs/virtual-scroll/horizontal-scroll-fixed-width";
 import { Play, Plus, Info, ChevronRight, Sparkles } from "lucide-react";
+import VirtualScrollDynamicHeight from "@/libs/virtual-scroll/virtual-scroll-with-dynamic-item-height";
 
 // Mock data generator for Nested Content
 const createNestedData = () => {
@@ -30,10 +31,10 @@ export default function Demo() {
   const categories = useMemo(() => createNestedData(), []);
 
   return (
-    <div className="relative min-h-screen bg-black transition-colors duration-500">
+    <div className="bg-background relative min-h-screen transition-colors duration-500">
       {/* Hero Banner */}
       <section className="relative h-[60vh] w-full overflow-hidden">
-        <div className="absolute inset-0 z-10 bg-gradient-to-t from-black via-black/40 to-transparent" />
+        <div className="from-background via-background/40 absolute inset-0 z-10 bg-gradient-to-t to-transparent" />
         <Image
           src="https://picsum.photos/seed/hero-stranger/1200/600"
           alt="Hero background"
@@ -47,15 +48,15 @@ export default function Demo() {
               STRANGER
             </h1>
           </div>
-          <p className="text-lg font-medium text-slate-200">
+          <p className="text-foreground/80 text-lg font-medium">
             When a young boy vanishes, a small town uncovers a mystery involving secret experiments,
             terrifying supernatural forces and one strange little girl.
           </p>
           <div className="flex items-center gap-4">
-            <button className="transition-hover flex items-center gap-2 rounded-md bg-white px-8 py-3 text-lg font-bold text-black hover:bg-white/90">
-              <Play className="size-6 fill-black" /> Play
+            <button className="transition-hover bg-foreground text-background hover:bg-foreground/90 flex items-center gap-2 rounded-md px-8 py-3 text-lg font-bold">
+              <Play className="fill-background size-6" /> Play
             </button>
-            <button className="transition-hover flex items-center gap-2 rounded-md bg-white/20 px-8 py-3 text-lg font-bold text-white backdrop-blur-md hover:bg-white/30">
+            <button className="transition-hover bg-foreground/10 text-foreground hover:bg-foreground/20 flex items-center gap-2 rounded-md px-8 py-3 text-lg font-bold backdrop-blur-md">
               <Info className="size-6" /> More Info
             </button>
           </div>
@@ -64,16 +65,16 @@ export default function Demo() {
 
       {/* Nested Virtualization Layer */}
       <div className="relative z-20 -mt-20 pl-12">
-        <VirtualScrollFixed items={categories} overscan={3} className="pb-20">
+        <VirtualScrollDynamicHeight items={categories} overscan={3} className="pb-20">
           {({ item: category, index: rowIndex }) => (
             <div className="space-y-4 py-4 pr-12">
               {/* Category Title */}
               <div className="flex items-center justify-between">
-                <h3 className="group flex cursor-pointer items-center gap-2 text-xl font-bold tracking-tight text-white">
+                <h3 className="group text-foreground flex cursor-pointer items-center gap-2 text-xl font-bold tracking-tight">
                   {category.title}
                   <ChevronRight className="size-5 -translate-x-2 text-blue-500 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
                 </h3>
-                <div className="text-[10px] font-black tracking-widest text-slate-600 uppercase">
+                <div className="text-[10px] font-black tracking-widest text-slate-500 uppercase">
                   Virtual Row {rowIndex}
                 </div>
               </div>
@@ -88,7 +89,7 @@ export default function Demo() {
               >
                 {({ item: movie, index: colIndex }) => (
                   <div className="h-full px-1">
-                    <div className="group relative h-[180px] cursor-pointer overflow-hidden rounded-lg bg-slate-900 shadow-2xl transition-all duration-300 hover:z-50 hover:scale-105">
+                    <div className="group relative h-[180px] cursor-pointer overflow-hidden rounded-lg bg-slate-200 shadow-2xl transition-all duration-300 hover:z-50 hover:scale-105 dark:bg-slate-900">
                       <Image
                         src={movie.image}
                         alt={movie.title}
@@ -125,15 +126,15 @@ export default function Demo() {
               </HorizontalVirtualScroll>
             </div>
           )}
-        </VirtualScrollFixed>
+        </VirtualScrollDynamicHeight>
       </div>
 
       {/* Floating Info */}
-      <div className="fixed right-12 bottom-6 z-50 rounded-3xl border border-white/20 bg-white/10 px-6 py-4 text-white backdrop-blur-xl">
-        <div className="mb-1 text-[10px] font-black tracking-widest text-blue-400 uppercase">
+      <div className="border-border-primary bg-background/80 text-foreground fixed right-12 bottom-6 z-50 rounded-3xl border px-6 py-4 shadow-2xl backdrop-blur-xl dark:bg-white/10 dark:text-white">
+        <div className="mb-1 text-[10px] font-black tracking-widest text-blue-500 uppercase dark:text-blue-400">
           Architecture Monitoring
         </div>
-        <div className="text-xs font-bold text-slate-300">
+        <div className="text-xs font-bold text-slate-600 dark:text-slate-300">
           100 Channels • 10,000 Nodes • Zero Layout Shift
         </div>
       </div>

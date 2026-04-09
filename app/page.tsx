@@ -4,13 +4,17 @@ import React, { useMemo } from "react";
 import { CaseCard } from "@/components/case-card";
 import { VirtualizationWizard } from "@/components/filter";
 import { cases } from "@/constansts/cases-data";
-import { useCaseFilters } from "@/context/filter-context";
+import { FilterProvider, useCaseFilters } from "@/context/filter-context";
 
-/**
- * Main Solutions Page - The hub for all virtualization scenarios.
- * Pattern-based filtering driven by FilterContext.
- */
-export default function InfiniteScrollDemo() {
+export default function HomePage() {
+  return (
+    <FilterProvider>
+      <InfiniteScrollDemo />
+    </FilterProvider>
+  );
+}
+
+function InfiniteScrollDemo() {
   const { scale, direction, itemSize, resetFilters } = useCaseFilters();
 
   // Derived filtered results

@@ -3,10 +3,6 @@
 import React, { useRef, useEffect } from "react";
 import { IMeasuredItemHorizontalProps } from "./types";
 
-/**
- * MeasuredItemHorizontal: "Mắt thần" giúp đo chiều rộng thực của item sau khi render.
- * Dùng ResizeObserver để phát hiện sự thay đổi width (do ảnh, text, hoặc logic UI).
- */
 export const MeasuredItemHorizontal = ({
   index,
   onResize,
