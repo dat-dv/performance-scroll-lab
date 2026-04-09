@@ -1,91 +1,141 @@
 "use client";
 
 import React, { useMemo } from "react";
-import VirtualGridFixedSize from "@/libs/virtual-scroll/grid-fixed-size";
-import { Grid3X3, MousePointer2 } from "lucide-react";
+import Image from "next/image";
+import VirtualScrollFixed from "@/libs/virtual-scroll/virtual-scroll-with-fixed-item-height";
+import HorizontalVirtualScroll from "@/libs/virtual-scroll/horizontal-scroll-fixed-width";
+import { Play, Plus, Info, ChevronRight, Sparkles } from "lucide-react";
 
-export default function Demo2D() {
-  // Tạo ma trận 1,000 x 1,000 (1 triệu ô)
-  const data = useMemo(() => {
-    return Array.from({ length: 1000 }, (_, r) =>
-      Array.from({ length: 1000 }, (_, c) => ({
-        id: `${r}-${c}`,
-        value: Math.floor(Math.random() * 1000),
-        label: `R${r} C${c}`,
-      }))
-    );
-  }, []);
+// Mock data generator for Nested Content
+const createNestedData = () => {
+  return Array.from({ length: 100 }, (_, r) => ({
+    id: `row-${r}`,
+    title: [
+      "Trending Now",
+      "Because you watched Inception",
+      "Award-Winning TV Dramas",
+      "New Releases",
+      "Action & Adventure",
+      "US TV Shows",
+    ][r % 6],
+    items: Array.from({ length: 100 }, (_, c) => ({
+      id: `row-${r}-col-${c}`,
+      title: `Movie ${r * 100 + c + 1}`,
+      image: `https://picsum.photos/seed/${r * 100 + c}/300/170`,
+    })),
+  }));
+};
+
+export default function Demo() {
+  const categories = useMemo(() => createNestedData(), []);
 
   return (
-    <div className="space-y-8 py-10">
-      <div className="flex flex-col gap-4 px-2 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2 text-xs font-black tracking-widest text-blue-500 uppercase">
-            <Grid3X3 className="size-4" />
-            2D Sparse Matrix Demo
+    <div className="relative min-h-screen bg-black transition-colors duration-500">
+      {/* Hero Banner */}
+      <section className="relative h-[60vh] w-full overflow-hidden">
+        <div className="absolute inset-0 z-10 bg-gradient-to-t from-black via-black/40 to-transparent" />
+        <Image
+          src="https://picsum.photos/seed/hero-stranger/1200/600"
+          alt="Hero background"
+          fill
+          priority
+          className="object-cover"
+        />
+        <div className="absolute bottom-20 left-12 z-20 max-w-xl space-y-6">
+          <div className="flex h-20 items-center">
+            <h1 className="bg-gradient-to-r from-rose-600 to-rose-400 bg-clip-text text-5xl font-black tracking-tighter text-transparent">
+              STRANGER
+            </h1>
           </div>
-          <h3 className="text-xl font-black tracking-tight dark:text-white">
-            Rendering 1,000,000 Points
-          </h3>
+          <p className="text-lg font-medium text-slate-200">
+            When a young boy vanishes, a small town uncovers a mystery involving secret experiments,
+            terrifying supernatural forces and one strange little girl.
+          </p>
+          <div className="flex items-center gap-4">
+            <button className="transition-hover flex items-center gap-2 rounded-md bg-white px-8 py-3 text-lg font-bold text-black hover:bg-white/90">
+              <Play className="size-6 fill-black" /> Play
+            </button>
+            <button className="transition-hover flex items-center gap-2 rounded-md bg-white/20 px-8 py-3 text-lg font-bold text-white backdrop-blur-md hover:bg-white/30">
+              <Info className="size-6" /> More Info
+            </button>
+          </div>
         </div>
+      </section>
 
-        <div className="flex items-center gap-4">
-          <div className="flex flex-col items-end">
-            <span className="text-[10px] font-bold tracking-tighter text-slate-400 uppercase">
-              GPU Load
-            </span>
-            <span className="text-xs font-black text-emerald-500">OPTIMAL</span>
-          </div>
-          <div className="h-8 w-px bg-slate-200 dark:bg-white/10" />
-          <div className="flex flex-col items-end">
-            <span className="text-[10px] font-bold tracking-tighter text-slate-400 uppercase">
-              Memory
-            </span>
-            <span className="text-xs font-black text-blue-500">~24MB</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="group relative overflow-hidden rounded-[2.5rem] border border-slate-200 bg-white p-4 shadow-xl dark:border-white/5 dark:bg-slate-900">
-        {/* Decorative elements */}
-        <div className="absolute -top-20 -right-20 size-64 rounded-full bg-blue-500/5 blur-[80px]" />
-
-        <VirtualGridFixedSize
-          data={data}
-          columnWidth={120}
-          rowHeight={80}
-          height={600}
-          overscan={3}
-          className="bg-slate-50/50 dark:bg-black/20"
-        >
-          {({ item }) => (
-            <div className="flex h-full w-full items-center justify-center p-1">
-              <div className="flex h-full w-full flex-col justify-center rounded-xl border border-slate-200 bg-white px-3 shadow-sm transition-all hover:border-blue-300 hover:bg-blue-50 dark:border-white/5 dark:bg-white/5 dark:hover:bg-blue-500/10">
-                <span className="text-[9px] font-black text-slate-400">{item.label}</span>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-bold text-slate-900 dark:text-white">
-                    {item.value}
-                  </span>
-                  <div className="size-1.5 rounded-full bg-blue-500/30" />
+      {/* Nested Virtualization Layer */}
+      <div className="relative z-20 -mt-20 pl-12">
+        <VirtualScrollFixed items={categories} overscan={3} className="pb-20">
+          {({ item: category, index: rowIndex }) => (
+            <div className="space-y-4 py-4 pr-12">
+              {/* Category Title */}
+              <div className="flex items-center justify-between">
+                <h3 className="group flex cursor-pointer items-center gap-2 text-xl font-bold tracking-tight text-white">
+                  {category.title}
+                  <ChevronRight className="size-5 -translate-x-2 text-blue-500 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
+                </h3>
+                <div className="text-[10px] font-black tracking-widest text-slate-600 uppercase">
+                  Virtual Row {rowIndex}
                 </div>
               </div>
+
+              {/* Inner Virtual Scroll (Horizontal) */}
+              <HorizontalVirtualScroll
+                items={category.items}
+                itemWidth={320} // Width of movie card
+                itemHeight={240}
+                overscan={5}
+                className="overflow-visible"
+              >
+                {({ item: movie, index: colIndex }) => (
+                  <div className="h-full px-1">
+                    <div className="group relative h-[180px] cursor-pointer overflow-hidden rounded-lg bg-slate-900 shadow-2xl transition-all duration-300 hover:z-50 hover:scale-105">
+                      <Image
+                        src={movie.image}
+                        alt={movie.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 320px"
+                        className="object-cover opacity-80 transition-opacity group-hover:opacity-100"
+                      />
+                      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black via-black/20 to-transparent p-4 opacity-0 transition-opacity group-hover:opacity-100">
+                        <h4 className="text-sm font-bold text-white">{movie.title}</h4>
+                        <div className="mt-2 flex items-center gap-2">
+                          <div className="flex size-6 items-center justify-center rounded-full border border-white">
+                            <Play className="size-3 fill-white" />
+                          </div>
+                          <div className="flex size-6 items-center justify-center rounded-full border border-white">
+                            <Plus className="size-3" />
+                          </div>
+                        </div>
+                        <div className="mt-2 flex items-center gap-2 text-[9px] font-bold text-emerald-400">
+                          <span>98% Match</span>
+                          <span className="border border-slate-600 px-1 text-white uppercase">
+                            HD
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-2 flex items-center justify-between px-1">
+                      <span className="text-[10px] font-bold text-slate-500">
+                        Virtual Col {colIndex}
+                      </span>
+                      <Sparkles className="size-3 text-blue-500/30" />
+                    </div>
+                  </div>
+                )}
+              </HorizontalVirtualScroll>
             </div>
           )}
-        </VirtualGridFixedSize>
-
-        {/* Interaction Indicator */}
-        <div className="pointer-events-none absolute right-10 bottom-10 flex items-center gap-2 rounded-full bg-slate-900/80 px-4 py-2 text-[10px] font-black tracking-widest text-white uppercase opacity-0 backdrop-blur-md transition-opacity group-hover:opacity-100">
-          <MousePointer2 className="size-3" />
-          Smooth Bidirectional Scroll
-        </div>
+        </VirtualScrollFixed>
       </div>
 
-      <div className="rounded-3xl border border-blue-500/10 bg-blue-500/5 p-6">
-        <p className="text-sm leading-relaxed font-medium text-blue-600 dark:text-blue-400">
-          <b>Kiểm chứng:</b> Dù ma trận có 1 triệu phần tử, DOM chỉ render khoảng 60-80 ô cùng lúc
-          (tuỳ vào overscan). Điều này giúp trình duyệt duy trì FPS ở mức 60 ngay cả trên các thiết
-          bị trung bình.
-        </p>
+      {/* Floating Info */}
+      <div className="fixed right-12 bottom-6 z-50 rounded-3xl border border-white/20 bg-white/10 px-6 py-4 text-white backdrop-blur-xl">
+        <div className="mb-1 text-[10px] font-black tracking-widest text-blue-400 uppercase">
+          Architecture Monitoring
+        </div>
+        <div className="text-xs font-bold text-slate-300">
+          100 Channels • 10,000 Nodes • Zero Layout Shift
+        </div>
       </div>
     </div>
   );

@@ -3,9 +3,9 @@
 import React from "react";
 import ShowcaseLayout from "@/components/show-case-layout";
 import { BookOpen, PlayCircle } from "lucide-react";
-import { Docs } from "./docs";
-import Demo1 from "./demo-1";
+import Docs from "./docs";
 import Demo2 from "./demo-2";
+import Demo1 from "./demo-1";
 
 /**
  * Case Study 8: Huge Dataset / 2D Grid / Fixed Size
@@ -21,13 +21,13 @@ export default function GridFixedPage() {
       children: <Docs />,
     },
     {
-      label: "Live Demo",
+      label: "TV Channels (Independent Rows)",
       value: "demo1",
       icon: <PlayCircle className="size-4" />,
       children: <Demo1 />,
     },
     {
-      label: "Independent Rows (Multi-Scroll)",
+      label: "Live Demo (Comming Soon)",
       value: "demo2",
       icon: <PlayCircle className="size-4" />,
       children: <Demo2 />,

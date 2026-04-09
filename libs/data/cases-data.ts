@@ -139,7 +139,7 @@ export const cases: RenderCase[] = [
     scale: "long",
     direction: "horizontal",
     itemSize: "dynamic",
-    isDone: false,
+    isDone: true,
   },
 
   // --- TIER 4: 2D GRID (VIRTUAL GRID) ---
@@ -154,17 +154,5 @@ export const cases: RenderCase[] = [
     direction: "bidirectional",
     itemSize: "fixed",
     isDone: true,
-  },
-  {
-    id: "9",
-    title: "9. Huge Dataset / 2D Grid / Dynamic Size",
-    description: "Virtual scroll 2D cho các item có kích thước không đồng đều.",
-    recommendation: "Masonry virtualization. Áp dụng cho: Pro Photo Gallery.",
-    href: "/long-2d-item-dynamic-width-height",
-    sourcePath: "app/long-2d-item-dynamic-width-height/page.tsx",
-    scale: "long",
-    direction: "bidirectional",
-    itemSize: "dynamic",
-    isDone: false,
   },
 ];
