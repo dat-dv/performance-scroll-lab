@@ -2,8 +2,8 @@
 
 import React, { useMemo } from "react";
 import { CaseCard } from "@/components/case-card";
-import { VirtualizationWizard } from "@/components/virtualization-wizard";
-import { cases } from "@/libs/data/cases-data";
+import { VirtualizationWizard } from "@/components/filter";
+import { cases } from "@/constansts/cases-data";
 import { useCaseFilters } from "@/context/filter-context";
 
 /**
@@ -32,9 +32,7 @@ export default function InfiniteScrollDemo() {
     <main className="relative mx-auto max-w-7xl px-0 py-8 lg:py-16">
       {/* 🚀 Header & Intro Text */}
       <header className="mb-14 px-4 sm:px-6">
-        <div
-          className="space-y-6"
-        >
+        <div className="space-y-6">
           <h1 className="text-4xl font-extrabold text-slate-900 sm:text-6xl dark:text-slate-100">
             Infinite Scroll & <br />
             <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent dark:from-blue-500 dark:to-indigo-500">

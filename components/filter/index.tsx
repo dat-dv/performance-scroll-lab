@@ -16,9 +16,9 @@ import {
 } from "lucide-react";
 
 import { useCaseFilters } from "@/context/filter-context";
-import { CaseScale, CaseDirection, CaseItemSize } from "@/libs/data/cases-data";
-import { FilterChip } from "../wizard/FilterChip";
-import { FilterGroup } from "../wizard/FilterGroup";
+import { CaseScale, CaseDirection, CaseItemSize } from "@/constansts/cases-data";
+import { FilterChip } from "./FilterChip";
+import { FilterGroup } from "./FilterGroup";
 
 /**
  * Strategy Wizard - Modularized layout.
@@ -63,7 +63,7 @@ export function VirtualizationWizard() {
         {!isCollapsed && (
           <div className="hidden items-center gap-2 text-[9px] font-black tracking-widest text-slate-400 uppercase sm:flex dark:text-slate-600">
             <Settings2 className="size-3" />
-            Selection Wizard
+            Selection Filter
           </div>
         )}
       </div>
