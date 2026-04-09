@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import ShowcaseLayout from "@/components/show-case-layout";
 import { BookOpen, PlayCircle } from "lucide-react";
 import Docs from "./docs";

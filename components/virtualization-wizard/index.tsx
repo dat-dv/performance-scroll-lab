@@ -57,7 +57,7 @@ export function VirtualizationWizard() {
           <div className="flex size-5 items-center justify-center rounded-full bg-slate-200 text-slate-500 transition-colors group-hover:bg-blue-500 group-hover:text-white dark:bg-slate-800 dark:text-slate-400">
             {isCollapsed ? <ChevronDown className="size-3" /> : <ChevronUp className="size-3" />}
           </div>
-          {isCollapsed ? "CẤU HÌNH BỘ LỌC (OFF)" : "THIẾT LẬP CHIẾN LƯỢC (ON)"}
+          {isCollapsed ? "ẨN BỘ LỌC (OFF)" : "BỘ LỌC (ON)"}
         </button>
 
         {!isCollapsed && (

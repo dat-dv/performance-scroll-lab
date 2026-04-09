@@ -1,5 +1,3 @@
-"use client";
-
 export function Docs() {
   return (
     <div className="text-foreground/80 max-w-3xl space-y-8 text-sm/relaxed antialiased selection:bg-blue-500/10">
