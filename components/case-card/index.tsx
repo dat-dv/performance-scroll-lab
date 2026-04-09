@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { Code } from "lucide-react";
-import { GIT_REPO } from "@/app/constansts/config";
+import { GIT_REPO } from "@/constansts/config";
 import { cn } from "@/libs/cn";
 
 export type CaseScale = "short" | "long" | "all";

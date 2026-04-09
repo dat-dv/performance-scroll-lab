@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Code } from "lucide-react";
-import { GIT_REPO } from "@/app/constansts/config";
+import { GIT_REPO } from "@/constansts/config";
 
 interface SourceCodeBadgeProps {
   path: string;

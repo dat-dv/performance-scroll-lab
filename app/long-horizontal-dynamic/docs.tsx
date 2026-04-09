@@ -3,7 +3,7 @@
 import React from "react";
 import { Sparkles, Layout, Cpu, Zap, Info, Code2, ExternalLink } from "lucide-react";
 import StepItem from "@/components/step-item";
-import ReferenceItem from "../referance-item";
+import ReferenceItem from "../../components/referance-item";
 import { ComingSoon } from "@/components/coming-soon";
 
 export function Docs() {

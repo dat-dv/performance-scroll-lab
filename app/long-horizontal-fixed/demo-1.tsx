@@ -5,6 +5,7 @@ import { RenderItem } from "./render-item";
 import { useState } from "react";
 import { delay } from "@/libs/delay";
 import { createMockItems } from "./mock-data";
+import HeaderItemLoaded from "@/components/header-item-loaded";
 
 export default function Demo() {
   const [items, setItems] = useState(() => createMockItems(20));
@@ -22,6 +23,12 @@ export default function Demo() {
 
   return (
     <div className="min-h-screen space-y-12 pb-20">
+      <HeaderItemLoaded
+        length={items.length}
+        isLoading={loading}
+        title="Horizontal Fixed Lab"
+        description="Mỗi Item dưới đây có chiều rộng cố định"
+      />
       <section className="relative -mx-6 overflow-visible rounded-[3rem] bg-slate-50/50 px-6 py-12 dark:bg-white/5">
         <HorizontalVirtualScroll
           items={items}

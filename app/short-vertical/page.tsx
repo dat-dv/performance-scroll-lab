@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { ShortVerticalDocs } from "./docs";
 import { LaboratoryDemoHeader } from "@/components/laboratory-demo-header";
 import ShowcaseLayout from "@/components/show-case-layout";
@@ -17,7 +18,7 @@ const MOCK_CONTACTS: Contact[] = Array.from({ length: 80 }, (_, i) => ({
   id: i,
   name: `User ${i + 1}`,
   role: ["Engineer", "Designer", "Product", "Quality"][i % 4],
-  avatar: `https://i.pravatar.cc/150?u=${i}`,
+  avatar: `https://picsum.photos/seed/avatar-${i}/150`,
 }));
 
 export default function ShortVerticalPage() {
@@ -47,10 +48,11 @@ export default function ShortVerticalPage() {
                   >
                     <div className="flex items-center gap-4">
                       <div className="relative">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
+                        <Image
                           src={item.avatar}
                           alt={item.name}
+                          width={48}
+                          height={48}
                           className="size-12 rounded-xl object-cover ring-2 ring-white transition-transform group-hover/item:scale-105 dark:ring-slate-900"
                         />
                         <div className="absolute -top-1 -right-1 size-3 rounded-full border-2 border-white bg-emerald-500 dark:border-slate-900" />

@@ -3,7 +3,7 @@
 import React from "react";
 import { ExternalLink, Sparkles, Code2, Cpu, Info, Zap } from "lucide-react";
 import StepItem from "@/components/step-item";
-import ReferenceItem from "../referance-item";
+import ReferenceItem from "../../components/referance-item";
 
 /**
  * Technical documentation for Dynamic Height Virtualization.

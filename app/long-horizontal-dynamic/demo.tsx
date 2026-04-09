@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import HorizontalScrollDynamicWidth from "@/libs/virtual-scroll/horizontal-scroll-dynamic-width";
 import { Sparkles, ArrowRight } from "lucide-react";
+import HeaderItemLoaded from "@/components/header-item-loaded";
 
 interface NewsItem {
   id: string;
@@ -44,20 +45,12 @@ export default function Demo() {
 
   return (
     <div className="space-y-8 py-10">
-      <div className="flex items-center justify-between">
-        <div className="space-y-1">
-          <h3 className="text-sm font-bold tracking-widest text-slate-400 uppercase">
-            Horizontal Dynamic Lab
-          </h3>
-          <p className="text-xs text-slate-500 italic">
-            Mỗi Item dưới đây có chiều rộng ngẫu nhiên và tự hiệu chỉnh toạ độ.
-          </p>
-        </div>
-        <div className="flex items-center gap-2 rounded-full bg-blue-500/10 px-4 py-2 text-xs font-bold text-blue-600">
-          <Sparkles className="size-3" />
-          {items.length} Items Loaded
-        </div>
-      </div>
+      <HeaderItemLoaded
+        length={items.length}
+        isLoading={isLoading}
+        title="Horizontal Dynamic Lab"
+        description="Mỗi Item dưới đây có chiều rộng ngẫu nhiên"
+      />
 
       <div className="rounded-[3rem] border border-slate-200 bg-slate-50 p-4 shadow-inner dark:border-white/5 dark:bg-slate-900/50">
         <HorizontalScrollDynamicWidth
@@ -107,7 +100,7 @@ export default function Demo() {
           </div>
         ) : (
           <div className="text-[10px] font-black tracking-[0.3em] text-slate-400 uppercase">
-            Swipe left to trigger infinite load
+            Swipe to trigger infinite load
           </div>
         )}
       </div>

@@ -1,10 +1,11 @@
 "use client";
 
 import HorizontalVirtualScroll from "@/libs/virtual-scroll/horizontal-scroll-fixed-width";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { delay } from "@/libs/delay";
 import { createMockItems } from "./mock-data";
 import { Layers } from "lucide-react";
+import HeaderItemLoaded from "@/components/header-item-loaded";
 
 export default function DemoMultiRow() {
   const ROWS_COUNT = 10; // Số hàng trong mỗi nhóm
@@ -28,25 +29,17 @@ export default function DemoMultiRow() {
     setLoading(false);
   };
 
-  const hasNext = rawData.length < 100; // Giới hạn 100 cột để test
+  const hasNext = rawData.length < 600; // Giới hạn 100 cột để test
 
   return (
     <div className="min-h-screen space-y-12 pb-20">
-      <section className="relative -mx-6 overflow-visible rounded-[3rem] bg-slate-100/50 px-6 py-16 dark:bg-white/5">
-        <div className="mb-6 flex items-center gap-3 px-10">
-          <div className="rounded-lg bg-emerald-500/10 p-2 text-emerald-600">
-            <Layers className="size-5" />
-          </div>
-          <div>
-            <h4 className="text-sm font-black tracking-tight dark:text-white">
-              Multi-row Horizontal Grid
-            </h4>
-            <p className="text-[10px] font-medium tracking-widest text-slate-500 uppercase">
-              Technique: Data Chunking
-            </p>
-          </div>
-        </div>
-
+      <HeaderItemLoaded
+        length={rawData.length}
+        isLoading={loading}
+        title="Horizontal Fixed Lab"
+        description="Mỗi Item dưới đây có chiều rộng cố định"
+      />
+      <section className="relative -mx-6 overflow-visible rounded-[3rem] bg-slate-50/50 px-6 py-12 dark:bg-white/5">
         <HorizontalVirtualScroll
           items={rawData}
           overscan={4}

@@ -18,7 +18,7 @@ export default function Case10() {
       label: "Live Demo",
       value: "demo",
       icon: <PlayCircle className="size-4" />,
-      children: <ComingSoon title="Infinite Loading Demo" />,
+      children: <ComingSoon title="Long 2d Item Dynamic Width Height" />,
     },
   ];
 
